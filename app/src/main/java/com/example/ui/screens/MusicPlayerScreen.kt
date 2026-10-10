@@ -79,6 +79,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -291,7 +292,6 @@ fun MusicPlayerScreen(
                         color = if (isSelected) NeonCyan else Color.White,
                         selected = isSelected,
                         onClick = {
-                            playerLayoutDesign = idx
                             GamificationManager.setMusicPlayerDesign(idx)
                         }
                     )
@@ -2839,7 +2839,7 @@ fun CircularZenSphereLayout(
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "Binaural Mindscapes • ${activeSoundscape.title} Ambient Wave",
+                    text = "Binaural Mindscapes • ${activeSoundscape.label} Ambient Wave",
                     style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1
