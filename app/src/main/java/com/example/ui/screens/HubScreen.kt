@@ -907,6 +907,152 @@ fun HubScreen(
             }
         }
 
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // DEFAULT HOME SCREEN LANDING TAB CUSTOMIZER
+        GlassCard(modifier = Modifier.fillMaxWidth(), glowColor = NeonLime, glowRadius = 8.dp) {
+            Column(modifier = Modifier.padding(14.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "🏠 Default Home Screen Landing Tab",
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                            color = Color.White
+                        )
+                        Text(
+                            text = "Choose which tab opens automatically when launching app",
+                            fontSize = 11.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    GlassChip(
+                        label = gamificationState.defaultHomeScreenTab,
+                        color = NeonLime,
+                        selected = true
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listOf(
+                        Pair("FOCUS", "⏱️ Focus (Default)"),
+                        Pair("MUSIC", "🎧 Music Player"),
+                        Pair("GAMES", "🎮 Brain Games"),
+                        Pair("TOOLS", "🛠️ Productivity Suite"),
+                        Pair("HUB", "⚙️ Hub & Settings")
+                    ).forEach { (tabKey, title) ->
+                        val isSelected = gamificationState.defaultHomeScreenTab == tabKey
+                        Box(
+                            modifier = Modifier
+                                .height(40.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(if (isSelected) NeonLime.copy(alpha = 0.28f) else Color(0x12FFFFFF))
+                                .border(1.2.dp, if (isSelected) NeonLime else Color(0x20FFFFFF), RoundedCornerShape(12.dp))
+                                .clickable {
+                                    GamificationManager.setDefaultHomeScreenTab(tabKey)
+                                    Toast.makeText(context, "Default home screen set to $title", Toast.LENGTH_SHORT).show()
+                                }
+                                .padding(horizontal = 12.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = title,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (isSelected) NeonLime else Color.White
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // MUSIC PLAYER 5-LAYOUT DESIGNS CUSTOMIZER
+        GlassCard(modifier = Modifier.fillMaxWidth(), glowColor = NeonCyan, glowRadius = 8.dp) {
+            Column(modifier = Modifier.padding(14.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(
+                            text = "🎵 Music Player Layout (5 Designs)",
+                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                            color = Color.White
+                        )
+                        Text(
+                            text = "2 Circular & 3 Horizontal Hi-Fi Player Layouts",
+                            fontSize = 11.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    GlassChip(
+                        label = when (gamificationState.musicPlayerDesign) {
+                            0 -> "Vinyl (Circle)"
+                            1 -> "Mandala (Circle)"
+                            2 -> "Wave (Horiz)"
+                            3 -> "Cassette (Horiz)"
+                            else -> "Soundbar (Horiz)"
+                        },
+                        color = NeonCyan,
+                        selected = true
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listOf(
+                        0 to "⭕ Vinyl Disc (Circle 1)",
+                        1 to "🪐 Sacred Mandala (Circle 2)",
+                        2 to "🌊 Cyber Wave Deck (Horiz 1)",
+                        3 to "📼 Retro Cassette (Horiz 2)",
+                        4 to "🔊 Horizon Soundbar (Horiz 3)"
+                    ).forEach { (idx, title) ->
+                        val isSelected = gamificationState.musicPlayerDesign == idx
+                        Box(
+                            modifier = Modifier
+                                .height(40.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(if (isSelected) NeonCyan.copy(alpha = 0.28f) else Color(0x12FFFFFF))
+                                .border(1.2.dp, if (isSelected) NeonCyan else Color(0x20FFFFFF), RoundedCornerShape(12.dp))
+                                .clickable {
+                                    GamificationManager.setMusicPlayerDesign(idx)
+                                    Toast.makeText(context, "Player layout changed to $title", Toast.LENGTH_SHORT).show()
+                                }
+                                .padding(horizontal = 12.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = title,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (isSelected) NeonCyan else Color.White
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
         Spacer(modifier = Modifier.height(20.dp))
 
         // 3-Way Navigation Tabs: 30 Focus vs 20 Music vs Feature Guide

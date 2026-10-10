@@ -109,6 +109,7 @@ data class GamificationState(
     val userName: String = "Focus Voyager",
     val userBio: String = "Seeking deep clarity, flow state & daily calm.",
     val userAvatarEmoji: String = "⚡",
+    val defaultHomeScreenTab: String = "FOCUS", // "FOCUS", "MUSIC", "GAMES", "TOOLS", "HUB"
     val musicPlayerDesign: Int = 0, // 0: Circular Vinyl, 1: Circular Aura Sphere, 2: Horizontal Waveform, 3: Horizontal Cassette, 4: Horizontal Soundbar
     val lastMoodCheckInDate: String? = null,
     val moodCheckInHistory: List<DailyMoodCheckIn> = listOf(
@@ -462,6 +463,10 @@ object GamificationManager {
     fun setMusicPlayerDesign(designIndex: Int) {
         val clamped = designIndex.coerceIn(0, 4)
         _state.value = _state.value.copy(musicPlayerDesign = clamped)
+    }
+
+    fun setDefaultHomeScreenTab(tab: String) {
+        _state.value = _state.value.copy(defaultHomeScreenTab = tab)
     }
 }
 

@@ -43,6 +43,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
@@ -622,3 +624,106 @@ fun GlassSlider(
         )
     )
 }
+
+/**
+ * Reusable Glassmorphism Notification / Rationale Banner with icon and optional action button.
+ */
+@Composable
+fun GlassBanner(
+    title: String,
+    description: String,
+    modifier: Modifier = Modifier,
+    iconEmoji: String = "✨",
+    accentColor: Color = NeonCyan,
+    actionButtonText: String? = null,
+    onActionClick: (() -> Unit)? = null
+) {
+    GlassCard(
+        modifier = modifier.fillMaxWidth(),
+        glowColor = accentColor,
+        glowRadius = 10.dp,
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(42.dp)
+                    .clip(CircleShape)
+                    .background(accentColor.copy(alpha = 0.2f))
+                    .border(1.dp, accentColor.copy(alpha = 0.6f), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(iconEmoji, fontSize = 20.sp)
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall.copy(fontSize = 13.sp, fontWeight = FontWeight.Bold),
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            if (actionButtonText != null && onActionClick != null) {
+                Spacer(modifier = Modifier.width(8.dp))
+                GlassChip(
+                    label = actionButtonText,
+                    color = accentColor,
+                    selected = true,
+                    onClick = onActionClick
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Reusable Glassmorphism Metric Pill for live telemetry, scores & stat counters.
+ */
+@Composable
+fun GlassMetricPill(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier,
+    iconEmoji: String? = null,
+    color: Color = NeonCyan
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(color.copy(alpha = 0.12f))
+            .border(1.dp, color.copy(alpha = 0.35f), RoundedCornerShape(12.dp))
+            .padding(horizontal = 10.dp, vertical = 6.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (iconEmoji != null) {
+                Text(iconEmoji, fontSize = 12.sp)
+                Spacer(modifier = Modifier.width(5.dp))
+            }
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(
+                    text = value,
+                    style = MaterialTheme.typography.labelMedium.copy(fontSize = 12.sp, fontWeight = FontWeight.Bold),
+                    color = color
+                )
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+

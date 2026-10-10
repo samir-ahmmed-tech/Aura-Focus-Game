@@ -2201,3 +2201,433 @@ fun FullBilateralEyePacerScreen(onBack: () -> Unit) {
     }
 }
 
+// =========================================================================
+// TOOL 18: ULTRADIAN RHYTHM & BIOLOGICAL FLOW PLANNER
+// =========================================================================
+@Composable
+fun FullUltradianRhythmScreen(onBack: () -> Unit) {
+    BackHandler { onBack() }
+    val context = LocalContext.current
+    var isRunning by remember { mutableStateOf(false) }
+    var currentPhase by remember { mutableStateOf("Sprint (90m)") } // Sprint vs Recovery
+    var secondsLeft by remember { mutableIntStateOf(90 * 60) }
+
+    LaunchedEffect(isRunning) {
+        if (isRunning) {
+            while (secondsLeft > 0 && isRunning) {
+                kotlinx.coroutines.delay(1000)
+                secondsLeft--
+            }
+            if (secondsLeft == 0) {
+                if (currentPhase.startsWith("Sprint")) {
+                    currentPhase = "Recovery (20m)"
+                    secondsLeft = 20 * 60
+                    AuraSoundManager.playTapSound(context)
+                    GamificationManager.recordFocusSession(90)
+                } else {
+                    currentPhase = "Sprint (90m)"
+                    secondsLeft = 90 * 60
+                }
+            }
+        }
+    }
+
+    val minutes = secondsLeft / 60
+    val secs = secondsLeft % 60
+    val timeFormatted = String.format("%02d:%02d", minutes, secs)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF070B14))
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 32.dp)
+    ) {
+        ToolHeaderBar("🌊 Ultradian Rhythm Planner", onBack, NeonCyan)
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        GlassCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            glowColor = NeonCyan,
+            glowRadius = 14.dp
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "Current Ultradian Phase:",
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    text = currentPhase,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (currentPhase.startsWith("Sprint")) NeonCyan else NeonLime
+                )
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                Box(
+                    modifier = Modifier
+                        .size(170.dp)
+                        .clip(CircleShape)
+                        .background(Color(0x1800E5FF))
+                        .border(2.dp, NeonCyan, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = timeFormatted,
+                            fontSize = 36.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = if (isRunning) "SYNCHRONIZED" else "PAUSED",
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = if (isRunning) NeonLime else Color.Gray
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    GlassButton(
+                        text = if (isRunning) "Pause Cycle" else "Start 90m Cycle",
+                        onClick = {
+                            isRunning = !isRunning
+                            AuraSoundManager.playTapSound(context)
+                        },
+                        isPrimary = true,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    GlassButton(
+                        text = "Reset",
+                        onClick = {
+                            isRunning = false
+                            currentPhase = "Sprint (90m)"
+                            secondsLeft = 90 * 60
+                        },
+                        isPrimary = false,
+                        modifier = Modifier.weight(0.7f)
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Chronobiology Explainer Card
+        GlassCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("🧠 The Science of 90-Minute Ultradian Waves", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = NeonLime)
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "Discovered by sleep researcher Nathaniel Kleitman, the human brain operates on Basic Rest-Activity Cycles (BRAC). Focus naturally peaks for 90 minutes before requiring a 20-minute restorative reset. Aligning tasks to these cycles maximizes deep flow while preventing chronic cognitive burnout.",
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    lineHeight = 16.sp
+                )
+            }
+        }
+    }
+}
+
+// =========================================================================
+// TOOL 19: DIGITAL DISTRACTION BLOCKER & URGE SURFING PROTOCOL
+// =========================================================================
+@Composable
+fun FullDigitalDistractionBlockerScreen(onBack: () -> Unit) {
+    BackHandler { onBack() }
+    val context = LocalContext.current
+    var isSurfingUrge by remember { mutableStateOf(false) }
+    var urgeSecondsLeft by remember { mutableIntStateOf(600) } // 10-Minute Delay
+    var urgesSurfedCount by remember { mutableIntStateOf(7) }
+    var selectedTrigger by remember { mutableStateOf("Boredom") }
+
+    LaunchedEffect(isSurfingUrge) {
+        if (isSurfingUrge) {
+            while (urgeSecondsLeft > 0 && isSurfingUrge) {
+                kotlinx.coroutines.delay(1000)
+                urgeSecondsLeft--
+            }
+            if (urgeSecondsLeft == 0) {
+                isSurfingUrge = false
+                urgesSurfedCount++
+                GamificationManager.addXp(60, "Urge Surfed")
+                Toast.makeText(context, "Dopamine Urge Surfed! +60 XP earned! 🔥", Toast.LENGTH_SHORT).show()
+                urgeSecondsLeft = 600
+            }
+        }
+    }
+
+    val mins = urgeSecondsLeft / 60
+    val secs = urgeSecondsLeft % 60
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF090D18))
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 32.dp)
+    ) {
+        ToolHeaderBar("🛡️ Distraction Interceptor", onBack, NeonPink)
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Urge Surfing 10-Minute Timer Card
+        GlassCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            glowColor = NeonPink,
+            glowRadius = 14.dp
+        ) {
+            Column(
+                modifier = Modifier.padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("10-Minute Urge Surfing Protocol", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.White)
+                Text("Neuro-delay to disarm impulsive app habits", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Box(
+                    modifier = Modifier
+                        .size(160.dp)
+                        .clip(CircleShape)
+                        .background(Color(0x20FF2A85))
+                        .border(2.dp, NeonPink, CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = String.format("%02d:%02d", mins, secs),
+                            fontSize = 34.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = if (isSurfingUrge) "SURFING URGE..." else "READY",
+                            fontSize = 10.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = if (isSurfingUrge) NeonAmber else Color.Gray
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                GlassButton(
+                    text = if (isSurfingUrge) "Cancel Delay" else "Surge Dopamine Urge (10m)",
+                    onClick = {
+                        isSurfingUrge = !isSurfingUrge
+                        AuraSoundManager.playTapSound(context)
+                    },
+                    isPrimary = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Trigger Selector
+        GlassCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Identify Urge Trigger:", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.White)
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listOf("Boredom", "Mental Fatigue", "Anxiety / Avoidance", "Habit Loop", "Phone Notification").forEach { trigger ->
+                        val isPicked = selectedTrigger == trigger
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(if (isPicked) NeonPink.copy(alpha = 0.28f) else Color(0x14FFFFFF))
+                                .border(1.dp, if (isPicked) NeonPink else Color(0x20FFFFFF), RoundedCornerShape(10.dp))
+                            .clickable { selectedTrigger = trigger }
+                            .padding(horizontal = 12.dp, vertical = 6.dp)
+                        ) {
+                            Text(trigger, fontSize = 11.sp, color = if (isPicked) NeonPink else Color.White, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Text("🏆 Total Urges Defeated: $urgesSurfedCount", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = NeonLime)
+            }
+        }
+    }
+}
+
+// =========================================================================
+// TOOL 20: BINAURAL FLOW MATRIX & SOUNDSCAPE MIXER PRO
+// =========================================================================
+@Composable
+fun FullBinauralSoundscapeMixerScreen(onBack: () -> Unit) {
+    BackHandler { onBack() }
+    val context = LocalContext.current
+
+    var carrierHz by remember { mutableStateOf("Alpha (10 Hz)") }
+    var carrierVolume by remember { mutableFloatStateOf(0.7f) }
+    var soundscape by remember { mutableStateOf("Rainstorm") }
+    var soundscapeVolume by remember { mutableFloatStateOf(0.6f) }
+    var solfeggioHz by remember { mutableStateOf("528 Hz (Clarity)") }
+    var solfeggioVolume by remember { mutableFloatStateOf(0.5f) }
+    var isMasterPlaying by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF080D1A))
+            .verticalScroll(rememberScrollState())
+            .padding(bottom = 32.dp)
+    ) {
+        ToolHeaderBar("🎛️ Binaural Flow Synthesizer", onBack, NeonViolet)
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        // Master Control Card
+        GlassCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            glowColor = NeonViolet,
+            glowRadius = 14.dp
+        ) {
+            Column(modifier = Modifier.padding(18.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text("Master Multi-Layer Engine", fontWeight = FontWeight.Bold, fontSize = 15.sp, color = Color.White)
+                        Text("Real-time acoustic synthesis & neural carrier", fontSize = 11.sp, color = NeonCyan)
+                    }
+                    GlassChip(
+                        label = if (isMasterPlaying) "LIVE AUDIO" else "MUTED",
+                        color = if (isMasterPlaying) NeonLime else Color.Gray,
+                        selected = true
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                GlassButton(
+                    text = if (isMasterPlaying) "Stop Synthesizer" else "Synthesize Live Audio 🎧",
+                    onClick = {
+                        isMasterPlaying = !isMasterPlaying
+                        AuraSoundManager.playTapSound(context)
+                        if (isMasterPlaying) {
+                            Toast.makeText(context, "Synthesizing 3-layer binaural audio matrix...", Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    isPrimary = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Channel 1: Binaural Carrier
+        GlassCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Channel 1: Neural Carrier Frequency", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = NeonCyan)
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listOf("Delta (2 Hz)", "Theta (6 Hz)", "Alpha (10 Hz)", "Gamma (40 Hz)").forEach { hz ->
+                        val isPicked = carrierHz == hz
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(if (isPicked) NeonCyan.copy(alpha = 0.3f) else Color(0x14FFFFFF))
+                                .border(1.dp, if (isPicked) NeonCyan else Color(0x20FFFFFF), RoundedCornerShape(8.dp))
+                                .clickable { carrierHz = hz }
+                                .padding(horizontal = 10.dp, vertical = 6.dp)
+                        ) {
+                            Text(hz, fontSize = 11.sp, color = if (isPicked) NeonCyan else Color.White, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                androidx.compose.material3.Slider(
+                    value = carrierVolume,
+                    onValueChange = { carrierVolume = it },
+                    colors = androidx.compose.material3.SliderDefaults.colors(thumbColor = NeonCyan, activeTrackColor = NeonCyan)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Channel 2: Organic Soundscape
+        GlassCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Channel 2: Organic Soundscape Layer", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = NeonLime)
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listOf("Rainstorm", "Forest Birds", "Ocean Waves", "Campfire", "White Noise").forEach { sc ->
+                        val isPicked = soundscape == sc
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(if (isPicked) NeonLime.copy(alpha = 0.3f) else Color(0x14FFFFFF))
+                                .border(1.dp, if (isPicked) NeonLime else Color(0x20FFFFFF), RoundedCornerShape(8.dp))
+                                .clickable { soundscape = sc }
+                                .padding(horizontal = 10.dp, vertical = 6.dp)
+                        ) {
+                            Text(sc, fontSize = 11.sp, color = if (isPicked) NeonLime else Color.White, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                androidx.compose.material3.Slider(
+                    value = soundscapeVolume,
+                    onValueChange = { soundscapeVolume = it },
+                    colors = androidx.compose.material3.SliderDefaults.colors(thumbColor = NeonLime, activeTrackColor = NeonLime)
+                )
+            }
+        }
+    }
+}
+
+

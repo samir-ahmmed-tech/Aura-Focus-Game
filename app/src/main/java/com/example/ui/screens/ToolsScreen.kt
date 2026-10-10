@@ -107,7 +107,10 @@ fun ToolsScreen(
             ProductivityTool("t14", "Aura Ambience Synthesizer", "5-channel nature sound mixing with binaural crossfades", "🎛️", "Sound Lab", NeonPink),
             ProductivityTool("t15", "Quest Vault & Focus Bounty", "Daily & weekly RPG productivity bounties & XP loot", "⚔️", "Quests", NeonAmber),
             ProductivityTool("t16", "Dopamine Fast Protocol", "Neuro-reset digital detox timeline & urge surfing tracker", "🧘", "Dopamine Reset", NeonLime),
-            ProductivityTool("t17", "Bilateral Eye Pacer", "EMDR neuro-bilateral saccade stimulation pacer for calm & focus", "👁️", "Neuro-Pacer", NeonCyan)
+            ProductivityTool("t17", "Bilateral Eye Pacer", "EMDR neuro-bilateral saccade stimulation pacer for calm & focus", "👁️", "Neuro-Pacer", NeonCyan),
+            ProductivityTool("t18", "Ultradian Rhythm Waves", "90-minute biological energy cycle & recovery planner", "🌊", "Bio-Rhythm", NeonCyan),
+            ProductivityTool("t19", "Distraction Interceptor", "10-minute dopamine urge surfing delay protocol", "🛡️", "Habit Shield", NeonPink),
+            ProductivityTool("t20", "Binaural Flow Synthesizer", "Multi-channel acoustic frequency & nature mixer", "🎛️", "Sound Lab", NeonViolet)
         )
     }
 

@@ -93,7 +93,11 @@ fun BrainGamesScreen(
             BrainGameInfo("g19", "Pitch Match Ear Trainer", "Acoustic audio frequency pitch discrimination", "Acoustic IQ", "Reflex & Rhythm", "🎵", 45, NeonViolet),
             BrainGameInfo("g20", "Codebreaker Cipher", "Rapid symbol-to-digit cryptanalysis under timer", "Cryptanalysis", "Math & Logic", "🕵️", 55, NeonAmber),
             BrainGameInfo("g21", "Quantum Flow Maze", "Dynamic rotating labyrinth pathfinding", "Spatial Maze", "Math & Logic", "🌀", 55, NeonCyan),
-            BrainGameInfo("g22", "Neuro Balance Tilt", "Kinetic gravity equilibrium & precision stabilizer", "Equilibrium", "Reflex & Rhythm", "⚖️", 50, NeonLime)
+            BrainGameInfo("g22", "Neuro Balance Tilt", "Kinetic gravity equilibrium & precision stabilizer", "Equilibrium", "Reflex & Rhythm", "⚖️", 50, NeonLime),
+            BrainGameInfo("g23", "Synapse Speed Sort", "Overclocked rapid categorization under shifting rules", "Executive Control", "Reflex & Rhythm", "⚡", 45, NeonCyan),
+            BrainGameInfo("g24", "Spatial Path Trace", "Recall celestial constellation sequences", "Visuospatial IQ", "Memory", "✨", 50, NeonLime),
+            BrainGameInfo("g25", "N-Back Audio Echo", "2-back acoustic frequency memory tracker", "Acoustic Memory", "Memory", "🎧", 55, NeonViolet),
+            BrainGameInfo("g26", "Focus Radar Saccade", "Anti-saccadic eye movement target inhibitor", "Inhibition IQ", "Executive Focus", "🎯", 50, NeonCyan)
         )
     }
 

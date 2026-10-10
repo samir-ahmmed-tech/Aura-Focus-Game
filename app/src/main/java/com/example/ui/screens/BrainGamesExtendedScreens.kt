@@ -1591,4 +1591,612 @@ fun FullNeuroBalanceTiltScreen(onBack: () -> Unit) {
     }
 }
 
+// =========================================================================
+// GAME 23: SYNAPSE SPEED SORT (EXECUTIVE CONTROL & RAPID CATEGORIZATION)
+// =========================================================================
+data class SynapseItem(val id: Int, val label: String, val isCategoryA: Boolean)
+
+@Composable
+fun FullSynapseSpeedSortScreen(onBack: () -> Unit) {
+    BackHandler { onBack() }
+    val context = LocalContext.current
+    var score by remember { mutableIntStateOf(0) }
+    var streak by remember { mutableIntStateOf(0) }
+    var lives by remember { mutableIntStateOf(3) }
+    var secondsLeft by remember { mutableIntStateOf(45) }
+    var isGameOver by remember { mutableStateOf(false) }
+    var ruleMode by remember { mutableIntStateOf(0) } // 0: Even vs Odd, 1: High (>50) vs Low (<=50)
+    var currentItem by remember { mutableStateOf(generateSynapseItem(ruleMode)) }
+    var feedbackColor by remember { mutableStateOf<Color?>(null) }
+
+    LaunchedEffect(isGameOver) {
+        if (!isGameOver) {
+            while (secondsLeft > 0) {
+                delay(1000)
+                secondsLeft--
+            }
+            isGameOver = true
+            GamificationManager.recordGameMatch("g23", "Synapse Speed Sort", score, 92, 195)
+        }
+    }
+
+    LaunchedEffect(feedbackColor) {
+        if (feedbackColor != null) {
+            delay(250)
+            feedbackColor = null
+        }
+    }
+
+    fun handleSort(choseA: Boolean) {
+        if (isGameOver) return
+        val isCorrect = choseA == currentItem.isCategoryA
+        if (isCorrect) {
+            score += 15 + streak * 3
+            streak++
+            AuraSoundManager.playTapSound(context)
+        } else {
+            lives--
+            streak = 0
+            if (lives <= 0) {
+                isGameOver = true
+                GamificationManager.recordGameMatch("g23", "Synapse Speed Sort", score, 85, 230)
+            }
+        }
+        feedbackColor = if (isCorrect) NeonLime else NeonPink
+
+        // Dynamic rule shifting every 5 matches
+        if (score % 60 == 0) {
+            ruleMode = (ruleMode + 1) % 2
+        }
+        currentItem = generateSynapseItem(ruleMode)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF070B14))
+            .padding(top = 40.dp, bottom = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        GameStatHUD(secondsLeft, lives, streak, NeonCyan)
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        Text(
+            text = "⚡ Synapse Speed Sort",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+        Text(
+            text = if (ruleMode == 0) "RULE: Even [Left] ◀ vs ▶ [Right] Odd" else "RULE: Low (≤50) [Left] ◀ vs ▶ [Right] High (>50)",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            color = NeonAmber
+        )
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        if (isGameOver) {
+            GameOverCard(
+                score = score,
+                streak = streak,
+                title = "Synapse Overclock Complete! 🧠",
+                onPlayAgain = {
+                    score = 0
+                    streak = 0
+                    lives = 3
+                    secondsLeft = 45
+                    ruleMode = 0
+                    currentItem = generateSynapseItem(0)
+                    isGameOver = false
+                },
+                onExit = onBack,
+                accentColor = NeonCyan
+            )
+        } else {
+            // Quantum Floating Stimulus
+            Box(
+                modifier = Modifier
+                    .size(170.dp)
+                    .clip(CircleShape)
+                    .background(
+                        Brush.radialGradient(
+                            listOf((feedbackColor ?: NeonCyan).copy(alpha = 0.35f), Color(0x10FFFFFF))
+                        )
+                    )
+                    .border(2.dp, feedbackColor ?: NeonCyan, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = currentItem.label,
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Text(
+                        text = "Score: $score",
+                        fontSize = 12.sp,
+                        color = NeonCyan
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(44.dp))
+
+            // Left / Right Sorting Bins
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(72.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color(0x2200E5FF))
+                        .border(1.5.dp, NeonCyan, RoundedCornerShape(16.dp))
+                        .clickable { handleSort(true) },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("◀ SORT LEFT", fontWeight = FontWeight.Bold, color = NeonCyan, fontSize = 13.sp)
+                        Text(if (ruleMode == 0) "EVEN NUMBERS" else "LOW (≤50)", fontSize = 10.sp, color = Color.White)
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(72.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color(0x22FF2A85))
+                        .border(1.5.dp, NeonPink, RoundedCornerShape(16.dp))
+                        .clickable { handleSort(false) },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("SORT RIGHT ▶", fontWeight = FontWeight.Bold, color = NeonPink, fontSize = 13.sp)
+                        Text(if (ruleMode == 0) "ODD NUMBERS" else "HIGH (>50)", fontSize = 10.sp, color = Color.White)
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun generateSynapseItem(ruleMode: Int): SynapseItem {
+    val number = Random.nextInt(2, 99)
+    val isCatA = if (ruleMode == 0) (number % 2 == 0) else (number <= 50)
+    return SynapseItem(number, "$number", isCatA)
+}
+
+// =========================================================================
+// GAME 24: SPATIAL PATH TRACE (VISUOSPATIAL WORKING MEMORY)
+// =========================================================================
+@Composable
+fun FullSpatialPathTraceScreen(onBack: () -> Unit) {
+    BackHandler { onBack() }
+    val context = LocalContext.current
+    var score by remember { mutableIntStateOf(0) }
+    var streak by remember { mutableIntStateOf(0) }
+    var lives by remember { mutableIntStateOf(3) }
+    var pathLength by remember { mutableIntStateOf(4) }
+    var isDemonstrating by remember { mutableStateOf(true) }
+    var targetPath by remember { mutableStateOf(generateRandomPath(4)) }
+    var playerInputIndex by remember { mutableIntStateOf(0) }
+    var activeFlashNode by remember { mutableStateOf<Int?>(null) }
+    var isGameOver by remember { mutableStateOf(false) }
+
+    LaunchedEffect(targetPath) {
+        isDemonstrating = true
+        playerInputIndex = 0
+        delay(600)
+        for (node in targetPath) {
+            activeFlashNode = node
+            AuraSoundManager.playTapSound(context)
+            delay(550)
+            activeFlashNode = null
+            delay(250)
+        }
+        isDemonstrating = false
+    }
+
+    fun handleNodeTap(nodeIndex: Int) {
+        if (isDemonstrating || isGameOver) return
+        AuraSoundManager.playTapSound(context)
+        if (nodeIndex == targetPath[playerInputIndex]) {
+            playerInputIndex++
+            if (playerInputIndex == targetPath.size) {
+                // Completed Path!
+                score += targetPath.size * 25
+                streak++
+                pathLength = (pathLength + 1).coerceAtMost(8)
+                targetPath = generateRandomPath(pathLength)
+            }
+        } else {
+            lives--
+            streak = 0
+            if (lives <= 0) {
+                isGameOver = true
+                GamificationManager.recordGameMatch("g24", "Spatial Path Trace", score, 88, 240)
+            } else {
+                targetPath = generateRandomPath(pathLength)
+            }
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF080D1A))
+            .padding(top = 40.dp, bottom = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        GameStatHUD(pathLength * 5, lives, streak, NeonLime)
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        Text("✨ Spatial Path Trace", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+        Text(
+            text = if (isDemonstrating) "MEMORIZE CONSTELLATION PATH 🌟" else "TRACE PATH FROM MEMORY (${playerInputIndex}/${targetPath.size})",
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            color = if (isDemonstrating) NeonAmber else NeonLime
+        )
+
+        Spacer(modifier = Modifier.height(26.dp))
+
+        if (isGameOver) {
+            GameOverCard(
+                score = score,
+                streak = streak,
+                title = "Constellation Traced!",
+                onPlayAgain = {
+                    score = 0
+                    streak = 0
+                    lives = 3
+                    pathLength = 4
+                    targetPath = generateRandomPath(4)
+                    isGameOver = false
+                },
+                onExit = onBack,
+                accentColor = NeonLime
+            )
+        } else {
+            // 4x4 Constellation Matrix Grid
+            Column(
+                modifier = Modifier
+                    .size(280.dp)
+                    .clip(RoundedCornerShape(20.dp))
+                    .background(Color(0x18FFFFFF))
+                    .border(1.5.dp, Color(0x30FFFFFF), RoundedCornerShape(20.dp))
+                    .padding(12.dp),
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                for (r in 0 until 4) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        for (c in 0 until 4) {
+                            val nodeIdx = r * 4 + c
+                            val isFlashed = activeFlashNode == nodeIdx
+                            Box(
+                                modifier = Modifier
+                                    .size(52.dp)
+                                    .clip(CircleShape)
+                                    .background(if (isFlashed) NeonLime else Color(0x20FFFFFF))
+                                    .border(1.5.dp, if (isFlashed) NeonLime else Color(0x40FFFFFF), CircleShape)
+                                    .clickable { handleNodeTap(nodeIdx) },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = if (isFlashed) "✦" else "•",
+                                    fontSize = 18.sp,
+                                    color = if (isFlashed) Color.Black else Color(0x80FFFFFF)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun generateRandomPath(length: Int): List<Int> {
+    val list = mutableListOf<Int>()
+    var prev = Random.nextInt(0, 16)
+    list.add(prev)
+    while (list.size < length) {
+        val next = Random.nextInt(0, 16)
+        if (next != prev) {
+            list.add(next)
+            prev = next
+        }
+    }
+    return list
+}
+
+// =========================================================================
+// GAME 25: N-BACK AUDIO ECHO (ACOUSTIC WORKING MEMORY)
+// =========================================================================
+data class AudioEchoStimulus(val toneLabel: String, val frequencyHz: Int, val emoji: String)
+
+@Composable
+fun FullNBackAudioEchoScreen(onBack: () -> Unit) {
+    BackHandler { onBack() }
+    val context = LocalContext.current
+    val stimuli = remember {
+        listOf(
+            AudioEchoStimulus("Alpha 10Hz", 440, "🎵"),
+            AudioEchoStimulus("Theta 6Hz", 330, "🌊"),
+            AudioEchoStimulus("Gamma 40Hz", 550, "⚡"),
+            AudioEchoStimulus("Delta 2Hz", 220, "🔔")
+        )
+    }
+
+    var history by remember { mutableStateOf(listOf<AudioEchoStimulus>()) }
+    var currentItem by remember { mutableStateOf<AudioEchoStimulus?>(null) }
+    var score by remember { mutableIntStateOf(0) }
+    var streak by remember { mutableIntStateOf(0) }
+    var trialsLeft by remember { mutableIntStateOf(20) }
+    var isGameOver by remember { mutableStateOf(false) }
+
+    fun nextStimulus() {
+        if (trialsLeft <= 0) {
+            isGameOver = true
+            GamificationManager.recordGameMatch("g25", "N-Back Audio Echo", score, 90, 210)
+            return
+        }
+        val isMatchPlanned = Random.nextFloat() < 0.35f && history.size >= 2
+        val chosen = if (isMatchPlanned) history[history.size - 2] else stimuli.random()
+        currentItem = chosen
+        history = history + chosen
+        trialsLeft--
+        AuraSoundManager.playTapSound(context)
+    }
+
+    LaunchedEffect(Unit) {
+        nextStimulus()
+    }
+
+    fun handleResponse(playerClaimedMatch: Boolean) {
+        if (isGameOver || history.size < 3) {
+            nextStimulus()
+            return
+        }
+        val actualMatch = history[history.size - 1] == history[history.size - 3]
+        if (playerClaimedMatch == actualMatch) {
+            score += 20 + streak * 4
+            streak++
+        } else {
+            streak = 0
+        }
+        nextStimulus()
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF0A0E18))
+            .padding(top = 40.dp, bottom = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        GameStatHUD(trialsLeft * 3, 3, streak, NeonViolet)
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        Text("🎧 2-Back Audio Echo", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+        Text("Does this sound match 2 steps ago?", fontSize = 12.sp, color = NeonViolet)
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        if (isGameOver) {
+            GameOverCard(
+                score = score,
+                streak = streak,
+                title = "Acoustic Memory Mastered!",
+                onPlayAgain = {
+                    score = 0
+                    streak = 0
+                    trialsLeft = 20
+                    history = emptyList()
+                    isGameOver = false
+                    nextStimulus()
+                },
+                onExit = onBack,
+                accentColor = NeonViolet
+            )
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(160.dp)
+                    .clip(CircleShape)
+                    .background(Color(0x207F00FF))
+                    .border(2.dp, NeonViolet, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(currentItem?.emoji ?: "🎵", fontSize = 38.sp)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(currentItem?.toneLabel ?: "", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 13.sp)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(64.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color(0x2200E676))
+                        .border(1.5.dp, NeonLime, RoundedCornerShape(16.dp))
+                        .clickable { handleResponse(true) },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("MATCH (2-Back)", fontWeight = FontWeight.Bold, color = NeonLime, fontSize = 13.sp)
+                }
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(64.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color(0x22FFFFFF))
+                        .border(1.5.dp, Color(0x40FFFFFF), RoundedCornerShape(16.dp))
+                        .clickable { handleResponse(false) },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("NO MATCH", fontWeight = FontWeight.Bold, color = Color.White, fontSize = 13.sp)
+                }
+            }
+        }
+    }
+}
+
+// =========================================================================
+// GAME 26: FOCUS RADAR SACCADE (VISUAL ATTENTION & INHIBITORY CONTROL)
+// =========================================================================
+@Composable
+fun FullFocusRadarSaccadeScreen(onBack: () -> Unit) {
+    BackHandler { onBack() }
+    val context = LocalContext.current
+    var score by remember { mutableIntStateOf(0) }
+    var streak by remember { mutableIntStateOf(0) }
+    var lives by remember { mutableIntStateOf(3) }
+    var secondsLeft by remember { mutableIntStateOf(40) }
+    var isGameOver by remember { mutableStateOf(false) }
+
+    var targetSector by remember { mutableIntStateOf(0) } // 0..7 sectors
+    var isDecoy by remember { mutableStateOf(false) } // Decoy vs Real Target
+
+    LaunchedEffect(isGameOver) {
+        if (!isGameOver) {
+            while (secondsLeft > 0) {
+                delay(1000)
+                secondsLeft--
+            }
+            isGameOver = true
+            GamificationManager.recordGameMatch("g26", "Focus Radar Saccade", score, 94, 185)
+        }
+    }
+
+    LaunchedEffect(isGameOver) {
+        while (!isGameOver) {
+            targetSector = Random.nextInt(0, 8)
+            isDecoy = Random.nextFloat() < 0.35f
+            delay(1200)
+        }
+    }
+
+    fun handleSectorTap(sectorIdx: Int) {
+        if (isGameOver) return
+        AuraSoundManager.playTapSound(context)
+        if (sectorIdx == targetSector) {
+            if (isDecoy) {
+                // Impulsive error! Tapped a decoy!
+                lives--
+                streak = 0
+                if (lives <= 0) isGameOver = true
+            } else {
+                score += 20 + streak * 4
+                streak++
+            }
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF060B12))
+            .padding(top = 40.dp, bottom = 20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        GameStatHUD(secondsLeft, lives, streak, NeonCyan)
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        Text("🎯 Focus Radar Saccade", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
+        Text("Tap Green Targets 🟢 • Ignore Red Decoys 🔴", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = NeonAmber)
+
+        Spacer(modifier = Modifier.height(30.dp))
+
+        if (isGameOver) {
+            GameOverCard(
+                score = score,
+                streak = streak,
+                title = "Visual Reflexes Certified!",
+                onPlayAgain = {
+                    score = 0
+                    streak = 0
+                    lives = 3
+                    secondsLeft = 40
+                    isGameOver = false
+                },
+                onExit = onBack,
+                accentColor = NeonCyan
+            )
+        } else {
+            // Radar circular canvas with 8 touch sectors
+            Box(
+                modifier = Modifier
+                    .size(280.dp)
+                    .clip(CircleShape)
+                    .background(Color(0x1800E5FF))
+                    .border(2.dp, NeonCyan, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Canvas(modifier = Modifier.fillMaxSize()) {
+                    val cx = size.width / 2f
+                    val cy = size.height / 2f
+                    drawCircle(Color(0x25FFFFFF), radius = size.minDimension * 0.35f, center = Offset(cx, cy), style = Stroke(1.5f))
+                    drawCircle(Color(0x25FFFFFF), radius = size.minDimension * 0.2f, center = Offset(cx, cy), style = Stroke(1.5f))
+                    drawLine(Color(0x35FFFFFF), Offset(0f, cy), Offset(size.width, cy), strokeWidth = 1f)
+                    drawLine(Color(0x35FFFFFF), Offset(cx, 0f), Offset(cx, size.height), strokeWidth = 1f)
+                }
+
+                // Center Fixation Crosshair
+                Text("┼", fontSize = 24.sp, color = NeonCyan, fontWeight = FontWeight.Bold)
+
+                // 8 Sector Buttons around perimeter
+                for (s in 0 until 8) {
+                    val angleRad = (s * 45.0 * Math.PI / 180.0)
+                    val r = 100.0
+                    val offsetX = (r * Math.cos(angleRad)).dp
+                    val offsetY = (r * Math.sin(angleRad)).dp
+                    val isTarget = (targetSector == s)
+
+                    Box(
+                        modifier = Modifier
+                            .androidx.compose.foundation.layout.offset(x = offsetX, y = offsetY)
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(if (isTarget) (if (isDecoy) NeonPink else NeonLime) else Color(0x25FFFFFF))
+                            .border(1.dp, if (isTarget) Color.White else Color(0x40FFFFFF), CircleShape)
+                            .clickable { handleSectorTap(s) },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (isTarget) {
+                            Text(if (isDecoy) "✖" else "✦", fontSize = 14.sp, color = Color.Black, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 

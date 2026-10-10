@@ -105,7 +105,7 @@ fun AnalyticsAndHistoryScreen(
                 dayDeltaPercent = +3.8f,
                 weekDeltaPercent = +12.4f,
                 monthDeltaPercent = +24.8f,
-                trainedByGames = listOf("Mental Math Sprint", "Speed Number Sequence", "Dual N-Back Mini", "Codebreaker Cipher")
+                trainedByGames = listOf("Mental Math Sprint", "Speed Number Sequence", "Dual N-Back Mini", "Codebreaker Cipher", "Synapse Speed Sort")
             ),
             CognitiveQuotientInfo(
                 code = "EX",
@@ -116,7 +116,7 @@ fun AnalyticsAndHistoryScreen(
                 dayDeltaPercent = +4.1f,
                 weekDeltaPercent = +14.6f,
                 monthDeltaPercent = +28.2f,
-                trainedByGames = listOf("Stroop Color Clash", "Chroma Clash Inversion", "Cognitive Flex Duel", "Pattern Flanker")
+                trainedByGames = listOf("Stroop Color Clash", "Chroma Clash Inversion", "Cognitive Flex Duel", "Pattern Flanker", "Focus Radar Saccade")
             ),
             CognitiveQuotientInfo(
                 code = "SQ",
@@ -127,7 +127,7 @@ fun AnalyticsAndHistoryScreen(
                 dayDeltaPercent = +3.2f,
                 weekDeltaPercent = +11.8f,
                 monthDeltaPercent = +22.5f,
-                trainedByGames = listOf("Spatial Angle Match", "Target Lock Radar", "Quantum Flow Maze", "Memory Matrix")
+                trainedByGames = listOf("Spatial Angle Match", "Target Lock Radar", "Quantum Flow Maze", "Memory Matrix", "Spatial Path Trace")
             ),
             CognitiveQuotientInfo(
                 code = "ESQ",
@@ -138,7 +138,7 @@ fun AnalyticsAndHistoryScreen(
                 dayDeltaPercent = +2.6f,
                 weekDeltaPercent = +9.5f,
                 monthDeltaPercent = +18.9f,
-                trainedByGames = listOf("Rhythm Beat Tap", "Neuro Balance Tilt", "Pitch Match Ear Trainer", "Box Breathing")
+                trainedByGames = listOf("Rhythm Beat Tap", "Neuro Balance Tilt", "Pitch Match Ear Trainer", "N-Back Audio Echo")
             ),
             CognitiveQuotientInfo(
                 code = "MQ",
@@ -149,7 +149,7 @@ fun AnalyticsAndHistoryScreen(
                 dayDeltaPercent = +4.5f,
                 weekDeltaPercent = +15.2f,
                 monthDeltaPercent = +31.0f,
-                trainedByGames = listOf("Chimp Memory Matrix", "Digit Span Recall", "Cyber Glitch Sequence")
+                trainedByGames = listOf("Chimp Memory Matrix", "Digit Span Recall", "Cyber Glitch Sequence", "Spatial Path Trace")
             ),
             CognitiveQuotientInfo(
                 code = "RQ",
@@ -160,7 +160,7 @@ fun AnalyticsAndHistoryScreen(
                 dayDeltaPercent = +5.4f,
                 weekDeltaPercent = +16.8f,
                 monthDeltaPercent = +33.4f,
-                trainedByGames = listOf("Micro-Reaction Tap", "Speed Sequence", "Chroma Clash Inversion")
+                trainedByGames = listOf("Micro-Reaction Tap", "Speed Sequence", "Chroma Clash Inversion", "Focus Radar Saccade")
             )
         )
     }

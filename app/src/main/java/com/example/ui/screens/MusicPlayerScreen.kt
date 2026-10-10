@@ -127,7 +127,7 @@ fun MusicPlayerScreen(
     var showPlaylistQueue by remember { mutableStateOf(false) }
 
     val gamificationState by GamificationManager.state.collectAsState()
-    var playerLayoutDesign by remember { mutableIntStateOf(gamificationState.musicPlayerDesign) }
+    val playerLayoutDesign = gamificationState.musicPlayerDesign
 
     // Pro Music Player & Visualizer States
     var visualizerStyle by remember { mutableIntStateOf(0) } // 0: Cosmic Mandala, 1: Cyber Spectrum, 2: Aura Water Ripple, 3: Supernova Plasma
@@ -480,8 +480,8 @@ fun MusicPlayerScreen(
                             )
                         }
 
-                        // 6. Translucent Glass Core Spindle Ring (Sized at 128dp diameter)
-                        val coreRadius = discRadius * 0.55f
+                        // 6. Translucent Glass Core Spindle Ring (Sized at 136dp diameter)
+                        val coreRadius = discRadius * 0.58f
                         drawCircle(
                             brush = Brush.radialGradient(
                                 listOf(Color(0xF00A131F), Color(0xEE050B12)),
@@ -506,16 +506,17 @@ fun MusicPlayerScreen(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
-                            .size(125.dp)
+                            .size(136.dp)
                             .clip(CircleShape)
-                            .padding(horizontal = 8.dp, vertical = 6.dp),
+                            .background(Color(0x990A131F))
+                            .padding(horizontal = 10.dp, vertical = 6.dp),
                         verticalArrangement = Arrangement.Center
                     ) {
                         Icon(
                             imageVector = if (playerState.isPlaying) Icons.Default.GraphicEq else Icons.Default.Audiotrack,
                             contentDescription = "Visualizer Track",
                             tint = NeonCyan,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(18.dp)
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
@@ -524,23 +525,25 @@ fun MusicPlayerScreen(
                             color = Color.White,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
                         )
                         Text(
                             text = playerState.currentTrack?.artist ?: "Aura Ambient Lab",
                             style = MaterialTheme.typography.bodySmall.copy(fontSize = 9.sp),
-                            color = Color(0xAAFFFFFF),
+                            color = Color(0xBBFFFFFF),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
                         )
                         Spacer(modifier = Modifier.height(3.dp))
                         Box(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(6.dp))
-                                .background(NeonLime.copy(alpha = 0.2f))
-                                .border(0.6.dp, NeonLime, RoundedCornerShape(6.dp))
-                                .padding(horizontal = 6.dp, vertical = 1.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(NeonLime.copy(alpha = 0.22f))
+                                .border(0.8.dp, NeonLime, RoundedCornerShape(8.dp))
+                                .padding(horizontal = 8.dp, vertical = 2.dp)
                         ) {
                             Text(
                                 text = activeBrainwave.stateLabel,
@@ -610,8 +613,8 @@ fun MusicPlayerScreen(
                             drawCircle(color = NeonPink, radius = 2f, center = p2)
                         }
 
-                        // Center core background
-                        val innerRadius = discRadius * 0.54f
+                        // Center core background (Sized at 136dp diameter)
+                        val innerRadius = discRadius * 0.58f
                         drawCircle(
                             brush = Brush.radialGradient(
                                 listOf(Color(0xF50D1117), Color(0xEE090D13)),
@@ -636,12 +639,13 @@ fun MusicPlayerScreen(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
-                            .size(124.dp)
+                            .size(136.dp)
                             .clip(CircleShape)
-                            .padding(horizontal = 8.dp, vertical = 6.dp),
+                            .background(Color(0x990D1117))
+                            .padding(horizontal = 10.dp, vertical = 6.dp),
                         verticalArrangement = Arrangement.Center
                     ) {
-                        Text(text = "🪐", fontSize = 18.sp)
+                        Text(text = "🪐", fontSize = 16.sp)
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = playerState.currentTrack?.title ?: "Select Track",
@@ -649,23 +653,34 @@ fun MusicPlayerScreen(
                             color = Color.White,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
                         )
                         Text(
                             text = playerState.currentTrack?.artist ?: "Mandala Orbit",
                             style = MaterialTheme.typography.bodySmall.copy(fontSize = 9.sp),
-                            color = Color(0xAAFFFFFF),
+                            color = Color(0xBBFFFFFF),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
                         )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = "528Hz SOLFEGGIO",
-                            fontSize = 8.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = NeonPink
-                        )
+                        Spacer(modifier = Modifier.height(3.dp))
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(NeonPink.copy(alpha = 0.22f))
+                                .border(0.8.dp, NeonPink, RoundedCornerShape(8.dp))
+                                .padding(horizontal = 8.dp, vertical = 2.dp)
+                        ) {
+                            Text(
+                                text = "${selectedSolfeggioHz}Hz SOLFEGGIO",
+                                fontSize = 8.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = NeonPink,
+                                maxLines = 1
+                            )
+                        }
                     }
                 }
             }
