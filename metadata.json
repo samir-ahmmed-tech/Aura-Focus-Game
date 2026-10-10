@@ -1,0 +1,8 @@
+{
+  "name": "AuraFocus",
+  "description": "Ambient productivity suite featuring Pomodoro timer, binaural audio, advanced music player, cognitive games, Kanban tasks, habit tracker, and glassmorphic UI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Outer Focus Ring Glow -->
+    <path
+        android:pathData="M54,26 A28,28 0 1,1 53.9,26 Z"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="26"
+                android:startY="26"
+                android:endX="82"
+                android:endY="82"
+                android:type="linear">
+                <item android:color="#00F2FE" android:offset="0.0" />
+                <item android:color="#7F00FF" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Top and Bottom Hourglass Plates -->
+    <path
+        android:fillColor="#00F2FE"
+        android:pathData="M37,35 L71,35 A2,2 0 0,1 73,37 L73,38 A2,2 0 0,1 71,40 L37,40 A2,2 0 0,1 35,38 L35,37 A2,2 0 0,1 37,35 Z" />
+    <path
+        android:fillColor="#7F00FF"
+        android:pathData="M37,68 L71,68 A2,2 0 0,1 73,70 L73,71 A2,2 0 0,1 71,73 L37,73 A2,2 0 0,1 35,71 L35,70 A2,2 0 0,1 37,68 Z" />
+
+    <!-- Glass Hourglass Body -->
+    <path
+        android:pathData="M39,40 L69,40 C69,47 62,51 56,54 C62,57 69,61 69,68 L39,68 C39,61 46,57 52,54 C46,51 39,47 39,40 Z"
+        android:strokeWidth="2.5"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="39"
+                android:startY="40"
+                android:endX="69"
+                android:endY="68"
+                android:type="linear">
+                <item android:color="#E0F7FA" android:offset="0.0" />
+                <item android:color="#B388FF" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="54"
+                android:startY="40"
+                android:endX="54"
+                android:endY="68"
+                android:type="linear">
+                <item android:color="#3300F2FE" android:offset="0.0" />
+                <item android:color="#337F00FF" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Flowing Focus Energy Particle & Beam -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,52 A2,2 0 1,1 53.9,52 Z" />
+    <path
+        android:fillColor="#00F2FE"
+        android:pathData="M54,59 A2.5,2.5 0 1,1 53.9,59 Z" />
+    <path
+        android:fillColor="#7F00FF"
+        android:pathData="M48,64 L60,64 L58,67 L50,67 Z" />
+</vector>
