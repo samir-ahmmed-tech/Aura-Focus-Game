@@ -65,11 +65,23 @@ object AuraSoundManager {
     /**
      * Plays a success chime when achieving a goal or high score.
      */
-    fun playSuccessSound() {
+    fun playSuccessSound(context: Context? = null) {
         soundScope.launch {
             try {
                 if (toneGenerator == null) initTone()
                 toneGenerator?.startTone(ToneGenerator.TONE_PROP_ACK, 65)
+            } catch (_: Exception) {}
+        }
+    }
+
+    /**
+     * Plays an error alert when clicking incorrect option.
+     */
+    fun playErrorSound(context: Context? = null) {
+        soundScope.launch {
+            try {
+                if (toneGenerator == null) initTone()
+                toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 60)
             } catch (_: Exception) {}
         }
     }

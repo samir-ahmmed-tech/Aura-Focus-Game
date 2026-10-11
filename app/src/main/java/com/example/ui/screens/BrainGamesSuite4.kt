@@ -112,7 +112,7 @@ fun FullQuantumMirrorEntanglementScreen(onBack: () -> Unit) {
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        GameHeaderBar(title = "Quantum Mirror Entanglement", subtitle = "Symmetry & Parity IQ", onBack = onBack, accentColor = NeonCyan)
+        GameHeaderBar("Quantum Mirror", score, "Standard", onBack, NeonCyan)
         GameStatHUD(secondsLeft = secondsLeft, currentLives = lives, streak = streak, accentColor = NeonCyan)
 
         Column(
@@ -295,7 +295,7 @@ fun FullStroopDualConflictScreen(onBack: () -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        GameHeaderBar(title = "Dual Conflict Color Clash", subtitle = "Inhibition Duel", onBack = onBack, accentColor = NeonPink)
+        GameHeaderBar("Dual Conflict", score, "Standard", onBack, NeonPink)
         GameStatHUD(secondsLeft = secondsLeft, currentLives = lives, streak = streak, accentColor = NeonPink)
 
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -409,7 +409,7 @@ fun FullReverseDigitSpanScreen(onBack: () -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        GameHeaderBar(title = "Reverse Digit Span", subtitle = "WAIS Working Memory", onBack = onBack, accentColor = NeonViolet)
+        GameHeaderBar("Reverse Digit Span", score, "Standard", onBack, NeonViolet)
         GameStatHUD(secondsLeft = currentLength, currentLives = lives, streak = score / 10, accentColor = NeonViolet)
 
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -543,7 +543,7 @@ fun FullMentalOrigamiScreen(onBack: () -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        GameHeaderBar(title = "Mental Origami Fold", subtitle = "Visuospatial Projection", onBack = onBack, accentColor = NeonLime)
+        GameHeaderBar("Mental Origami", score, "Standard", onBack, NeonLime)
         GameStatHUD(secondsLeft = secondsLeft, currentLives = lives, streak = streak, accentColor = NeonLime)
 
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -648,7 +648,7 @@ fun FullColorPulseRhythmScreen(onBack: () -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        GameHeaderBar(title = "Color Pulse Rhythm", subtitle = "Sub-50ms Beat Sync", onBack = onBack, accentColor = NeonAmber)
+        GameHeaderBar("Color Pulse", score, "Standard", onBack, NeonAmber)
         GameStatHUD(secondsLeft = secondsLeft, currentLives = lives, streak = streak, accentColor = NeonAmber)
 
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -737,7 +737,7 @@ fun FullTowerOfHanoiMiniScreen(onBack: () -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        GameHeaderBar(title = "Tower of Hanoi Flow", subtitle = "Executive Sequence Planning", onBack = onBack, accentColor = NeonCyan)
+        GameHeaderBar("Tower of Hanoi", moves, "Standard", onBack, NeonCyan)
 
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             if (!isStarted) {
@@ -867,7 +867,7 @@ fun FullLexicalSpeedHuntScreen(onBack: () -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        GameHeaderBar(title = "Lexical Anomaly Hunt", subtitle = "Verbal Anomaly Spotter", onBack = onBack, accentColor = NeonViolet)
+        GameHeaderBar("Lexical Anomaly", score, "Standard", onBack, NeonViolet)
         GameStatHUD(secondsLeft = secondsLeft, currentLives = lives, streak = streak, accentColor = NeonViolet)
 
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -974,7 +974,7 @@ fun FullSynapseCircuitConnectScreen(onBack: () -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        GameHeaderBar(title = "Synapse Circuit Router", subtitle = "Neural Conduit Aligner", onBack = onBack, accentColor = NeonCyan)
+        GameHeaderBar("Synapse Circuit", score, "Standard", onBack, NeonCyan)
         GameStatHUD(secondsLeft = secondsLeft, currentLives = lives, streak = streak, accentColor = NeonCyan)
 
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -1072,7 +1072,7 @@ fun FullAcousticIntervalScreen(onBack: () -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        GameHeaderBar(title = "Microtone Interval", subtitle = "Acoustic Ear Discriminator", onBack = onBack, accentColor = NeonPink)
+        GameHeaderBar("Microtone Interval", score, "Standard", onBack, NeonPink)
         GameStatHUD(secondsLeft = secondsLeft, currentLives = lives, streak = streak, accentColor = NeonPink)
 
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
@@ -1203,7 +1203,7 @@ fun FullPeripheralChangeBlindnessScreen(onBack: () -> Unit) {
     }
 
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        GameHeaderBar(title = "Peripheral Anomaly Scanner", subtitle = "Change Blindness Radar", onBack = onBack, accentColor = NeonLime)
+        GameHeaderBar("Peripheral Scanner", score, "Standard", onBack, NeonLime)
         GameStatHUD(secondsLeft = secondsLeft, currentLives = lives, streak = streak, accentColor = NeonLime)
 
         Column(modifier = Modifier.fillMaxSize().padding(20.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
