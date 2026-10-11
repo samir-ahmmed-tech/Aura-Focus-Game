@@ -226,11 +226,10 @@ fun ToolsScreen(
                 CustomEmptyStateView(
                     iconEmoji = "🧰",
                     title = "No Productivity Tools Found",
-                    description = "No tools matched \"$searchQuery\" in category \"$selectedCategory\". Reset search to explore all 35 power tools.",
-                    actionButtonText = "Reset All Filters",
+                    description = "No tools matched \"$searchQuery\". Clear search to explore all 35 power tools.",
+                    actionButtonText = "Clear Search",
                     onActionClick = {
                         searchQuery = ""
-                        selectedCategory = "All"
                     }
                 )
             }

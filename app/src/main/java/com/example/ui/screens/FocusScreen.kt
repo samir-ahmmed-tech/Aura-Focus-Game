@@ -380,21 +380,6 @@ fun FocusScreen(
                     },
                 contentAlignment = Alignment.Center
             ) {
-            modifier = Modifier
-                .size(270.dp)
-                .graphicsLayer {
-                    scaleX = pulseScale.value
-                    scaleY = pulseScale.value
-                }
-                .testTag("pomodoro_clock_disc")
-                .drawBehind {
-                    drawCircle(
-                        brush = clockGlowBrush,
-                        radius = size.minDimension * 0.72f
-                    )
-                },
-            contentAlignment = Alignment.Center
-        ) {
             Canvas(modifier = Modifier.fillMaxSize().padding(14.dp)) {
                 val strokeWidth = 12.dp.toPx()
                 val diameter = size.minDimension - strokeWidth
@@ -463,6 +448,7 @@ fun FocusScreen(
                 )
             }
         }
+    }
 
         // Play / Pause / Reset Controls
         item(key = "focus_playback_controls") {
@@ -723,4 +709,5 @@ fun FocusScreen(
             }
         }
     }
+}
 }
