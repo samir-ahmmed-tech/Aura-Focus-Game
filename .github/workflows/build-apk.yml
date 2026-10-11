@@ -110,37 +110,37 @@ jobs:
       - name: Publish debug APK to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.2.0
-          name: NeuroBox v1.2.0 - Zero-Lag Butter-Smooth Edition & 20 Launch Checklist Complete
+          tag_name: v1.3.0
+          name: NeuroBox v1.3.0 - 50 Master Brain Games & 45 Power Productivity Tools
           body: |
-            ## NeuroBox v1.2.0 Release: ChatGPT/Gemini-Level Butter-Smooth Experience & 20 Launch Checklist
-            - **Zero-Lag Tab Transitions (ChatGPT / Gemini Speed)**:
-              - Replaced heavy crossfade transitions with instantaneous `SaveableStateHolder` tab switching (0ms latency).
-              - Virtualized `FocusScreen` and `MusicPlayerScreen` with keyed `LazyColumn`s.
-              - Added fluid spring-bounce haptic micro-animations on bottom navigation dock.
-              - Eliminated audio HAL tone generator thread locking with non-blocking native feedback.
-            - **100% Complete 20-Point App Launch Checklist**:
-              1. **Privacy Policy Page**: Built-in comprehensive GDPR/CCPA privacy policy modal and terms.
-              2. **Terms & Conditions**: Complete legal terms of use agreement.
-              3. **Secrets Off Frontend**: 100% clean frontend with zero hardcoded API secrets.
-              4. **Force HTTPS**: Enforced strict `network_security_config.xml` with zero cleartext traffic.
-              5. **Data Sovereignty Consent Banner**: First-launch consent banner informing users of offline storage.
-              6. **Meta Titles & Descriptions**: Rich semantic app metadata in strings and AndroidManifest.
-              7. **Store Preview Assets**: Added vector promotional banners and graphics.
-              8. **Compress Images**: Migrated launcher icons from 1.76MB bitmap to razor-sharp XML vector drawables.
-              9. **Faster Page Load**: LazyColumn virtualization across all 5 main screens.
-              10. **Fix Color Contrast**: WCAG AA compliant text contrast across all dark and light themes.
-              11. **Mobile-Friendly**: Full edge-to-edge support, multi-screen, foldable, and tablet responsive.
-              12. **Fix Broken Links**: Wrapped all intent URL triggers in `AuraLinkHelper` with error recovery.
-              13. **Form Validation**: Universal input validation on profile names, bios, and timers (`FormValidationHelper`).
-              14. **Spam & Bot Protection**: Rapid click debouncer and tap rate limiter (`DebounceHelper`).
-              15. **Set Up Analytics**: Privacy-preserving 100% offline local telemetry dashboard (`AuraLocalAnalytics`).
-              16. **Clear Call-to-Action (CTA)**: High-contrast primary action buttons across all games and tools.
-              17. **Adaptive Launcher Icon**: Standardized Android 26+ vector adaptive icon definitions.
-              18. **Custom 404 / Empty States**: Sleek `CustomEmptyStateView` with quick filter reset on empty searches.
-              19. **Sitemap / Deep Links & Backup Rules**: Deep linking intent filter (`neurobox://app`) + explicit XML backup rules.
-              20. **Error Monitoring**: Global uncaught exception crash handler and diagnostic recorder (`AuraGlobalCrashHandler`).
-            - **Creator Credits**: Samir Ahmmed (Lead Architect & Developer).
+            ## NeuroBox v1.3.0 Release: 50 Master Brain Games, 45 Power Productivity Tools & Zero-Lag Architecture
+            - **10 Brand New High-Cognitive Brain Games (Total 50 Master Games)**:
+              - `g43` Quantum Mirror Entanglement: Mirror-spin pattern symmetry detector.
+              - `g44` Dual Conflict Color Clash: Double-conflict text vs ink decision test.
+              - `g45` Reverse Digit Span Recall: WAIS working memory backward manipulation.
+              - `g46` Mental Origami Hole Punch: Visuospatial fold projection & hole punch prediction.
+              - `g47` Color Pulse Rhythm Sync: Sub-50ms beat concentric pulse synchronizer.
+              - `g48` Tower of Hanoi Flow: Executive sequence planning and minimal move optimizer.
+              - `g49` Lexical Anomaly Hunt: High-speed semantic cluster outlier detector.
+              - `g50` Synapse Circuit Router: 3x3 rotating tile electrical pathway aligner.
+              - `g51` Microtone Interval Calibrator: Acoustic micro-tonal ear discriminator.
+              - `g52` Peripheral Anomaly Scanner: Subtle change blindness flicker scanner.
+            - **10 Brand New Power Productivity Tools (Total 45 Power Tools)**:
+              - `t36` Parkinson's Law Sprint: Micro-sprint countdown enforcer restricting task inflation.
+              - `t37` Rubber Duck Cognitive Debugger: Socratic lateral blocker solver canvas.
+              - `t38` Energy-Drainer & Burnout Radar: 5-factor vitality friction & recovery audit.
+              - `t39` Mental Rehearsal Visualizer: 4-stage pre-performance neural imagery script.
+              - `t40` Interstitial Journaling Timer: Zero-lag transition bridge between work blocks.
+              - `t41` Feynman Technique Clarifier: Plain-English deep mastery concept breakdown.
+              - `t42` Decision Matrix & Weighted Scorer: Multi-factor weighted prioritization grid.
+              - `t43` Digital Sunset Wind-Down: 4-step circadian evening cognitive shutdown.
+              - `t44` Anti-Procrastination 5-Min Kickstart: Low-friction momentum trigger.
+              - `t45` Weekly OKR & Retrospective Matrix: Objectives & Key Results weekly alignment.
+            - **Zero-Lag Butter-Smooth Architecture**:
+              - Instantaneous 0ms tab switching with `SaveableStateHolder`.
+              - 120 FPS LazyColumn virtualization across all screens.
+              - Non-blocking native haptic feedback on tab changes.
+            - **Developer Credits**: Samir Ahmmed (Lead Architect & Developer).
           draft: false
           prerelease: false
           make_latest: true

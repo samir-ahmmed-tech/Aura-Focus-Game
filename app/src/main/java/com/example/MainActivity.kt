@@ -160,6 +160,26 @@ import com.example.ui.screens.FullHydrationMetabolismPacerScreen
 import com.example.ui.screens.FullWeeklyReviewRetrospectiveScreen
 import com.example.ui.screens.FullFocusCommitmentContractScreen
 import com.example.ui.screens.FullDeskErgonomicsStretchPacerScreen
+import com.example.ui.screens.FullQuantumMirrorEntanglementScreen
+import com.example.ui.screens.FullStroopDualConflictScreen
+import com.example.ui.screens.FullReverseDigitSpanScreen
+import com.example.ui.screens.FullMentalOrigamiScreen
+import com.example.ui.screens.FullColorPulseRhythmScreen
+import com.example.ui.screens.FullTowerOfHanoiMiniScreen
+import com.example.ui.screens.FullLexicalSpeedHuntScreen
+import com.example.ui.screens.FullSynapseCircuitConnectScreen
+import com.example.ui.screens.FullAcousticIntervalScreen
+import com.example.ui.screens.FullPeripheralChangeBlindnessScreen
+import com.example.ui.screens.FullParkinsonsLawSprintScreen
+import com.example.ui.screens.FullRubberDuckDebuggerScreen
+import com.example.ui.screens.FullBurnoutRadarAuditScreen
+import com.example.ui.screens.FullMentalRehearsalScreen
+import com.example.ui.screens.FullInterstitialJournalScreen
+import com.example.ui.screens.FullFeynmanTechniqueScreen
+import com.example.ui.screens.FullDecisionMatrixScreen
+import com.example.ui.screens.FullDigitalSunsetScreen
+import com.example.ui.screens.FullAntiProcrastination5MinScreen
+import com.example.ui.screens.FullWeeklyOkrMatrixScreen
 import com.example.ui.components.GlassBanner
 import com.example.ui.components.GlassButton
 import com.example.ui.components.GlassChip
@@ -446,6 +466,16 @@ fun AuraFocusApp(
                         "g40" -> FullChronoDigitMatrixScreen(onBack = { activeGameId = null })
                         "g41" -> FullTonePitchDiscriminationScreen(onBack = { activeGameId = null })
                         "g42" -> FullKineticOrbBalancingScreen(onBack = { activeGameId = null })
+                        "g43" -> FullQuantumMirrorEntanglementScreen(onBack = { activeGameId = null })
+                        "g44" -> FullStroopDualConflictScreen(onBack = { activeGameId = null })
+                        "g45" -> FullReverseDigitSpanScreen(onBack = { activeGameId = null })
+                        "g46" -> FullMentalOrigamiScreen(onBack = { activeGameId = null })
+                        "g47" -> FullColorPulseRhythmScreen(onBack = { activeGameId = null })
+                        "g48" -> FullTowerOfHanoiMiniScreen(onBack = { activeGameId = null })
+                        "g49" -> FullLexicalSpeedHuntScreen(onBack = { activeGameId = null })
+                        "g50" -> FullSynapseCircuitConnectScreen(onBack = { activeGameId = null })
+                        "g51" -> FullAcousticIntervalScreen(onBack = { activeGameId = null })
+                        "g52" -> FullPeripheralChangeBlindnessScreen(onBack = { activeGameId = null })
                         "analytics_history" -> AnalyticsAndHistoryScreen(onBack = { activeGameId = null })
                         "zen_garden" -> ZenGardenScreen(onBack = { activeGameId = null })
                         else -> FullMentalMathScreen(onBack = { activeGameId = null })
@@ -490,6 +520,16 @@ fun AuraFocusApp(
                         "t33" -> FullWeeklyReviewRetrospectiveScreen(onBack = { activeToolId = null })
                         "t34" -> FullFocusCommitmentContractScreen(onBack = { activeToolId = null })
                         "t35" -> FullDeskErgonomicsStretchPacerScreen(onBack = { activeToolId = null })
+                        "t36" -> FullParkinsonsLawSprintScreen(onBack = { activeToolId = null })
+                        "t37" -> FullRubberDuckDebuggerScreen(onBack = { activeToolId = null })
+                        "t38" -> FullBurnoutRadarAuditScreen(onBack = { activeToolId = null })
+                        "t39" -> FullMentalRehearsalScreen(onBack = { activeToolId = null })
+                        "t40" -> FullInterstitialJournalScreen(onBack = { activeToolId = null })
+                        "t41" -> FullFeynmanTechniqueScreen(onBack = { activeToolId = null })
+                        "t42" -> FullDecisionMatrixScreen(onBack = { activeToolId = null })
+                        "t43" -> FullDigitalSunsetScreen(onBack = { activeToolId = null })
+                        "t44" -> FullAntiProcrastination5MinScreen(onBack = { activeToolId = null })
+                        "t45" -> FullWeeklyOkrMatrixScreen(onBack = { activeToolId = null })
                         "zen_garden" -> ZenGardenScreen(onBack = { activeToolId = null })
                         "analytics_history" -> AnalyticsAndHistoryScreen(onBack = { activeToolId = null })
                         else -> FullNotesScreen(onBack = { activeToolId = null })

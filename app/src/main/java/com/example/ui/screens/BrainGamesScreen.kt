@@ -113,7 +113,18 @@ fun BrainGamesScreen(
             BrainGameInfo("g39", "Labyrinth Pathfinder", "Dynamic barrier rotation maze navigation", "Spatial Planning", "Math & Logic", "🌀", 55, NeonCyan),
             BrainGameInfo("g40", "Chrono Digit Matrix", "Interleaved ascending order processing speed", "Processing Speed", "Reflex & Rhythm", "🔢", 45, NeonViolet),
             BrainGameInfo("g41", "Pitch Discrimination", "Micro-semitone acoustic ear discrimination", "Acoustic IQ", "Reflex & Rhythm", "🎵", 50, NeonPink),
-            BrainGameInfo("g42", "Kinetic Orb Balancing", "Kinetic gravity equilibrium beam precision", "Equilibrium", "Reflex & Rhythm", "⚖️", 50, NeonLime)
+            BrainGameInfo("g42", "Kinetic Orb Balancing", "Kinetic gravity equilibrium beam precision", "Equilibrium", "Reflex & Rhythm", "⚖️", 50, NeonLime),
+            // 10 BRAND NEW HIGH-COGNITIVE GAMES (TOTAL 50 GAMES)
+            BrainGameInfo("g43", "Quantum Mirror Entanglement", "Instant mirror-spin pattern symmetry detector", "Quantum Symmetry", "Math & Logic", "🪞", 55, NeonCyan),
+            BrainGameInfo("g44", "Dual Conflict Color Clash", "Double-conflict text vs ink decision test", "Cognitive Inversion", "Reflex & Rhythm", "💥", 50, NeonPink),
+            BrainGameInfo("g45", "Reverse Digit Span Recall", "Working memory sequence backward manipulation", "Working Memory", "Memory", "🧠", 50, NeonViolet),
+            BrainGameInfo("g46", "Mental Origami Hole Punch", "Predict punched holes on unfolded 2D/3D sheets", "Visuospatial IQ", "Executive Focus", "📐", 55, NeonLime),
+            BrainGameInfo("g47", "Color Pulse Rhythm Sync", "Sub-50ms concentric beat expansion synchronizer", "Rhythm & Reflex", "Reflex & Rhythm", "🎯", 45, NeonAmber),
+            BrainGameInfo("g48", "Tower of Hanoi Flow", "Executive 3-peg disk sequencing optimizer", "Executive Planning", "Math & Logic", "🏛️", 60, NeonCyan),
+            BrainGameInfo("g49", "Lexical Anomaly Hunt", "High-speed semantic anomaly spotting in word grid", "Verbal Processing", "Executive Focus", "🔤", 45, NeonViolet),
+            BrainGameInfo("g50", "Synapse Circuit Router", "Rotate 3x3 tiles to transmit neural signals", "Spatial Circuit", "Math & Logic", "⚡", 55, NeonCyan),
+            BrainGameInfo("g51", "Microtone Interval Calibrator", "Micro-tonal acoustic pitch ear calibrator", "Acoustic Ear", "Reflex & Rhythm", "🎵", 50, NeonPink),
+            BrainGameInfo("g52", "Peripheral Anomaly Scanner", "Subtle visual scene change blindness scanner", "Visual Saccade", "Executive Focus", "📡", 50, NeonLime)
         )
     }
 
@@ -154,7 +165,7 @@ fun BrainGamesScreen(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = "40 Master Brain Games • 120 FPS Decoupled Engine",
+                        text = "50 Master Brain Games • 120 FPS Decoupled Engine",
                         style = MaterialTheme.typography.bodySmall,
                         color = NeonCyan
                     )

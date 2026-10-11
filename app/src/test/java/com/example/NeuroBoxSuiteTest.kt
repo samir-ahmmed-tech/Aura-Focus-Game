@@ -187,4 +187,41 @@ class NeuroBoxSuiteTest {
         // Immediate next call within 100ms should be throttled
         assertFalse(com.example.util.DebounceHelper.canClick(100L))
     }
+
+    @Test
+    fun `test suite 4 games recording and leveling progression`() {
+        // Record matches for new cognitive games g43 and g48
+        GamificationManager.recordGameMatch(
+            gameId = "g43",
+            gameTitle = "Quantum Mirror Entanglement",
+            score = 120,
+            accuracyPercent = 90,
+            reactionMs = 320
+        )
+        val stateAfterG43 = GamificationManager.state.value
+        assertEquals(1, stateAfterG43.gamesPlayedTotal)
+        assertTrue(stateAfterG43.currentXp > 0)
+
+        // Record Hanoi optimizer match
+        GamificationManager.recordGameMatch(
+            gameId = "g48",
+            gameTitle = "Tower of Hanoi Flow",
+            score = 95,
+            accuracyPercent = 100,
+            reactionMs = 450
+        )
+        val stateAfterG48 = GamificationManager.state.value
+        assertEquals(2, stateAfterG48.gamesPlayedTotal)
+    }
+
+    @Test
+    fun `test productivity tool xp rewards and streak preservation`() {
+        val initialXp = GamificationManager.state.value.currentXp
+        GamificationManager.addXp(30, "Parkinson Task Smashed")
+        GamificationManager.addXp(25, "Rubber Duck Insight Logged")
+        GamificationManager.addXp(30, "Mental Rehearsal Done")
+
+        val newXp = GamificationManager.state.value.currentXp
+        assertEquals(initialXp + 85, newXp)
+    }
 }

@@ -104,7 +104,18 @@ fun ToolsScreen(
             ProductivityTool("t32", "Hydration Metabolism Pacer", "Daily cognitive water intake & interval pacer", "💧", "Hydration", NeonCyan),
             ProductivityTool("t33", "Weekly Agile Retrospective", "Sprint wins, stumbles & lessons learned review", "🏆", "Agile", NeonLime),
             ProductivityTool("t34", "Focus Commitment Contract", "Pre-commitment pact with streak stake forfeiture", "🔒", "Focus Lock", NeonPink),
-            ProductivityTool("t35", "Desk Ergonomics & Stretch", "Guided 3-minute spinal and wrist posture reset", "🧘", "Posture", NeonLime)
+            ProductivityTool("t35", "Desk Ergonomics & Stretch", "Guided 3-minute spinal and wrist posture reset", "🧘", "Posture", NeonLime),
+            // 10 BRAND NEW POWER PRODUCTIVITY TOOLS (TOTAL 45 TOOLS)
+            ProductivityTool("t36", "Parkinson's Law Sprint", "10-minute micro-sprint countdown enforcer", "⏳", "Sprint Matrix", NeonCyan),
+            ProductivityTool("t37", "Rubber Duck Debugger", "Socratic lateral blocker solver canvas", "🦆", "Clarity", NeonAmber),
+            ProductivityTool("t38", "Burnout Radar Audit", "5-factor vitality friction & recovery index", "⚡", "Energy", NeonPink),
+            ProductivityTool("t39", "Mental Rehearsal Visualizer", "Pre-performance flow state imagery script", "🧘", "Mindful", NeonViolet),
+            ProductivityTool("t40", "Interstitial Journaling", "Zero-lag micro-journaling between tasks", "📝", "Notes", NeonCyan),
+            ProductivityTool("t41", "Feynman Technique Clarifier", "Plain-English deep mastery concept breakdown", "🔬", "Learning", NeonAmber),
+            ProductivityTool("t42", "Decision Scorer Matrix", "Weighted criteria prioritization grid", "⚖️", "Strategy", NeonLime),
+            ProductivityTool("t43", "Digital Sunset Wind-Down", "4-step circadian evening cognitive shutdown", "🌙", "Recovery", NeonAmber),
+            ProductivityTool("t44", "5-Minute Kickstart", "Friction-free momentum initiation protocol", "🚀", "Discipline", NeonLime),
+            ProductivityTool("t45", "Weekly OKR Matrix", "Objectives & Key Results weekly alignment", "🎯", "High Leverage", NeonViolet)
         )
     }
 
@@ -140,7 +151,7 @@ fun ToolsScreen(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = "35 Power Tools • Zero Lag Decoupled Engine",
+                        text = "45 Power Tools • Zero Lag Decoupled Engine",
                         style = MaterialTheme.typography.bodySmall,
                         color = NeonLime
                     )
