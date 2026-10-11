@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="360dp"
+    android:height="160dp"
+    android:viewportWidth="360"
+    android:viewportHeight="160">
+
+    <!-- Deep Space Gradient Background -->
+    <path
+        android:pathData="M0,0 L360,0 L360,160 L0,160 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="0"
+                android:startY="0"
+                android:endX="360"
+                android:endY="160"
+                android:type="linear">
+                <item android:color="#0B0F19" android:offset="0.0" />
+                <item android:color="#1A102F" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Concentric Cyber Glow Rings -->
+    <path
+        android:pathData="M80,80 A50,50 0 1,1 79.9,80 Z"
+        android:strokeWidth="2">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="30"
+                android:startY="30"
+                android:endX="130"
+                android:endY="130"
+                android:type="linear">
+                <item android:color="#00F2FE" android:offset="0.0" />
+                <item android:color="#7F00FF" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <path
+        android:pathData="M80,80 A35,35 0 1,1 79.9,80 Z"
+        android:strokeWidth="1.5">
+        <aapt:attr name="android:strokeColor">
+            <gradient
+                android:startX="45"
+                android:startY="45"
+                android:endX="115"
+                android:endY="115"
+                android:type="linear">
+                <item android:color="#00FFC2" android:offset="0.0" />
+                <item android:color="#00F2FE" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+
+    <!-- Hourglass Core Symbol -->
+    <path
+        android:fillColor="#00F2FE"
+        android:pathData="M65,58 L95,58 L95,62 L65,62 Z" />
+    <path
+        android:fillColor="#7F00FF"
+        android:pathData="M65,98 L95,98 L95,102 L65,102 Z" />
+    <path
+        android:pathData="M68,62 L92,62 C92,72 86,76 80,80 C86,84 92,88 92,98 L68,98 C68,88 74,84 80,80 C74,76 68,72 68,62 Z"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFF" />
+</vector>

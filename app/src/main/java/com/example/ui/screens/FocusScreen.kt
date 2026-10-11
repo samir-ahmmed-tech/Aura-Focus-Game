@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -174,193 +176,210 @@ fun FocusScreen(
     val primaryColor = MaterialTheme.colorScheme.primary
     val secondaryColor = MaterialTheme.colorScheme.secondary
 
-    Column(
+    val clockGlowBrush = remember(primaryColor, secondaryColor, isRunning) {
+        Brush.radialGradient(
+            colors = listOf(
+                primaryColor.copy(alpha = if (isRunning) 0.30f else 0.12f),
+                secondaryColor.copy(alpha = if (isRunning) 0.18f else 0.05f),
+                Color.Transparent
+            )
+        )
+    }
+    val arcSweepBrush = remember(primaryColor, secondaryColor) {
+        Brush.sweepGradient(
+            0.0f to primaryColor,
+            0.5f to secondaryColor,
+            1.0f to primaryColor
+        )
+    }
+
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .verticalScroll(rememberScrollState())
-            .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 120.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .statusBarsPadding(),
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 120.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Top Header
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    text = "NeuroBox",
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = 1.sp
-                    ),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    text = "Acoustic Brainwave & Cognitive Space",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+        item(key = "focus_header") {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = "NeuroBox",
+                        style = MaterialTheme.typography.titleLarge.copy(
+                            fontWeight = FontWeight.Bold,
+                            letterSpacing = 1.sp
+                        ),
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Text(
+                        text = "Acoustic Brainwave & Cognitive Space",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                GlassChip(
-                    label = if (isInfiniteMode) "♾️ Unlimited Flow" else "Session #$completedSessionsCount",
-                    color = if (isInfiniteMode) NeonLime else NeonCyan,
-                    selected = true,
-                    onClick = {
-                        isInfiniteMode = !isInfiniteMode
-                        isRunning = false
-                        if (isInfiniteMode) {
-                            infiniteSecondsElapsed = 0
-                        } else {
-                            secondsRemaining = totalSeconds
-                        }
-                    },
-                    testTag = "infinite_mode_chip"
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    GlassChip(
+                        label = if (isInfiniteMode) "♾️ Unlimited Flow" else "Session #$completedSessionsCount",
+                        color = if (isInfiniteMode) NeonLime else NeonCyan,
+                        selected = true,
+                        onClick = {
+                            isInfiniteMode = !isInfiniteMode
+                            isRunning = false
+                            if (isInfiniteMode) {
+                                infiniteSecondsElapsed = 0
+                            } else {
+                                secondsRemaining = totalSeconds
+                            }
+                        },
+                        testTag = "infinite_mode_chip"
+                    )
+                }
             }
         }
 
-        Spacer(modifier = Modifier.height(18.dp))
-
         // Mode Selector Pills
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(24.dp))
-                .background(Color(0x14FFFFFF))
-                .border(1.dp, Color(0x22FFFFFF), RoundedCornerShape(24.dp))
-                .padding(4.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            SessionMode.values().forEach { mode ->
-                val isSelected = selectedMode == mode
-                val modeBg = if (isSelected) {
-                    Brush.horizontalGradient(
-                        listOf(primaryColor.copy(alpha = 0.4f), secondaryColor.copy(alpha = 0.4f))
-                    )
-                } else {
-                    Brush.linearGradient(listOf(Color.Transparent, Color.Transparent))
-                }
-                val modeBorderBrush = if (isSelected) {
-                    Brush.horizontalGradient(listOf(primaryColor, secondaryColor))
-                } else {
-                    Brush.linearGradient(listOf(Color.Transparent, Color.Transparent))
-                }
-
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(38.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(modeBg)
-                        .border(
-                            width = if (isSelected) 1.dp else 0.dp,
-                            brush = modeBorderBrush,
-                            shape = RoundedCornerShape(20.dp)
+        item(key = "focus_modes") {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(Color(0x14FFFFFF))
+                    .border(1.dp, Color(0x22FFFFFF), RoundedCornerShape(24.dp))
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                SessionMode.values().forEach { mode ->
+                    val isSelected = selectedMode == mode
+                    val modeBg = if (isSelected) {
+                        Brush.horizontalGradient(
+                            listOf(primaryColor.copy(alpha = 0.4f), secondaryColor.copy(alpha = 0.4f))
                         )
-                        .clickable {
-                            selectedMode = mode
-                            if (mode == SessionMode.CUSTOM) {
-                                showCustomDurationPanel = true
-                            } else {
-                                isInfiniteMode = false
-                                totalSeconds = mode.defaultMinutes * 60
-                                secondsRemaining = totalSeconds
-                                isRunning = false
+                    } else {
+                        Brush.linearGradient(listOf(Color.Transparent, Color.Transparent))
+                    }
+                    val modeBorderBrush = if (isSelected) {
+                        Brush.horizontalGradient(listOf(primaryColor, secondaryColor))
+                    } else {
+                        Brush.linearGradient(listOf(Color.Transparent, Color.Transparent))
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(38.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(modeBg)
+                            .border(
+                                width = if (isSelected) 1.dp else 0.dp,
+                                brush = modeBorderBrush,
+                                shape = RoundedCornerShape(20.dp)
+                            )
+                            .clickable {
+                                selectedMode = mode
+                                if (mode == SessionMode.CUSTOM) {
+                                    showCustomDurationPanel = true
+                                } else {
+                                    isInfiniteMode = false
+                                    totalSeconds = mode.defaultMinutes * 60
+                                    secondsRemaining = totalSeconds
+                                    isRunning = false
+                                }
                             }
-                        }
-                        .padding(horizontal = 4.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = if (mode == SessionMode.CUSTOM) "Custom" else mode.title,
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                            fontSize = 11.sp
-                        ),
-                        color = if (isSelected) primaryColor else MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                            .padding(horizontal = 4.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = if (mode == SessionMode.CUSTOM) "Custom" else mode.title,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                fontSize = 11.sp
+                            ),
+                            color = if (isSelected) primaryColor else MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
         }
 
         // Custom Duration Slider Panel
         if (showCustomDurationPanel || selectedMode == SessionMode.CUSTOM) {
-            Spacer(modifier = Modifier.height(14.dp))
-            GlassCard(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.padding(14.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = if (isInfiniteMode) "Infinite Listening Mode" else "Custom Duration: $customMinutes minutes",
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        GlassChip(
-                            label = if (isInfiniteMode) "Unlimited ♾️" else "Set Infinite",
-                            color = NeonLime,
-                            selected = isInfiniteMode,
-                            onClick = {
-                                isInfiniteMode = !isInfiniteMode
-                                isRunning = false
-                                infiniteSecondsElapsed = 0
-                            }
-                        )
-                    }
-
-                    if (!isInfiniteMode) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Slider(
-                            value = customMinutes.toFloat(),
-                            onValueChange = {
-                                customMinutes = it.toInt()
-                                totalSeconds = customMinutes * 60
-                                secondsRemaining = totalSeconds
-                            },
-                            valueRange = 5f..180f,
-                            steps = 34,
-                            colors = SliderDefaults.colors(thumbColor = NeonCyan, activeTrackColor = NeonCyan)
-                        )
+            item(key = "focus_custom_panel") {
+                GlassCard(modifier = Modifier.fillMaxWidth()) {
+                    Column(modifier = Modifier.padding(14.dp)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text("5m", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text("60m", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Text("180m (3 hrs)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text(
+                                text = if (isInfiniteMode) "Infinite Listening Mode" else "Custom Duration: $customMinutes minutes",
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                            GlassChip(
+                                label = if (isInfiniteMode) "Unlimited ♾️" else "Set Infinite",
+                                color = NeonLime,
+                                selected = isInfiniteMode,
+                                onClick = {
+                                    isInfiniteMode = !isInfiniteMode
+                                    isRunning = false
+                                    infiniteSecondsElapsed = 0
+                                }
+                            )
+                        }
+
+                        if (!isInfiniteMode) {
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Slider(
+                                value = customMinutes.toFloat(),
+                                onValueChange = {
+                                    customMinutes = it.toInt()
+                                    totalSeconds = customMinutes * 60
+                                    secondsRemaining = totalSeconds
+                                },
+                                valueRange = 5f..180f,
+                                steps = 34,
+                                colors = SliderDefaults.colors(thumbColor = NeonCyan, activeTrackColor = NeonCyan)
+                            )
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text("5m", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text("60m", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text("180m (3 hrs)", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
                         }
                     }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(28.dp))
-
         // Central Glassmorphic Countdown / Infinite Ring
-        val clockGlowBrush = remember(primaryColor, secondaryColor, isRunning) {
-            Brush.radialGradient(
-                colors = listOf(
-                    primaryColor.copy(alpha = if (isRunning) 0.30f else 0.12f),
-                    secondaryColor.copy(alpha = if (isRunning) 0.18f else 0.05f),
-                    Color.Transparent
-                )
-            )
-        }
-        val arcSweepBrush = remember(primaryColor, secondaryColor) {
-            Brush.sweepGradient(
-                0.0f to primaryColor,
-                0.5f to secondaryColor,
-                1.0f to primaryColor
-            )
-        }
-
-        Box(
+        item(key = "focus_clock_dial") {
+            Box(
+                modifier = Modifier
+                    .size(270.dp)
+                    .graphicsLayer {
+                        scaleX = pulseScale.value
+                        scaleY = pulseScale.value
+                    }
+                    .testTag("pomodoro_clock_disc")
+                    .drawBehind {
+                        drawCircle(
+                            brush = clockGlowBrush,
+                            radius = size.minDimension * 0.72f
+                        )
+                    },
+                contentAlignment = Alignment.Center
+            ) {
             modifier = Modifier
                 .size(270.dp)
                 .graphicsLayer {
@@ -445,236 +464,235 @@ fun FocusScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(28.dp))
-
         // Play / Pause / Reset Controls
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                onClick = {
-                    isRunning = false
-                    binauralEngine.stop()
-                    if (isInfiniteMode) {
-                        infiniteSecondsElapsed = 0
-                    } else {
-                        secondsRemaining = totalSeconds
-                    }
-                },
-                modifier = Modifier
-                    .size(52.dp)
-                    .clip(CircleShape)
-                    .background(Color(0x14FFFFFF))
-                    .border(1.dp, Color(0x2EFFFFFF), CircleShape)
-                    .testTag("timer_reset_btn")
+        item(key = "focus_playback_controls") {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Default.Refresh,
-                    contentDescription = "Reset Timer",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            Spacer(modifier = Modifier.width(20.dp))
-
-            Box(
-                modifier = Modifier
-                    .size(76.dp)
-                    .clip(CircleShape)
-                    .background(Brush.radialGradient(listOf(primaryColor, secondaryColor)))
-                    .border(2.dp, Color.White.copy(alpha = 0.5f), CircleShape)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = ripple(bounded = true, color = Color.White),
-                        onClick = {
-                            isRunning = !isRunning
-                            if (!isRunning) {
-                                binauralEngine.stop()
-                            }
+                IconButton(
+                    onClick = {
+                        isRunning = false
+                        binauralEngine.stop()
+                        if (isInfiniteMode) {
+                            infiniteSecondsElapsed = 0
+                        } else {
+                            secondsRemaining = totalSeconds
                         }
+                    },
+                    modifier = Modifier
+                        .size(52.dp)
+                        .clip(CircleShape)
+                        .background(Color(0x14FFFFFF))
+                        .border(1.dp, Color(0x2EFFFFFF), CircleShape)
+                        .testTag("timer_reset_btn")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = "Reset Timer",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    .testTag("timer_play_pause_btn"),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = if (isRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
-                    contentDescription = if (isRunning) "Pause" else "Start",
-                    tint = Color.Black,
-                    modifier = Modifier.size(40.dp)
-                )
-            }
+                }
 
-            Spacer(modifier = Modifier.width(20.dp))
+                Spacer(modifier = Modifier.width(20.dp))
 
-            IconButton(
-                onClick = {
-                    if (isInfiniteMode) {
-                        infiniteSecondsElapsed += 300
-                    } else {
-                        secondsRemaining = 0
-                    }
-                },
-                modifier = Modifier
-                    .size(52.dp)
-                    .clip(CircleShape)
-                    .background(Color(0x14FFFFFF))
-                    .border(1.dp, Color(0x2EFFFFFF), CircleShape)
-                    .testTag("timer_skip_btn")
-            ) {
-                Icon(
-                    imageVector = Icons.Default.FastForward,
-                    contentDescription = "Advance",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                Box(
+                    modifier = Modifier
+                        .size(76.dp)
+                        .clip(CircleShape)
+                        .background(Brush.radialGradient(listOf(primaryColor, secondaryColor)))
+                        .border(2.dp, Color.White.copy(alpha = 0.5f), CircleShape)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = ripple(bounded = true, color = Color.White),
+                            onClick = {
+                                isRunning = !isRunning
+                                if (!isRunning) {
+                                    binauralEngine.stop()
+                                }
+                            }
+                        )
+                        .testTag("timer_play_pause_btn"),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = if (isRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
+                        contentDescription = if (isRunning) "Pause" else "Start",
+                        tint = Color.Black,
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(20.dp))
+
+                IconButton(
+                    onClick = {
+                        if (isInfiniteMode) {
+                            infiniteSecondsElapsed += 300
+                        } else {
+                            secondsRemaining = 0
+                        }
+                    },
+                    modifier = Modifier
+                        .size(52.dp)
+                        .clip(CircleShape)
+                        .background(Color(0x14FFFFFF))
+                        .border(1.dp, Color(0x2EFFFFFF), CircleShape)
+                        .testTag("timer_skip_btn")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.FastForward,
+                        contentDescription = "Advance",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
         // REAL BINAURAL BRAINWAVE TUNER SELECTOR
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            glowColor = NeonViolet,
-            glowRadius = 12.dp,
-            testTag = "binaural_tuner_card"
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Psychology, "Brainwave", tint = NeonViolet, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Brainwave Frequency (Real 100% Entrainment)",
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
+        item(key = "focus_brainwave_tuner") {
+            GlassCard(
+                modifier = Modifier.fillMaxWidth(),
+                glowColor = NeonViolet,
+                glowRadius = 12.dp,
+                testTag = "binaural_tuner_card"
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.Psychology, "Brainwave", tint = NeonViolet, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Brainwave Frequency (Real 100% Entrainment)",
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState()),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        BrainwaveType.values().forEach { wave ->
+                            val isSelected = selectedBrainwave == wave
+                            val waveColor = when (wave) {
+                                BrainwaveType.LONE_WOLF, BrainwaveType.GAMMA_PEAK -> NeonPink
+                                BrainwaveType.BETA_ACTIVE, BrainwaveType.SMR_CALM -> NeonAmber
+                                BrainwaveType.ALPHA_FLOW -> NeonCyan
+                                BrainwaveType.THETA_MEDITATION -> NeonViolet
+                                BrainwaveType.DELTA_REST, BrainwaveType.SCHUMANN -> NeonLime
+                                else -> NeonViolet
+                            }
+                            GlassChip(
+                                label = wave.title,
+                                color = waveColor,
+                                selected = isSelected,
+                                onClick = { selectedBrainwave = wave }
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = selectedBrainwave.description,
+                        style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                        color = NeonCyan
+                    )
+                }
+            }
+        }
+
+        // Ambient Soundscape Selector
+        item(key = "focus_ambient_soundscape") {
+            GlassCard(
+                modifier = Modifier.fillMaxWidth(),
+                testTag = "ambient_sound_card"
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.GraphicEq, "Ambient Sounds", tint = NeonCyan, modifier = Modifier.size(18.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Acoustic Layer: ${selectedSoundscape.label}",
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        SoundscapeType.values().forEach { sound ->
+                            val isPicked = selectedSoundscape == sound
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(46.dp)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .background(if (isPicked) NeonCyan.copy(alpha = 0.25f) else Color(0x10FFFFFF))
+                                    .border(1.dp, if (isPicked) NeonCyan else Color(0x18FFFFFF), RoundedCornerShape(12.dp))
+                                    .clickable { selectedSoundscape = sound }
+                                    .padding(horizontal = 4.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text(sound.iconEmoji, fontSize = 14.sp)
+                                    Text(
+                                        text = sound.label,
+                                        style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
+                                        color = if (isPicked) NeonCyan else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
+            }
+        }
 
-                Spacer(modifier = Modifier.height(10.dp))
-
+        // 20+ FEATURE MUSIC STUDIO DOCK BANNER
+        item(key = "focus_music_studio_dock") {
+            GlassCard(
+                modifier = Modifier.fillMaxWidth(),
+                glowColor = NeonPink,
+                glowRadius = 10.dp,
+                onClick = onOpenMusicStudio,
+                testTag = "open_music_studio_card"
+            ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState()),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    BrainwaveType.values().forEach { wave ->
-                        val isSelected = selectedBrainwave == wave
-                        val waveColor = when (wave) {
-                            BrainwaveType.LONE_WOLF, BrainwaveType.GAMMA_PEAK -> NeonPink
-                            BrainwaveType.BETA_ACTIVE, BrainwaveType.SMR_CALM -> NeonAmber
-                            BrainwaveType.ALPHA_FLOW -> NeonCyan
-                            BrainwaveType.THETA_MEDITATION -> NeonViolet
-                            BrainwaveType.DELTA_REST, BrainwaveType.SCHUMANN -> NeonLime
-                            else -> NeonViolet
-                        }
-                        GlassChip(
-                            label = wave.title,
-                            color = waveColor,
-                            selected = isSelected,
-                            onClick = { selectedBrainwave = wave }
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = selectedBrainwave.description,
-                    style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
-                    color = NeonCyan
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Ambient Soundscape Selector
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            testTag = "ambient_sound_card"
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.GraphicEq, "Ambient Sounds", tint = NeonCyan, modifier = Modifier.size(18.dp))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Acoustic Layer: ${selectedSoundscape.label}",
-                            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    SoundscapeType.values().forEach { sound ->
-                        val isPicked = selectedSoundscape == sound
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.weight(1f)
+                    ) {
                         Box(
                             modifier = Modifier
-                                .weight(1f)
-                                .height(46.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .background(if (isPicked) NeonCyan.copy(alpha = 0.25f) else Color(0x10FFFFFF))
-                                .border(1.dp, if (isPicked) NeonCyan else Color(0x18FFFFFF), RoundedCornerShape(12.dp))
-                                .clickable { selectedSoundscape = sound }
-                                .padding(horizontal = 4.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(sound.iconEmoji, fontSize = 14.sp)
-                                Text(
-                                    text = sound.label,
-                                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp),
-                                    color = if (isPicked) NeonCyan else MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // 20+ FEATURE MUSIC STUDIO DOCK BANNER
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            glowColor = NeonPink,
-            glowRadius = 10.dp,
-            onClick = onOpenMusicStudio,
-            testTag = "open_music_studio_card"
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(44.dp)
-                            .clip(CircleShape)
+                                .size(44.dp)
+                                .clip(CircleShape)
                             .background(NeonPink.copy(alpha = 0.2f))
                             .border(1.dp, NeonPink, CircleShape),
                         contentAlignment = Alignment.Center
@@ -704,7 +722,5 @@ fun FocusScreen(
                 )
             }
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
     }
 }

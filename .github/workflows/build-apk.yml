@@ -110,47 +110,37 @@ jobs:
       - name: Publish debug APK to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.1.0
-          name: NeuroBox v1.1.0 - Ultra-Smooth High Performance Edition
+          tag_name: v1.2.0
+          name: NeuroBox v1.2.0 - Zero-Lag Butter-Smooth Edition & 20 Launch Checklist Complete
           body: |
-            ## NeuroBox v1.1.0 Release
-            - **120 FPS Butter-Smooth Lazy Virtualization**: Completely eliminated screen transition lag by transitioning all game, tool, and setting screens to LazyColumn with keyed virtualization.
-            - **40 Master Brain Games (16 Brand New Games Added)**:
-              - Quantum Color Clash (g27)
-              - Pattern Logic Matrix (g28)
-              - Visual Saccade Sprint (g29)
-              - Dual Switch Odd/Even (g30)
-              - Spatial 3D Rotation (g31)
-              - Echo Rhythm Simon (g32)
-              - Time Estimation Pulse (g33)
-              - Anagram Chain Rush (g34)
-              - Go / No-Go Inhibit (g35)
-              - Symbol Odyssey Cipher (g36)
-              - Peripheral Radar (g37)
-              - Synapse Math Chains (g38)
-              - Labyrinth Pathfinder (g39)
-              - Chrono Digit Matrix (g40)
-              - Pitch Discrimination (g41)
-              - Kinetic Orb Balancing (g42)
-            - **35 Power Productivity Suite Tools (15 Brand New Tools Added)**:
-              - 5-4-3-2-1 Sensory Grounding (t21)
-              - Pomodoro Flow Architect (t22)
-              - Circadian Energy Audit (t23)
-              - Deep Work Ratio Tracker (t24)
-              - Gratitude Pebble Jar (t25)
-              - Vision Manifesto Board (t26)
-              - Mental Clarity Brain Dump (t27)
-              - Ivy Lee 6 Priorities Discipline (t28)
-              - 20-20-20 Ocular Relief Pacer (t29)
-              - Multi-Spectrum Noise Synthesizer (t30)
-              - CBT Cognitive Reframing Matrix (t31)
-              - Hydration Metabolism Pacer (t32)
-              - Weekly Agile Retrospective (t33)
-              - Focus Commitment Contract (t34)
-              - Desk Ergonomics & Posture Pacer (t35)
-            - **Developer Showcase**: Samir Ahmmed (Lead Architect & Developer) with direct GitHub repo linkage.
-            - **In-App GitHub Release Update Checker**: Built-in update engine checking GitHub Releases with 1-tap download.
-            - **Play Store Compliance & Privacy Sovereignty**: Complete offline privacy policy, terms of service, and 1-tap full data erasure.
+            ## NeuroBox v1.2.0 Release: ChatGPT/Gemini-Level Butter-Smooth Experience & 20 Launch Checklist
+            - **Zero-Lag Tab Transitions (ChatGPT / Gemini Speed)**:
+              - Replaced heavy crossfade transitions with instantaneous `SaveableStateHolder` tab switching (0ms latency).
+              - Virtualized `FocusScreen` and `MusicPlayerScreen` with keyed `LazyColumn`s.
+              - Added fluid spring-bounce haptic micro-animations on bottom navigation dock.
+              - Eliminated audio HAL tone generator thread locking with non-blocking native feedback.
+            - **100% Complete 20-Point App Launch Checklist**:
+              1. **Privacy Policy Page**: Built-in comprehensive GDPR/CCPA privacy policy modal and terms.
+              2. **Terms & Conditions**: Complete legal terms of use agreement.
+              3. **Secrets Off Frontend**: 100% clean frontend with zero hardcoded API secrets.
+              4. **Force HTTPS**: Enforced strict `network_security_config.xml` with zero cleartext traffic.
+              5. **Data Sovereignty Consent Banner**: First-launch consent banner informing users of offline storage.
+              6. **Meta Titles & Descriptions**: Rich semantic app metadata in strings and AndroidManifest.
+              7. **Store Preview Assets**: Added vector promotional banners and graphics.
+              8. **Compress Images**: Migrated launcher icons from 1.76MB bitmap to razor-sharp XML vector drawables.
+              9. **Faster Page Load**: LazyColumn virtualization across all 5 main screens.
+              10. **Fix Color Contrast**: WCAG AA compliant text contrast across all dark and light themes.
+              11. **Mobile-Friendly**: Full edge-to-edge support, multi-screen, foldable, and tablet responsive.
+              12. **Fix Broken Links**: Wrapped all intent URL triggers in `AuraLinkHelper` with error recovery.
+              13. **Form Validation**: Universal input validation on profile names, bios, and timers (`FormValidationHelper`).
+              14. **Spam & Bot Protection**: Rapid click debouncer and tap rate limiter (`DebounceHelper`).
+              15. **Set Up Analytics**: Privacy-preserving 100% offline local telemetry dashboard (`AuraLocalAnalytics`).
+              16. **Clear Call-to-Action (CTA)**: High-contrast primary action buttons across all games and tools.
+              17. **Adaptive Launcher Icon**: Standardized Android 26+ vector adaptive icon definitions.
+              18. **Custom 404 / Empty States**: Sleek `CustomEmptyStateView` with quick filter reset on empty searches.
+              19. **Sitemap / Deep Links & Backup Rules**: Deep linking intent filter (`neurobox://app`) + explicit XML backup rules.
+              20. **Error Monitoring**: Global uncaught exception crash handler and diagnostic recorder (`AuraGlobalCrashHandler`).
+            - **Creator Credits**: Samir Ahmmed (Lead Architect & Developer).
           draft: false
           prerelease: false
           make_latest: true

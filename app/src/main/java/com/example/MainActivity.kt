@@ -42,6 +42,15 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.Icon
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.ui.draw.scale
+import com.example.ui.components.DataSovereigntyBanner
+import com.example.util.AuraGlobalCrashHandler
+import com.example.util.AuraLocalAnalytics
+import com.example.util.DebounceHelper
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
@@ -193,6 +202,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Install Global Crash Boundary & Diagnostics Logger (Item 20)
+        AuraGlobalCrashHandler.install(applicationContext)
+        // Initialize 100% Offline Local Analytics Engine (Item 15)
+        AuraLocalAnalytics.init(applicationContext)
+
         // Ensure transparent status and navigation bars without system black scrims
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
@@ -482,16 +496,12 @@ fun AuraFocusApp(
                     }
                 }
 
-                // Main Tab Screens with ultra-smooth lag-free 90ms transition
+                // Main Tab Screens with ultra-smooth lag-free instant state-preserved transition
                 else -> {
                     Box(modifier = Modifier.fillMaxSize()) {
-                        Crossfade(
-                            targetState = currentTab,
-                            label = "main_tab_fade",
-                            animationSpec = tween(90, easing = LinearOutSlowInEasing),
-                            modifier = Modifier.fillMaxSize()
-                        ) { tab ->
-                            when (tab) {
+                        val tabStateHolder = rememberSaveableStateHolder()
+                        tabStateHolder.SaveableStateProvider(key = currentTab) {
+                            when (currentTab) {
                                 AuraNavDestination.FOCUS -> FocusScreen(
                                     binauralEngine = musicEngine.binauralEngine,
                                     onOpenMusicStudio = { currentTab = AuraNavDestination.MUSIC }
@@ -520,93 +530,116 @@ fun AuraFocusApp(
                             }
                         }
 
-                // Pure Floating Glass iOS-Style Edge Dock (Floating over background with NO black bar)
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .navigationBarsPadding()
-                        .padding(horizontal = 24.dp, vertical = 12.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(58.dp)
-                            .shadow(
-                                elevation = 20.dp,
-                                shape = RoundedCornerShape(29.dp),
-                                ambientColor = Color(0x60000000),
-                                spotColor = Color(0x40000000)
-                            )
-                            .clip(RoundedCornerShape(29.dp))
-                            .background(
-                                Brush.verticalGradient(
-                                    listOf(Color(0x35FFFFFF), Color(0x18FFFFFF))
-                                )
-                            )
-                            .border(
-                                width = 1.dp,
-                                brush = Brush.verticalGradient(
-                                    listOf(Color(0x55FFFFFF), Color(0x18FFFFFF))
-                                ),
-                                shape = RoundedCornerShape(29.dp)
-                            )
-                            .padding(horizontal = 8.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            AuraNavDestination.values().forEach { destination ->
-                                val isSelected = currentTab == destination
-                                val accentColor = when (destination) {
-                                    AuraNavDestination.FOCUS -> NeonCyan
-                                    AuraNavDestination.MUSIC -> NeonPink
-                                    AuraNavDestination.GAMES -> NeonLime
-                                    AuraNavDestination.TOOLS -> NeonAmber
-                                    AuraNavDestination.HUB -> NeonViolet
-                                }
+                        // Mobile Data Sovereignty & Privacy Consent Banner (Item 5)
+                        DataSovereigntyBanner(
+                            visible = !gamificationState.hasAcknowledgedPrivacy,
+                            onAcknowledge = { GamificationManager.acknowledgePrivacy() },
+                            onViewPolicy = {
+                                currentTab = AuraNavDestination.HUB
+                            },
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .navigationBarsPadding()
+                                .padding(bottom = 80.dp)
+                        )
 
-                                Box(
-                                    modifier = Modifier
-                                        .size(44.dp)
-                                        .clip(CircleShape)
-                                        .background(if (isSelected) accentColor.copy(alpha = 0.24f) else Color.Transparent)
-                                        .border(
-                                            width = if (isSelected) 1.dp else 0.dp,
-                                            color = if (isSelected) accentColor else Color.Transparent,
-                                            shape = CircleShape
-                                        )
-                                        .clickable(
-                                            interactionSource = remember { MutableInteractionSource() },
-                                            indication = ripple(bounded = true, color = accentColor),
-                                            onClick = {
-                                                if (touchSoundEnabled) {
-                                                    AuraSoundManager.playTapSound(context)
-                                                }
-                                                currentTab = destination
-                                            }
-                                        )
-                                        .testTag(destination.tag),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        imageVector = destination.icon,
-                                        contentDescription = destination.title,
-                                        tint = if (isSelected) accentColor else MaterialTheme.colorScheme.onSurfaceVariant,
-                                        modifier = Modifier.size(22.dp)
+                        // Pure Floating Glass iOS-Style Edge Dock (Floating over background with NO black bar)
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .fillMaxWidth()
+                                .navigationBarsPadding()
+                                .padding(horizontal = 24.dp, vertical = 12.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(58.dp)
+                                    .shadow(
+                                        elevation = 20.dp,
+                                        shape = RoundedCornerShape(29.dp),
+                                        ambientColor = Color(0x60000000),
+                                        spotColor = Color(0x40000000)
                                     )
+                                    .clip(RoundedCornerShape(29.dp))
+                                    .background(
+                                        Brush.verticalGradient(
+                                            listOf(Color(0x35FFFFFF), Color(0x18FFFFFF))
+                                        )
+                                    )
+                                    .border(
+                                        width = 1.dp,
+                                        brush = Brush.verticalGradient(
+                                            listOf(Color(0x55FFFFFF), Color(0x18FFFFFF))
+                                        ),
+                                        shape = RoundedCornerShape(29.dp)
+                                    )
+                                    .padding(horizontal = 8.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceAround,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    AuraNavDestination.values().forEach { destination ->
+                                        val isSelected = currentTab == destination
+                                        val accentColor = when (destination) {
+                                            AuraNavDestination.FOCUS -> NeonCyan
+                                            AuraNavDestination.MUSIC -> NeonPink
+                                            AuraNavDestination.GAMES -> NeonLime
+                                            AuraNavDestination.TOOLS -> NeonAmber
+                                            AuraNavDestination.HUB -> NeonViolet
+                                        }
+
+                                        val animatedTabScale by animateFloatAsState(
+                                            targetValue = if (isSelected) 1.15f else 1.0f,
+                                            animationSpec = spring(
+                                                dampingRatio = Spring.DampingRatioMediumBouncy,
+                                                stiffness = Spring.StiffnessMedium
+                                            ),
+                                            label = "tab_scale_${destination.name}"
+                                        )
+
+                                        Box(
+                                            modifier = Modifier
+                                                .size(44.dp)
+                                                .scale(animatedTabScale)
+                                                .clip(CircleShape)
+                                                .background(if (isSelected) accentColor.copy(alpha = 0.24f) else Color.Transparent)
+                                                .border(
+                                                    width = if (isSelected) 1.dp else 0.dp,
+                                                    color = if (isSelected) accentColor else Color.Transparent,
+                                                    shape = CircleShape
+                                                )
+                                                .clickable(
+                                                    interactionSource = remember { MutableInteractionSource() },
+                                                    indication = ripple(bounded = true, color = accentColor),
+                                                    onClick = {
+                                                        if (currentTab != destination && DebounceHelper.canClick(100L)) {
+                                                            if (touchSoundEnabled) {
+                                                                AuraSoundManager.playTapSound(context)
+                                                            }
+                                                            currentTab = destination
+                                                        }
+                                                    }
+                                                )
+                                                .testTag(destination.tag),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Icon(
+                                                imageVector = destination.icon,
+                                                contentDescription = destination.title,
+                                                tint = if (isSelected) accentColor else MaterialTheme.colorScheme.onSurfaceVariant,
+                                                modifier = Modifier.size(22.dp)
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                }
             }
         }
-    }
-}
     }
 }

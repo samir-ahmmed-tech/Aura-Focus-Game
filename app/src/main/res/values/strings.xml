@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">NeuroBox</string>
+    <string name="app_full_title">NeuroBox: Focus Flow &amp; Brain Gym</string>
+    <string name="app_description">All-in-one cognitive enhancement platform featuring 40 master brain games, 35 power productivity tools, binaural beats studio, and 100% offline data sovereignty.</string>
+    <string name="developer_name">Samir Ahmmed</string>
+    <string name="privacy_policy_title">NeuroBox Privacy Policy</string>
+    <string name="terms_of_service_title">NeuroBox Terms of Service</string>
 </resources>

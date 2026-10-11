@@ -131,12 +131,17 @@ data class GamificationState(
         AchievementBadge("b6", "Zenith Stoic", "Accumulated 300+ minutes of deep focus", "🧘", false),
         AchievementBadge("b7", "Garden Arborist", "Grew the Daily Login Tree to Stage 4 Bonsai", "🌸", false),
         AchievementBadge("b8", "Record Breaker", "Set 5 new game high score personal bests", "🏆", false)
-    )
+    ),
+    val hasAcknowledgedPrivacy: Boolean = false
 )
 
 object GamificationManager {
     private val _state = MutableStateFlow(GamificationState())
     val state: StateFlow<GamificationState> = _state.asStateFlow()
+
+    fun acknowledgePrivacy() {
+        _state.value = _state.value.copy(hasAcknowledgedPrivacy = true)
+    }
 
     fun resetAllUserDataToZero() {
         _state.value = GamificationState()

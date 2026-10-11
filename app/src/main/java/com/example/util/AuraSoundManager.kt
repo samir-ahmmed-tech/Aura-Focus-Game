@@ -47,24 +47,18 @@ object AuraSoundManager {
      */
     fun playTapSound(context: Context?, view: View? = null) {
         val now = System.currentTimeMillis()
-        if (now - lastTapTime < 50L) return // Rate-limit rapid successive clicks to prevent queue buildup
+        if (now - lastTapTime < 80L) return // Rate-limit rapid successive clicks
         lastTapTime = now
 
         val ctx = context ?: view?.context
 
-        // Lightweight instant view click if available
+        // Lightweight instant view click / haptic if available
         try {
             view?.playSoundEffect(SoundEffectConstants.CLICK)
         } catch (_: Exception) {}
 
-        // Tone & Haptic in background coroutine to never block the main rendering thread
         soundScope.launch {
-            try {
-                if (toneGenerator == null) initTone()
-                toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 25)
-            } catch (_: Exception) {}
-
-            performHaptic(ctx, 8)
+            performHaptic(ctx, 6)
         }
     }
 

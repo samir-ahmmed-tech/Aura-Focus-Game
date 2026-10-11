@@ -73,8 +73,10 @@ import com.example.ui.theme.NeonLime
 import com.example.ui.theme.NeonPink
 import com.example.ui.theme.NeonViolet
 import com.example.ui.theme.RoseGold
+import com.example.util.AuraLinkHelper
 import com.example.util.AuraSoundManager
 import com.example.util.AuraUpdateChecker
+import com.example.util.FormValidationHelper
 import com.example.util.NeuroBoxBackupEngine
 import com.example.util.UpdateCheckResult
 import kotlinx.coroutines.launch
@@ -590,12 +592,7 @@ fun HubScreen(
                                 GlassButton(
                                     text = "GitHub Repo 🌐",
                                     onClick = {
-                                        try {
-                                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/samir-ahmmed-tech/Aura-Focus-Game"))
-                                            context.startActivity(intent)
-                                        } catch (e: Exception) {
-                                            Toast.makeText(context, "Could not open link", Toast.LENGTH_SHORT).show()
-                                        }
+                                        AuraLinkHelper.openUrl(context, "https://github.com/samir-ahmmed-tech/Aura-Focus-Game")
                                     },
                                     modifier = Modifier.weight(1f)
                                 )
@@ -678,10 +675,9 @@ fun HubScreen(
                                             GlassButton(
                                                 text = "Download Release APK 📥",
                                                 onClick = {
-                                                    try {
-                                                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateResult!!.downloadUrl))
-                                                        context.startActivity(intent)
-                                                    } catch (_: Exception) {}
+                                                    updateResult?.downloadUrl?.let { url ->
+                                                        AuraLinkHelper.openUrl(context, url)
+                                                    }
                                                 },
                                                 modifier = Modifier.fillMaxWidth()
                                             )
@@ -826,8 +822,11 @@ fun HubScreen(
         }
     }
 
-    // Edit Profile Dialog
+    // Edit Profile Dialog with Universal Form Validation (Item 13)
     if (showEditProfileDialog) {
+        val nameValidation = FormValidationHelper.validateProfileName(editName)
+        val bioValidation = FormValidationHelper.validateProfileBio(editBio)
+
         AlertDialog(
             onDismissRequest = { showEditProfileDialog = false },
             containerColor = Color(0xFF101322),
@@ -843,6 +842,10 @@ fun HubScreen(
                         onValueChange = { editName = it },
                         label = { Text("Display Name") },
                         singleLine = true,
+                        isError = !nameValidation.isValid && editName.isNotEmpty(),
+                        supportingText = if (!nameValidation.isValid && editName.isNotEmpty()) {
+                            { Text(nameValidation.errorMessage ?: "Invalid name", color = NeonPink, fontSize = 10.sp) }
+                        } else null,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedTextColor = Color.White,
                             unfocusedTextColor = Color.White,
@@ -855,6 +858,10 @@ fun HubScreen(
                         onValueChange = { editBio = it },
                         label = { Text("Focus Bio / Mantra") },
                         singleLine = true,
+                        isError = !bioValidation.isValid && editBio.isNotEmpty(),
+                        supportingText = if (!bioValidation.isValid && editBio.isNotEmpty()) {
+                            { Text(bioValidation.errorMessage ?: "Bio too long", color = NeonPink, fontSize = 10.sp) }
+                        } else null,
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedTextColor = Color.White,
                             unfocusedTextColor = Color.White,
@@ -864,12 +871,15 @@ fun HubScreen(
                 }
             },
             confirmButton = {
-                TextButton(onClick = {
-                    GamificationManager.updateProfile(editName, editBio, editAvatar)
-                    showEditProfileDialog = false
-                    Toast.makeText(context, "Profile updated!", Toast.LENGTH_SHORT).show()
-                }) {
-                    Text("Save", color = NeonCyan, fontWeight = FontWeight.Bold)
+                TextButton(
+                    enabled = nameValidation.isValid && bioValidation.isValid,
+                    onClick = {
+                        GamificationManager.updateProfile(nameValidation.sanitizedValue, bioValidation.sanitizedValue, editAvatar)
+                        showEditProfileDialog = false
+                        Toast.makeText(context, "Profile updated!", Toast.LENGTH_SHORT).show()
+                    }
+                ) {
+                    Text("Save", color = if (nameValidation.isValid && bioValidation.isValid) NeonCyan else Color.Gray, fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {

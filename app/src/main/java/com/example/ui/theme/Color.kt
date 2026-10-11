@@ -24,10 +24,10 @@ val NeonLime = Color(0xFF00FF87)
 val NeonAmber = Color(0xFFFFB300)
 val NeonCoral = Color(0xFFFF5252)
 
-// Typography Palette
+// Typography Palette (WCAG AA Compliant High Contrast)
 val TextPrimaryDark = Color(0xFFF8FAFC)
-val TextSecondaryDark = Color(0xFF94A3B8)
-val TextMutedDark = Color(0xFF64748B)
+val TextSecondaryDark = Color(0xFFCBD5E1)
+val TextMutedDark = Color(0xFFA0AEC0)
 
 // Light Theme Palette (Solar Quartz)
 val SolarQuartzBg = Color(0xFFF1F5F9)

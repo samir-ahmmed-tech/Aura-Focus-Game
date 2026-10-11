@@ -47,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ui.components.GlassCard
+import com.example.ui.components.CustomEmptyStateView
 import com.example.ui.components.GlassChip
 import com.example.ui.theme.NeonAmber
 import com.example.ui.theme.NeonCyan
@@ -259,6 +260,21 @@ fun BrainGamesScreen(
                         onClick = { selectedCategory = cat }
                     )
                 }
+            }
+        }
+
+        if (filteredGames.isEmpty()) {
+            item(key = "empty_games_state") {
+                CustomEmptyStateView(
+                    iconEmoji = "🧩",
+                    title = "No Cognitive Games Found",
+                    description = "No games matched \"$searchQuery\" in category \"$selectedCategory\". Reset filters to explore all 40 cognitive games.",
+                    actionButtonText = "Reset All Filters",
+                    onActionClick = {
+                        searchQuery = ""
+                        selectedCategory = "All"
+                    }
+                )
             }
         }
 

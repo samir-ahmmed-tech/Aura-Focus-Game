@@ -155,4 +155,36 @@ class NeuroBoxSuiteTest {
         assertEquals(0, resetState.totalFocusMinutes)
         assertEquals(0, resetState.tree.auraFruits)
     }
+
+    @Test
+    fun `test privacy consent acknowledgement updates state`() {
+        assertFalse(GamificationManager.state.value.hasAcknowledgedPrivacy)
+        GamificationManager.acknowledgePrivacy()
+        assertTrue(GamificationManager.state.value.hasAcknowledgedPrivacy)
+    }
+
+    @Test
+    fun `test form validation on profile names and bios`() {
+        // Empty name should fail
+        val emptyResult = com.example.util.FormValidationHelper.validateProfileName("   ")
+        assertFalse(emptyResult.isValid)
+
+        // Valid name
+        val validResult = com.example.util.FormValidationHelper.validateProfileName("Samir Ahmmed")
+        assertTrue(validResult.isValid)
+        assertEquals("Samir Ahmmed", validResult.sanitizedValue)
+
+        // Bio length limit
+        val longBio = "A".repeat(150)
+        val bioResult = com.example.util.FormValidationHelper.validateProfileBio(longBio)
+        assertFalse(bioResult.isValid)
+        assertEquals(120, bioResult.sanitizedValue.length)
+    }
+
+    @Test
+    fun `test debounce helper allows first click and throttles rapid bursts`() {
+        assertTrue(com.example.util.DebounceHelper.canClick(100L))
+        // Immediate next call within 100ms should be throttled
+        assertFalse(com.example.util.DebounceHelper.canClick(100L))
+    }
 }
