@@ -58,6 +58,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -106,7 +107,7 @@ fun FocusScreen(
 
     var selectedBrainwave by remember { mutableStateOf(BrainwaveType.LONE_WOLF) }
     var selectedSoundscape by remember { mutableStateOf(SoundscapeType.RAIN) }
-    var completedSessionsCount by remember { mutableIntStateOf(3) }
+    var completedSessionsCount by remember { mutableIntStateOf(0) }
     var showCustomDurationPanel by remember { mutableStateOf(false) }
 
     // Synchronize Binaural Engine parameters
@@ -342,21 +343,35 @@ fun FocusScreen(
         Spacer(modifier = Modifier.height(28.dp))
 
         // Central Glassmorphic Countdown / Infinite Ring
+        val clockGlowBrush = remember(primaryColor, secondaryColor, isRunning) {
+            Brush.radialGradient(
+                colors = listOf(
+                    primaryColor.copy(alpha = if (isRunning) 0.30f else 0.12f),
+                    secondaryColor.copy(alpha = if (isRunning) 0.18f else 0.05f),
+                    Color.Transparent
+                )
+            )
+        }
+        val arcSweepBrush = remember(primaryColor, secondaryColor) {
+            Brush.sweepGradient(
+                0.0f to primaryColor,
+                0.5f to secondaryColor,
+                1.0f to primaryColor
+            )
+        }
+
         Box(
             modifier = Modifier
                 .size(270.dp)
-                .scale(pulseScale.value)
+                .graphicsLayer {
+                    scaleX = pulseScale.value
+                    scaleY = pulseScale.value
+                }
                 .testTag("pomodoro_clock_disc")
                 .drawBehind {
                     drawCircle(
-                        brush = Brush.radialGradient(
-                            colors = listOf(
-                                primaryColor.copy(alpha = if (isRunning) 0.30f else 0.12f),
-                                secondaryColor.copy(alpha = if (isRunning) 0.18f else 0.05f),
-                                Color.Transparent
-                            ),
-                            radius = size.minDimension * 0.72f
-                        )
+                        brush = clockGlowBrush,
+                        radius = size.minDimension * 0.72f
                     )
                 },
             contentAlignment = Alignment.Center
@@ -379,11 +394,7 @@ fun FocusScreen(
 
                 val sweep = 360f * animatedProgress
                 drawArc(
-                    brush = Brush.sweepGradient(
-                        0.0f to primaryColor,
-                        0.5f to secondaryColor,
-                        1.0f to primaryColor
-                    ),
+                    brush = arcSweepBrush,
                     startAngle = -90f,
                     sweepAngle = sweep,
                     useCenter = false,

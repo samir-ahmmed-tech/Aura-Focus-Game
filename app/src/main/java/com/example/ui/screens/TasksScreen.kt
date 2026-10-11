@@ -98,11 +98,11 @@ fun TasksScreen(
     }
     val tasks = remember {
         mutableStateListOf(
-            TaskItem("1", "Draft NeuroBox architecture", "Room SQLite schema and DAO interfaces", TaskColumn.DONE, TaskPriority.HIGH, 3, 3, true),
-            TaskItem("2", "Design 3D Glassmorphism Cards", "Layered acrylic surfaces with neon edge shaders", TaskColumn.IN_PROGRESS, TaskPriority.URGENT, 4, 2, false),
-            TaskItem("3", "Implement Pomodoro countdown loop", "Precision timekeeper with breathing pulse", TaskColumn.IN_PROGRESS, TaskPriority.HIGH, 2, 1, false),
+            TaskItem("1", "Draft NeuroBox architecture", "Room SQLite schema and DAO interfaces", TaskColumn.TODO, TaskPriority.HIGH, 3, 0, false),
+            TaskItem("2", "Design 3D Glassmorphism Cards", "Layered acrylic surfaces with neon edge shaders", TaskColumn.TODO, TaskPriority.URGENT, 4, 0, false),
+            TaskItem("3", "Implement Pomodoro countdown loop", "Precision timekeeper with breathing pulse", TaskColumn.TODO, TaskPriority.HIGH, 2, 0, false),
             TaskItem("4", "Local MP3 audio player SAF hook", "Storage Access Framework integration", TaskColumn.BACKLOG, TaskPriority.MEDIUM, 2, 0, false),
-            TaskItem("5", "Weekly habit heatmap matrix", "GitHub contribution grid in Compose canvas", TaskColumn.REVIEW, TaskPriority.HIGH, 3, 2, false)
+            TaskItem("5", "Weekly habit heatmap matrix", "GitHub contribution grid in Compose canvas", TaskColumn.BACKLOG, TaskPriority.HIGH, 3, 0, false)
         )
     }
 

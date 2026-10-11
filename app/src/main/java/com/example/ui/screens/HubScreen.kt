@@ -82,6 +82,7 @@ import com.example.ui.theme.NeonViolet
 import com.example.ui.theme.CardBackdropStyle
 import com.example.ui.theme.LocalCardBackdropStyle
 import com.example.util.AuraSoundManager
+import com.example.util.NeuroBoxBackupEngine
 
 data class SettingItem(
     val name: String,
@@ -105,6 +106,9 @@ fun HubScreen(
     val context = LocalContext.current
     var selectedSection by remember { mutableStateOf(0) } // 0: Focus (30), 1: Music (20), 2: User Manual / Readme
     val gamificationState by GamificationManager.state.collectAsState()
+    var showPrivacyPolicyDialog by remember { mutableStateOf(false) }
+    var showTermsDialog by remember { mutableStateOf(false) }
+    var showWipeConfirmDialog by remember { mutableStateOf(false) }
 
     // 30 Focus & Productivity Settings with Plain English Descriptions
     val focusSettingsList = remember {
@@ -1282,8 +1286,258 @@ fun HubScreen(
                     }
                 }
             }
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // 4. OFFLINE DATA SOVEREIGNTY & AES-256-GCM ENCRYPTED LOCAL BACKUP
+        GlassCard(
+            modifier = Modifier.fillMaxWidth(),
+            glowColor = NeonCyan,
+            glowRadius = 10.dp
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "🛡️ Offline Data Sovereignty & Encrypted Vault",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            text = "100% Offline • Hardware AES-256-GCM • Zero Server Costs",
+                            fontSize = 10.sp,
+                            color = NeonCyan
+                        )
+                    }
+                    GlassChip(label = "SOVEREIGN", color = NeonLime, selected = true)
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    text = "Your data belongs solely to you. All stats, tree progress, habits, and cognitive records are stored locally with zero cloud telemetry. Export or restore your encrypted database anytime.",
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    lineHeight = 16.sp
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(NeonCyan.copy(alpha = 0.2f))
+                            .border(1.dp, NeonCyan, RoundedCornerShape(12.dp))
+                            .clickable {
+                                NeuroBoxBackupEngine.shareBackup(context)
+                            }
+                            .padding(vertical = 10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("📤 Export .nbx", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = NeonCyan)
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color(0x18FFFFFF))
+                            .border(1.dp, Color(0x30FFFFFF), RoundedCornerShape(12.dp))
+                            .clickable {
+                                NeuroBoxBackupEngine.copyBackupToClipboard(context)
+                            }
+                            .padding(vertical = 10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("📋 Copy Token", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(NeonLime.copy(alpha = 0.2f))
+                            .border(1.dp, NeonLime, RoundedCornerShape(12.dp))
+                            .clickable {
+                                NeuroBoxBackupEngine.restoreFromClipboard(context)
+                            }
+                            .padding(vertical = 10.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("📥 Restore", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = NeonLime)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Play Store Right-to-be-Forgotten Data Wipe
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(NeonPink.copy(alpha = 0.12f))
+                        .border(1.dp, NeonPink.copy(alpha = 0.5f), RoundedCornerShape(12.dp))
+                        .clickable { showWipeConfirmDialog = true }
+                        .padding(vertical = 10.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("🗑️ Erase All User Data (Reset to Zero)", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = NeonPink)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // 5. LEGAL & PLAY STORE COMPLIANCE (Privacy Policy & Terms)
+        GlassCard(
+            modifier = Modifier.fillMaxWidth(),
+            glowColor = Color(0x30FFFFFF),
+            glowRadius = 6.dp
+        ) {
+            Column(modifier = Modifier.padding(14.dp)) {
+                Text(
+                    text = "⚖️ Legal & Play Store Compliance",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(Color(0x14FFFFFF))
+                            .border(1.dp, Color(0x25FFFFFF), RoundedCornerShape(10.dp))
+                            .clickable { showPrivacyPolicyDialog = true }
+                            .padding(vertical = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("📄 Privacy Policy", fontSize = 11.sp, color = NeonCyan)
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(Color(0x14FFFFFF))
+                            .border(1.dp, Color(0x25FFFFFF), RoundedCornerShape(10.dp))
+                            .clickable { showTermsDialog = true }
+                            .padding(vertical = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("📜 Terms of Service", fontSize = 11.sp, color = NeonAmber)
+                    }
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(28.dp))
     }
+
+    // Wipe Confirmation Dialog
+    if (showWipeConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = { showWipeConfirmDialog = false },
+            containerColor = Color(0xFF141926),
+            title = { Text("⚠️ Erase All Data?", color = NeonPink, fontWeight = FontWeight.Bold) },
+            text = {
+                Text(
+                    "This will wipe all your tree growth, focus minutes, habits, XP, level, and personal bests, resetting everything to ZERO (0). This action is permanent and compliant with data deletion rights.",
+                    color = Color.White,
+                    fontSize = 12.sp
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    NeuroBoxBackupEngine.eraseAllUserData(context)
+                    showWipeConfirmDialog = false
+                }) {
+                    Text("Erase Everything", color = NeonPink, fontWeight = FontWeight.Bold)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showWipeConfirmDialog = false }) {
+                    Text("Cancel", color = Color.Gray)
+                }
+            }
+        )
+    }
+
+    // Privacy Policy Dialog
+    if (showPrivacyPolicyDialog) {
+        AlertDialog(
+            onDismissRequest = { showPrivacyPolicyDialog = false },
+            containerColor = Color(0xFF141926),
+            title = { Text("📄 Privacy Policy", color = NeonCyan, fontWeight = FontWeight.Bold) },
+            text = {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "NeuroBox Privacy Policy (Last Updated: October 2026)\n\n" +
+                            "1. Zero Personal Data Collection: NeuroBox is an offline-first application. We do NOT collect, transmit, store, or sell any of your personal information, focus logs, habits, or biometric check-ins.\n\n" +
+                            "2. Local Storage Sovereignty: All data generated inside NeuroBox is saved locally on your physical device. No account creation or remote servers are required.\n\n" +
+                            "3. AES-256 Hardware Encryption: Backups exported by the user are encrypted locally using AES-256-GCM. You have 100% control over your files.\n\n" +
+                            "4. Media & Audio Storage: The READ_MEDIA_AUDIO permission is exclusively utilized locally by the media player to scan and play audio tracks stored on your own device.\n\n" +
+                            "5. Right to Erasure: You have the unconditional right to erase all data at any moment via the 'Erase All Data' button in Settings.",
+                        color = Color(0xEEFFFFFF),
+                        fontSize = 11.sp,
+                        lineHeight = 16.sp
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showPrivacyPolicyDialog = false }) {
+                    Text("Close", color = NeonCyan, fontWeight = FontWeight.Bold)
+                }
+            }
+        )
+    }
+
+    // Terms of Service Dialog
+    if (showTermsDialog) {
+        AlertDialog(
+            onDismissRequest = { showTermsDialog = false },
+            containerColor = Color(0xFF141926),
+            title = { Text("📜 Terms of Service", color = NeonAmber, fontWeight = FontWeight.Bold) },
+            text = {
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "NeuroBox Terms of Service (Last Updated: October 2026)\n\n" +
+                            "1. Acceptance of Terms: By downloading or using NeuroBox, you agree to these Terms of Service.\n\n" +
+                            "2. Wellness & Focus Disclaimer: NeuroBox provides cognitive exercises, ambient soundscapes, and binaural frequencies for focus and productivity. It is NOT a medical device and is not intended to diagnose, treat, cure, or prevent any neurological or psychological condition.\n\n" +
+                            "3. Safe Audio Practices: Users should listen to binaural beats and ambient sounds at safe, comfortable volume levels. Do not use audio features while driving or operating heavy machinery.\n\n" +
+                            "4. Offline Software License: NeuroBox is licensed to you for personal, non-commercial use on your mobile devices.",
+                        color = Color(0xEEFFFFFF),
+                        fontSize = 11.sp,
+                        lineHeight = 16.sp
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showTermsDialog = false }) {
+                    Text("Understood", color = NeonAmber, fontWeight = FontWeight.Bold)
+                }
+            }
+        )
+    }
+}
+
 }

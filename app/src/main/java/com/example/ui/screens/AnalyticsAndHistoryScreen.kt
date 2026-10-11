@@ -88,10 +88,10 @@ fun AnalyticsAndHistoryScreen(
     val matches = gamificationState.matchHistory
     val personalBests = gamificationState.personalBests
 
-    // Calculate aggregated metrics
-    val avgReactionMs = if (matches.isNotEmpty()) matches.map { it.reactionTimeMs }.average().toInt() else 215
-    val avgAccuracy = if (matches.isNotEmpty()) matches.map { it.accuracyPercent }.average().toInt() else 94
-    val overallBrainIndex = (avgAccuracy * 0.7f + (1000 - avgReactionMs).coerceIn(0, 1000) * 0.05f).toInt().coerceIn(100, 145)
+    // Calculate aggregated metrics (starts at 0 until user plays games)
+    val avgReactionMs = if (matches.isNotEmpty()) matches.map { it.reactionTimeMs }.average().toInt() else 0
+    val avgAccuracy = if (matches.isNotEmpty()) matches.map { it.accuracyPercent }.average().toInt() else 0
+    val overallBrainIndex = if (matches.isNotEmpty()) (avgAccuracy * 0.7f + (1000 - avgReactionMs).coerceIn(0, 1000) * 0.05f).toInt().coerceIn(100, 145) else 0
 
     // The 6 Fundamental Cognitive Quotients mapped to games
     val quotients = remember {
@@ -201,7 +201,7 @@ fun AnalyticsAndHistoryScreen(
                 }
             }
 
-            GlassChip(label = "Cognitive Index $overallBrainIndex 🧠", color = NeonCyan, selected = true)
+            GlassChip(label = if (overallBrainIndex > 0) "Cognitive Index $overallBrainIndex 🧠" else "Cognitive Index: Initializing 🌱", color = NeonCyan, selected = true)
         }
 
         Spacer(modifier = Modifier.height(14.dp))

@@ -46,15 +46,15 @@ data class CustomWisdom(
 )
 
 data class TreeState(
-    val growthDays: Int = 4,
-    val auraFruits: Int = 35,
-    val gardenTreesCount: Int = 1,
-    val streakShields: Int = 1,
+    val growthDays: Int = 1,
+    val auraFruits: Int = 0,
+    val gardenTreesCount: Int = 0,
+    val streakShields: Int = 0,
     val lastCheckInDate: String = "",
     val penaltyNotice: String? = null,
-    val nextWateringHours: Int = 8,
-    val isWateredToday: Boolean = true,
-    val unlockedRewards: Set<String> = setOf("reward_starter_pack")
+    val nextWateringHours: Int = 0,
+    val isWateredToday: Boolean = false,
+    val unlockedRewards: Set<String> = emptySet()
 ) {
     val stage: Int
         get() = when {
@@ -98,61 +98,53 @@ data class DailyMoodCheckIn(
 )
 
 data class GamificationState(
-    val currentLevel: Int = 4,
-    val currentXp: Int = 420,
-    val xpForNextLevel: Int = 650,
-    val totalFocusMinutes: Int = 240,
-    val habitsCompletedTotal: Int = 28,
-    val gamesPlayedTotal: Int = 14,
-    val currentStreakDays: Int = 5,
-    val rankTitle: String = "Focus Adept",
-    val userName: String = "Focus Voyager",
-    val userBio: String = "Seeking deep clarity, flow state & daily calm.",
-    val userAvatarEmoji: String = "⚡",
+    val currentLevel: Int = 1,
+    val currentXp: Int = 0,
+    val xpForNextLevel: Int = 100,
+    val totalFocusMinutes: Int = 0,
+    val habitsCompletedTotal: Int = 0,
+    val gamesPlayedTotal: Int = 0,
+    val currentStreakDays: Int = 0,
+    val rankTitle: String = "Zen Apprentice",
+    val userName: String = "NeuroBox Explorer",
+    val userBio: String = "Mastering flow state & daily cognitive clarity.",
+    val userAvatarEmoji: String = "🧠",
     val defaultHomeScreenTab: String = "FOCUS", // "FOCUS", "MUSIC", "GAMES", "TOOLS", "HUB"
     val musicPlayerDesign: Int = 0, // 0: Circular Vinyl, 1: Circular Aura Sphere, 2: Horizontal Waveform, 3: Horizontal Cassette, 4: Horizontal Soundbar
     val lastMoodCheckInDate: String? = null,
-    val moodCheckInHistory: List<DailyMoodCheckIn> = listOf(
-        DailyMoodCheckIn("Yesterday", "⚡", "High Energy", 9, "Build peak cognitive performance", 150, System.currentTimeMillis() - 86400000),
-        DailyMoodCheckIn("2 days ago", "🧘", "Deep Focus", 8, "Deep work math sprint & habits", 120, System.currentTimeMillis() - 172800000),
-        DailyMoodCheckIn("3 days ago", "🌊", "Calm Zen", 7, "Stoic reflection & binaural meditation", 90, System.currentTimeMillis() - 259200000)
-    ),
+    val moodCheckInHistory: List<DailyMoodCheckIn> = emptyList(),
     val tree: TreeState = TreeState(),
-    val matchHistory: List<GameMatchRecord> = listOf(
-        GameMatchRecord("m1", "g1", "Mental Math Sprint", 120, 95, 230, System.currentTimeMillis() - 7200000, true, 3),
-        GameMatchRecord("m2", "g2", "Stroop Color Clash", 150, 90, 310, System.currentTimeMillis() - 14400000, true, 2),
-        GameMatchRecord("m3", "g4", "Speed Sequence", 180, 100, 195, System.currentTimeMillis() - 21600000, true, 4)
-    ),
-    val personalBests: Map<String, GamePersonalBest> = mapOf(
-        "g1" to GamePersonalBest("g1", "Mental Math Sprint", 120, 3, 95, "Today"),
-        "g2" to GamePersonalBest("g2", "Stroop Color Clash", 150, 2, 90, "Today"),
-        "g4" to GamePersonalBest("g4", "Speed Sequence", 180, 4, 100, "Today")
-    ),
-    val gameStreaks: Map<String, Int> = mapOf(
-        "g1" to 3,
-        "g2" to 2,
-        "g4" to 4
-    ),
+    val matchHistory: List<GameMatchRecord> = emptyList(),
+    val personalBests: Map<String, GamePersonalBest> = emptyMap(),
+    val gameStreaks: Map<String, Int> = emptyMap(),
     val customWisdomList: List<CustomWisdom> = listOf(
         CustomWisdom("w1", "Discipline is choosing between what you want now, and what you want most.", "Abraham Lincoln", "Focus & Willpower"),
         CustomWisdom("w2", "You have power over your mind - not outside events. Realize this, and you will find strength.", "Marcus Aurelius", "Mental Fortitude"),
         CustomWisdom("w3", "Simplicity is the prerequisite for great productivity.", "Edsger Dijkstra", "Clarity")
     ),
     val badges: List<AchievementBadge> = listOf(
-        AchievementBadge("b1", "Lone Wolf Initiate", "Completed first 40Hz Lone Wolf deep focus", "🐺", true),
-        AchievementBadge("b2", "Alpha Synced", "Mastered 5 Alpha brainwave flow sessions", "⚡", true),
+        AchievementBadge("b1", "Lone Wolf Initiate", "Completed first 40Hz Lone Wolf deep focus", "🐺", false),
+        AchievementBadge("b2", "Alpha Synced", "Mastered 5 Alpha brainwave flow sessions", "⚡", false),
         AchievementBadge("b3", "Flamekeeper", "Kept an unbroken 7-day habit streak alive", "🔥", false),
-        AchievementBadge("b4", "Math Sprint Prodigy", "Solved rapid mental arithmetic challenge", "🧮", true),
-        AchievementBadge("b5", "Acoustic Alchemist", "Mixed 3 layers in Soundscape Stacker", "🎛️", true),
+        AchievementBadge("b4", "Math Sprint Prodigy", "Solved rapid mental arithmetic challenge", "🧮", false),
+        AchievementBadge("b5", "Acoustic Alchemist", "Mixed 3 layers in Soundscape Stacker", "🎛️", false),
         AchievementBadge("b6", "Zenith Stoic", "Accumulated 300+ minutes of deep focus", "🧘", false),
-        AchievementBadge("b7", "Garden Arborist", "Grew the Daily Login Tree to Stage 4 Bonsai", "🌸", true),
-        AchievementBadge("b8", "Record Breaker", "Set 5 new game high score personal bests", "🏆", true)
+        AchievementBadge("b7", "Garden Arborist", "Grew the Daily Login Tree to Stage 4 Bonsai", "🌸", false),
+        AchievementBadge("b8", "Record Breaker", "Set 5 new game high score personal bests", "🏆", false)
     )
 )
 
 object GamificationManager {
     private val _state = MutableStateFlow(GamificationState())
     val state: StateFlow<GamificationState> = _state.asStateFlow()
+
+    fun resetAllUserDataToZero() {
+        _state.value = GamificationState()
+    }
+
+    fun restoreState(newState: GamificationState) {
+        _state.value = newState
+    }
 
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
 

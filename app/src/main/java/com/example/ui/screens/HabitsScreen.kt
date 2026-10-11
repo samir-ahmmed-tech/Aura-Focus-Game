@@ -120,16 +120,16 @@ fun HabitsScreen(
     val isCheckedInToday = gamificationState.lastMoodCheckInDate == todayDateStr
     var showMoodCheckInDialog by remember { mutableStateOf(!isCheckedInToday) }
     var selectedFilter by remember { mutableStateOf(HabitTimeOfDay.ALL) }
-    var streakFreezesRemaining by remember { mutableIntStateOf(2) }
+    var streakFreezesRemaining by remember { mutableIntStateOf(0) }
 
     val habits = remember {
         mutableStateListOf(
-            AdvancedHabitItem("1", "4 Focus Sessions Daily", "Deep Work", HabitTimeOfDay.MORNING, 14, 21, 7, "Hard", true, true, "Used 40Hz Lone Wolf mode", 48, NeonCyan),
-            AdvancedHabitItem("2", "Read Architecture & Tech Docs", "Knowledge", HabitTimeOfDay.AFTERNOON, 9, 14, 5, "Medium", true, false, "Studied Compose shaders", 28, NeonViolet),
-            AdvancedHabitItem("3", "Hydrate & Stand Every Hour", "Wellness", HabitTimeOfDay.ALL, 21, 21, 7, "Easy", false, true, "", 82, NeonLime),
-            AdvancedHabitItem("4", "No Social Media Before Noon", "Mindfulness", HabitTimeOfDay.MORNING, 5, 12, 7, "Medium", false, false, "", 16, NeonPink),
-            AdvancedHabitItem("5", "Evening Stoic Reflection Journal", "Mindfulness", HabitTimeOfDay.EVENING, 8, 15, 7, "Easy", false, false, "", 24, NeonAmber),
-            AdvancedHabitItem("6", "30-Min Cardio / Cold Shower", "Fitness", HabitTimeOfDay.MORNING, 11, 18, 5, "Hard", true, false, "Morning 5K run", 35, NeonLime)
+            AdvancedHabitItem("1", "4 Focus Sessions Daily", "Deep Work", HabitTimeOfDay.MORNING, 0, 0, 7, "Hard", false, false, "", 0, NeonCyan),
+            AdvancedHabitItem("2", "Read Architecture & Tech Docs", "Knowledge", HabitTimeOfDay.AFTERNOON, 0, 0, 5, "Medium", false, false, "", 0, NeonViolet),
+            AdvancedHabitItem("3", "Hydrate & Stand Every Hour", "Wellness", HabitTimeOfDay.ALL, 0, 0, 7, "Easy", false, false, "", 0, NeonLime),
+            AdvancedHabitItem("4", "No Social Media Before Noon", "Mindfulness", HabitTimeOfDay.MORNING, 0, 0, 7, "Medium", false, false, "", 0, NeonPink),
+            AdvancedHabitItem("5", "Evening Stoic Reflection Journal", "Mindfulness", HabitTimeOfDay.EVENING, 0, 0, 7, "Easy", false, false, "", 0, NeonAmber),
+            AdvancedHabitItem("6", "30-Min Cardio / Cold Shower", "Fitness", HabitTimeOfDay.MORNING, 0, 0, 5, "Hard", false, false, "", 0, NeonLime)
         )
     }
 

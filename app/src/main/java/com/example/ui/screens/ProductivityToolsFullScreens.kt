@@ -359,13 +359,13 @@ fun FullEisenhowerScreen(onBack: () -> Unit) {
     val tasks = remember {
         mutableStateListOf(
             EisenhowerTask("1", "Fix production build issues", 0, false),
-            EisenhowerTask("2", "40-min Deep Focus Sprint", 0, true),
+            EisenhowerTask("2", "40-min Deep Focus Sprint", 0, false),
             EisenhowerTask("3", "Deliver milestone release", 0, false),
             EisenhowerTask("4", "Daily meditation & breathwork", 1, false),
             EisenhowerTask("5", "Read system architecture guide", 1, false),
-            EisenhowerTask("6", "Review weekly habit streaks", 1, true),
+            EisenhowerTask("6", "Review weekly habit streaks", 1, false),
             EisenhowerTask("7", "Routine email sorting", 2, false),
-            EisenhowerTask("8", "Automated file backups", 2, true),
+            EisenhowerTask("8", "Automated file backups", 2, false),
             EisenhowerTask("9", "Mindless social doomscrolling", 3, false),
             EisenhowerTask("10", "Irrelevant video rabbit holes", 3, false)
         )
@@ -1129,8 +1129,8 @@ fun FullTimeBoxingScreen(onBack: () -> Unit) {
 
     val slots = remember {
         mutableStateListOf(
-            TimeBoxSlot("1", "08:00 - 09:30", "Deep Coding Sprint (Core Engine)", "Deep Work", true),
-            TimeBoxSlot("2", "09:45 - 11:15", "Architecture System Refactoring", "Architecture", true),
+            TimeBoxSlot("1", "08:00 - 09:30", "Deep Coding Sprint (Core Engine)", "Deep Work", false),
+            TimeBoxSlot("2", "09:45 - 11:15", "Architecture System Refactoring", "Architecture", false),
             TimeBoxSlot("3", "11:30 - 12:30", "Technical Documentation & Tests", "Writing", false),
             TimeBoxSlot("4", "14:00 - 15:30", "UI Polish & Glassmorphic Effects", "Design", false),
             TimeBoxSlot("5", "16:00 - 17:00", "Daily Review & Habit Audit", "Review", false)
@@ -1478,7 +1478,7 @@ fun FullSprintTimeBoxScreen(onBack: () -> Unit) {
 
     val sprints = remember {
         mutableStateListOf(
-            Triple("Sprint 1: Core Deep Build", "Draft main functional logic and components", true),
+            Triple("Sprint 1: Core Deep Build", "Draft main functional logic and components", false),
             Triple("Sprint 2: Architecture & Clean up", "Refactor models, state flows & edge cases", false),
             Triple("Sprint 3: Stress Testing & Polish", "Run compilation, test taps, eliminate bugs", false),
             Triple("Sprint 4: Final Release & Delivery", "Verify design harmony and deploy successfully", false)
@@ -1766,8 +1766,8 @@ fun FullQuestVaultScreen(onBack: () -> Unit) {
         mutableStateListOf(
             Triple("🗡️ Slay the Procrastination Beast", "Complete 2 consecutive focus timer sprints", false),
             Triple("🏹 Cognitive Attunement", "Score 120+ points in any cognitive arena game", false),
-            Triple("🛡️ Distraction Vault Oath", "Seal a 25-minute dopamine commitment oath", true),
-            Triple("🍎 Harvest Daily Zen Tree", "Water your daily tree to harvest fresh Aura Fruits", true),
+            Triple("🛡️ Distraction Vault Oath", "Seal a 25-minute dopamine commitment oath", false),
+            Triple("🍎 Harvest Daily Zen Tree", "Water your daily tree to harvest fresh Aura Fruits", false),
             Triple("👑 Weekly Grandmaster: 150m Flow", "Accumulate 150 minutes of deep focus this week", false)
         )
     }
@@ -1889,17 +1889,17 @@ fun FullQuestVaultScreen(onBack: () -> Unit) {
 fun FullDopamineFastScreen(onBack: () -> Unit) {
     BackHandler { onBack() }
     val context = LocalContext.current
-    var isFastActive by remember { mutableStateOf(true) }
-    var elapsedHours by remember { mutableIntStateOf(6) }
+    var isFastActive by remember { mutableStateOf(false) }
+    var elapsedHours by remember { mutableIntStateOf(0) }
     var targetHours by remember { mutableIntStateOf(16) }
-    var urgesSurfedCount by remember { mutableIntStateOf(4) }
+    var urgesSurfedCount by remember { mutableIntStateOf(0) }
     val rules = remember {
         mutableStateListOf(
-            Pair("📵 No Social Media or Short-form Feeds", true),
-            Pair("🍬 Zero Hyper-Palatable Sugar Snacking", true),
+            Pair("📵 No Social Media or Short-form Feeds", false),
+            Pair("🍬 Zero Hyper-Palatable Sugar Snacking", false),
             Pair("💻 Screen-Free Nature Walk (30 mins)", false),
             Pair("📖 Read Physical Book / Journal", false),
-            Pair("🧘 10-Minute Coherence Breathwork", true)
+            Pair("🧘 10-Minute Coherence Breathwork", false)
         )
     }
 
