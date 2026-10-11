@@ -45,6 +45,8 @@ object AuraAdMobManager {
         onDismissed()
     }
 
+    fun showInterstitialAd(context: Context, onDismissed: () -> Unit) = showInterstitial(context, onDismissed)
+
     fun showRewardedAd(context: Context, onRewardEarned: (rewardAmount: Int) -> Unit) {
         if (!isAdMobEnabled) {
             Toast.makeText(context, "AdMob Test Mode: Bonus Reward Granted! 🍎", Toast.LENGTH_SHORT).show()

@@ -571,7 +571,7 @@ fun FullPlayStoreAdMobLaunchpadScreen(onBack: () -> Unit) {
                             GlassButton(
                                 text = "TEST INTERSTITIAL",
                                 onClick = {
-                                    AuraAdMobManager.showInterstitialAd(context) {
+                                    AuraAdMobManager.showInterstitial(context) {
                                         Toast.makeText(context, "Interstitial Ad Viewed", Toast.LENGTH_SHORT).show()
                                     }
                                 },
