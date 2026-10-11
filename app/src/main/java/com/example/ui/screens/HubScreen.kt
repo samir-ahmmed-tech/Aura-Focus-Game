@@ -1286,6 +1286,8 @@ fun HubScreen(
                     }
                 }
             }
+        }
+
         Spacer(modifier = Modifier.height(20.dp))
 
         // 4. OFFLINE DATA SOVEREIGNTY & AES-256-GCM ENCRYPTED LOCAL BACKUP
@@ -1540,4 +1542,3 @@ fun HubScreen(
     }
 }
 
-}
