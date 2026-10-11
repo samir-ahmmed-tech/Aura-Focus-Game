@@ -546,8 +546,5 @@ fun AuraFocusApp(
         }
     }
 }
-
-
-
-
-
+    }
+}
