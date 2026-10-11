@@ -180,6 +180,21 @@ import com.example.ui.screens.FullDecisionMatrixScreen
 import com.example.ui.screens.FullDigitalSunsetScreen
 import com.example.ui.screens.FullAntiProcrastination5MinScreen
 import com.example.ui.screens.FullWeeklyOkrMatrixScreen
+import com.example.ui.screens.FullQuantumPolarizationScreen
+import com.example.ui.screens.FullSchulteTableMatrixScreen
+import com.example.ui.screens.FullTaskSwitchingParityMagnitudeScreen
+import com.example.ui.screens.FullSpatialIsometricCubeScreen
+import com.example.ui.screens.FullAuditoryPitchEchoScreen
+import com.example.ui.screens.FullFlankerArrowSaccadeScreen
+import com.example.ui.screens.FullMathFractionSprintScreen
+import com.example.ui.screens.FullLexicalRhymeSpeedScreen
+import com.example.ui.screens.FullColorStroopTripleConflictScreen
+import com.example.ui.screens.FullNeuroVelocityReflexArenaScreen
+import com.example.ui.screens.FullEisenhowerMatrixV2Screen
+import com.example.ui.screens.FullAtomicHabitMicroDoserScreen
+import com.example.ui.screens.FullChronotypeEnergyPlannerScreen
+import com.example.ui.screens.FullDistractionSwitchCostScreen
+import com.example.ui.screens.FullPlayStoreAdMobLaunchpadScreen
 import com.example.ui.components.GlassBanner
 import com.example.ui.components.GlassButton
 import com.example.ui.components.GlassChip
@@ -476,13 +491,23 @@ fun AuraFocusApp(
                         "g50" -> FullSynapseCircuitConnectScreen(onBack = { activeGameId = null })
                         "g51" -> FullAcousticIntervalScreen(onBack = { activeGameId = null })
                         "g52" -> FullPeripheralChangeBlindnessScreen(onBack = { activeGameId = null })
+                        "g53" -> FullQuantumPolarizationScreen(onBack = { activeGameId = null })
+                        "g54" -> FullSchulteTableMatrixScreen(onBack = { activeGameId = null })
+                        "g55" -> FullTaskSwitchingParityMagnitudeScreen(onBack = { activeGameId = null })
+                        "g56" -> FullSpatialIsometricCubeScreen(onBack = { activeGameId = null })
+                        "g57" -> FullAuditoryPitchEchoScreen(onBack = { activeGameId = null })
+                        "g58" -> FullFlankerArrowSaccadeScreen(onBack = { activeGameId = null })
+                        "g59" -> FullMathFractionSprintScreen(onBack = { activeGameId = null })
+                        "g60" -> FullLexicalRhymeSpeedScreen(onBack = { activeGameId = null })
+                        "g61" -> FullColorStroopTripleConflictScreen(onBack = { activeGameId = null })
+                        "g62" -> FullNeuroVelocityReflexArenaScreen(onBack = { activeGameId = null })
                         "analytics_history" -> AnalyticsAndHistoryScreen(onBack = { activeGameId = null })
                         "zen_garden" -> ZenGardenScreen(onBack = { activeGameId = null })
                         else -> FullMentalMathScreen(onBack = { activeGameId = null })
                     }
                 }
 
-                // Full Screen Tools (35 Power Tools + Zen Garden)
+                // Full Screen Tools (50 Power Tools + Zen Garden)
                 "tool" -> {
                     when (activeToolId) {
                         "t1" -> FullKanbanScreen(onBack = { activeToolId = null })
@@ -530,6 +555,11 @@ fun AuraFocusApp(
                         "t43" -> FullDigitalSunsetScreen(onBack = { activeToolId = null })
                         "t44" -> FullAntiProcrastination5MinScreen(onBack = { activeToolId = null })
                         "t45" -> FullWeeklyOkrMatrixScreen(onBack = { activeToolId = null })
+                        "t46" -> FullEisenhowerMatrixV2Screen(onBack = { activeToolId = null })
+                        "t47" -> FullAtomicHabitMicroDoserScreen(onBack = { activeToolId = null })
+                        "t48" -> FullChronotypeEnergyPlannerScreen(onBack = { activeToolId = null })
+                        "t49" -> FullDistractionSwitchCostScreen(onBack = { activeToolId = null })
+                        "t50" -> FullPlayStoreAdMobLaunchpadScreen(onBack = { activeToolId = null })
                         "zen_garden" -> ZenGardenScreen(onBack = { activeToolId = null })
                         "analytics_history" -> AnalyticsAndHistoryScreen(onBack = { activeToolId = null })
                         else -> FullNotesScreen(onBack = { activeToolId = null })

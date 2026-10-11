@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import com.example.util.AuraAdMobManager
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -749,6 +750,96 @@ fun HubScreen(
                                 GlassButton(
                                     text = "📜 Terms of Service",
                                     onClick = { showTermsDialog = true },
+                                    isPrimary = false,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item(key = "admob_and_store_launch_card") {
+                    GlassCard(modifier = Modifier.fillMaxWidth(), glowColor = NeonAmber) {
+                        Column(modifier = Modifier.padding(18.dp)) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text("💰", fontSize = 22.sp)
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        "Google AdMob & Store Launchpad",
+                                        style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                        color = Color.White
+                                    )
+                                }
+                                GlassChip(
+                                    label = if (AuraAdMobManager.isAdMobEnabled) "Live Mode 🟢" else "Ready to Plug ⚡",
+                                    color = if (AuraAdMobManager.isAdMobEnabled) NeonLime else NeonAmber,
+                                    selected = true
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Text(
+                                text = "Pre-wired with Google AdMob official test IDs and standard Play Store intent hooks. Switch on live mode or test rewarded bonus XP directly.",
+                                fontSize = 12.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                lineHeight = 18.sp
+                            )
+
+                            Spacer(modifier = Modifier.height(12.dp))
+                            AuraAdMobManager.AdMobBannerSlot()
+
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                            ) {
+                                GlassButton(
+                                    text = "🎁 Test Rewarded (+25 XP)",
+                                    onClick = {
+                                        AuraAdMobManager.showRewardedAd(context) { reward ->
+                                            GamificationManager.addXp(reward, "AdMob Test Bonus")
+                                            AuraSoundManager.playSuccessSound()
+                                        }
+                                    },
+                                    isPrimary = true,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                GlassButton(
+                                    text = if (AuraAdMobManager.isAdMobEnabled) "Disable Ads" else "Enable Test Ads",
+                                    onClick = {
+                                        AuraAdMobManager.isAdMobEnabled = !AuraAdMobManager.isAdMobEnabled
+                                        AuraSoundManager.playTapSound(context)
+                                    },
+                                    isPrimary = false,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                GlassButton(
+                                    text = "⭐ Rate App",
+                                    onClick = { AuraLinkHelper.rateOnPlayStore(context) },
+                                    isPrimary = false,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                GlassButton(
+                                    text = "🔗 Share",
+                                    onClick = { AuraLinkHelper.shareApp(context) },
+                                    isPrimary = false,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                GlassButton(
+                                    text = "✉️ Support",
+                                    onClick = { AuraLinkHelper.contactDeveloper(context) },
                                     isPrimary = false,
                                     modifier = Modifier.weight(1f)
                                 )

@@ -115,7 +115,13 @@ fun ToolsScreen(
             ProductivityTool("t42", "Decision Scorer Matrix", "Weighted criteria prioritization grid", "⚖️", "Strategy", NeonLime),
             ProductivityTool("t43", "Digital Sunset Wind-Down", "4-step circadian evening cognitive shutdown", "🌙", "Recovery", NeonAmber),
             ProductivityTool("t44", "5-Minute Kickstart", "Friction-free momentum initiation protocol", "🚀", "Discipline", NeonLime),
-            ProductivityTool("t45", "Weekly OKR Matrix", "Objectives & Key Results weekly alignment", "🎯", "High Leverage", NeonViolet)
+            ProductivityTool("t45", "Weekly OKR Matrix", "Objectives & Key Results weekly alignment", "🎯", "High Leverage", NeonViolet),
+            // 5 BRAND NEW POWER PRODUCTIVITY TOOLS (TOTAL 50 TOOLS)
+            ProductivityTool("t46", "Eisenhower Matrix V2", "4-quadrant strategic priority sorter", "⚖️", "Priority", NeonAmber),
+            ProductivityTool("t47", "Atomic Habit Micro-Doser", "James Clear 2-minute habit stacking protocol", "🔗", "Habits", NeonLime),
+            ProductivityTool("t48", "Chronotype Bio-Planner", "Circadian biological rhythm peak focus mapper", "🦁", "Bio-Rhythm", NeonCyan),
+            ProductivityTool("t49", "Distraction Switch Cost", "Sophie Leroy attention residue auditor", "⚠️", "Deep Flow", NeonPink),
+            ProductivityTool("t50", "Play Store Launchpad", "AdMob monetization & release diagnostics", "🚀", "Launchpad", NeonViolet)
         )
     }
 
@@ -151,7 +157,7 @@ fun ToolsScreen(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = "45 Power Tools • Zero Lag Decoupled Engine",
+                        text = "50 Power Tools • Zero Lag Decoupled Engine",
                         style = MaterialTheme.typography.bodySmall,
                         color = NeonLime
                     )
@@ -172,7 +178,7 @@ fun ToolsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag("tools_search_bar"),
-                placeholder = { Text("Search 35 tools, kanban, habits, notes, pomodoro...", color = Color(0x70FFFFFF), fontSize = 13.sp) },
+                placeholder = { Text("Search 50 tools, kanban, habits, notes, pomodoro...", color = Color(0x70FFFFFF), fontSize = 13.sp) },
                 leadingIcon = {
                     Icon(Icons.Default.Search, contentDescription = "Search", tint = NeonLime, modifier = Modifier.size(20.dp))
                 },

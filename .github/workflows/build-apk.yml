@@ -110,32 +110,31 @@ jobs:
       - name: Publish debug APK to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.3.0
-          name: NeuroBox v1.3.0 - 50 Master Brain Games & 45 Power Productivity Tools
+          tag_name: v1.4.0
+          name: NeuroBox v1.4.0 - 60 Master Brain Games & 50 Power Tools (Google Play & AdMob Ready)
           body: |
-            ## NeuroBox v1.3.0 Release: 50 Master Brain Games, 45 Power Productivity Tools & Zero-Lag Architecture
-            - **10 Brand New High-Cognitive Brain Games (Total 50 Master Games)**:
-              - `g43` Quantum Mirror Entanglement: Mirror-spin pattern symmetry detector.
-              - `g44` Dual Conflict Color Clash: Double-conflict text vs ink decision test.
-              - `g45` Reverse Digit Span Recall: WAIS working memory backward manipulation.
-              - `g46` Mental Origami Hole Punch: Visuospatial fold projection & hole punch prediction.
-              - `g47` Color Pulse Rhythm Sync: Sub-50ms beat concentric pulse synchronizer.
-              - `g48` Tower of Hanoi Flow: Executive sequence planning and minimal move optimizer.
-              - `g49` Lexical Anomaly Hunt: High-speed semantic cluster outlier detector.
-              - `g50` Synapse Circuit Router: 3x3 rotating tile electrical pathway aligner.
-              - `g51` Microtone Interval Calibrator: Acoustic micro-tonal ear discriminator.
-              - `g52` Peripheral Anomaly Scanner: Subtle change blindness flicker scanner.
-            - **10 Brand New Power Productivity Tools (Total 45 Power Tools)**:
-              - `t36` Parkinson's Law Sprint: Micro-sprint countdown enforcer restricting task inflation.
-              - `t37` Rubber Duck Cognitive Debugger: Socratic lateral blocker solver canvas.
-              - `t38` Energy-Drainer & Burnout Radar: 5-factor vitality friction & recovery audit.
-              - `t39` Mental Rehearsal Visualizer: 4-stage pre-performance neural imagery script.
-              - `t40` Interstitial Journaling Timer: Zero-lag transition bridge between work blocks.
-              - `t41` Feynman Technique Clarifier: Plain-English deep mastery concept breakdown.
-              - `t42` Decision Matrix & Weighted Scorer: Multi-factor weighted prioritization grid.
-              - `t43` Digital Sunset Wind-Down: 4-step circadian evening cognitive shutdown.
-              - `t44` Anti-Procrastination 5-Min Kickstart: Low-friction momentum trigger.
-              - `t45` Weekly OKR & Retrospective Matrix: Objectives & Key Results weekly alignment.
+            ## NeuroBox v1.4.0 Release: 60 Master Brain Games, 50 Power Tools & Google Play AdMob Suite
+            - **Google Play Store & AdMob Suite Ready**:
+              - Validated AdMob Application ID (`ca-app-pub-3940256099942544~3347511713`) in AndroidManifest.xml.
+              - Live AdMob Banner & Rewarded Video XP testing slots in Hub & Launchpad.
+              - 1-Tap Play Store Rating, App Share Intent, and Direct Support to Developer Samir Ahmmed.
+            - **10 Brand New High-Cognitive Brain Games (Total 60 Master Games)**:
+              - `g53` Quantum Polarization Align: Dual-spin photon angle alignment.
+              - `g54` Schulte Table Matrix: Rapid 5x5 peripheral number hunt (1..25).
+              - `g55` Task Switching Parity: Dynamic parity vs magnitude prompt flipping.
+              - `g56` Spatial Isometric Cube: Mental 3D hidden block tallying & depth IQ.
+              - `g57` Auditory Pitch Echo: 3-tone melodic pitch interval recall ear trainer.
+              - `g58` Flanker Saccade Inhibitor: Central arrow direction vs distractor flankers.
+              - `g59` Math Fraction Sprint: Rapid fraction vs percentage magnitude comparison.
+              - `g60` Lexical Rhyme Speed: Phonological awareness rapid rhyme classifier.
+              - `g61` Color Stroop Triple Conflict: Text, Ink, and Frame color 3-way clash.
+              - `g62` Neuro Velocity Reflex Arena: Multi-target kinetic moving orb tap reflex.
+            - **5 Brand New Power Productivity Tools (Total 50 Power Tools)**:
+              - `t46` Eisenhower Matrix V2: 4-quadrant strategic priority sorter with Q2 ratio audit.
+              - `t47` Atomic Habit Micro-Doser: James Clear 2-minute habit stacking protocol & live timer.
+              - `t48` Chronotype Bio-Planner: Circadian biological rhythm peak focus mapper (Lion/Bear/Wolf/Dolphin).
+              - `t49` Distraction Switch Cost: Sophie Leroy attention residue auditor & 25-min Firewall shield.
+              - `t50` Play Store Launchpad: AdMob monetization & release diagnostics wizard.
             - **Zero-Lag Butter-Smooth Architecture**:
               - Instantaneous 0ms tab switching with `SaveableStateHolder`.
               - 120 FPS LazyColumn virtualization across all screens.

@@ -224,4 +224,46 @@ class NeuroBoxSuiteTest {
         val newXp = GamificationManager.state.value.currentXp
         assertEquals(initialXp + 85, newXp)
     }
+
+    @Test
+    fun `test suite 5 games recording and high score updates`() {
+        // Record matches for new cognitive games g53 and g54
+        val pb1 = GamificationManager.recordGameMatch(
+            gameId = "g53",
+            gameTitle = "Quantum Polarization Align",
+            score = 150,
+            accuracyPercent = 95,
+            reactionMs = 280
+        )
+        assertTrue(pb1)
+        val stateAfterG53 = GamificationManager.state.value
+        assertEquals(1, stateAfterG53.gamesPlayedTotal)
+        assertEquals(150, stateAfterG53.personalBests["g53"]?.highScore)
+
+        // Record Schulte Table match
+        val pb2 = GamificationManager.recordGameMatch(
+            gameId = "g54",
+            gameTitle = "Schulte Table Matrix",
+            score = 200,
+            accuracyPercent = 100,
+            reactionMs = 190
+        )
+        assertTrue(pb2)
+        val stateAfterG54 = GamificationManager.state.value
+        assertEquals(2, stateAfterG54.gamesPlayedTotal)
+        assertEquals(200, stateAfterG54.personalBests["g54"]?.highScore)
+    }
+
+    @Test
+    fun `test suite 4 productivity tools xp allocation and gamification`() {
+        val initialXp = GamificationManager.state.value.currentXp
+        GamificationManager.addXp(20, "Eisenhower Quadrant Completed")
+        GamificationManager.addXp(35, "Atomic Habit Microdose Executed")
+        GamificationManager.addXp(25, "Chronotype Rhythm Synced")
+        GamificationManager.addXp(40, "Attention Firewall Complete")
+        GamificationManager.addXp(50, "Play Store Launchpad Rewarded")
+
+        val expectedXp = initialXp + 170
+        assertEquals(expectedXp, GamificationManager.state.value.currentXp)
+    }
 }

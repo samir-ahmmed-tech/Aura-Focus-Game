@@ -29,4 +29,49 @@ object AuraLinkHelper {
             Toast.makeText(context, "Unable to open link: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
+
+    fun rateOnPlayStore(context: Context) {
+        try {
+            val marketUri = Uri.parse("market://details?id=com.aistudio.aurafocus.nmhhmt")
+            val intent = Intent(Intent.ACTION_VIEW, marketUri).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+        } catch (_: Exception) {
+            openUrl(context, "https://play.google.com/store/apps/details?id=com.aistudio.aurafocus.nmhhmt")
+        }
+    }
+
+    fun shareApp(context: Context) {
+        try {
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "text/plain"
+                putExtra(Intent.EXTRA_SUBJECT, "NeuroBox - Cognitive Training & Focus Lab")
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "Experience NeuroBox: 60 Master Brain Games, 50 Power Productivity Tools, and Zero-Lag Focus Space created by Samir Ahmmed! Download on GitHub: https://github.com/samir-ahmmed-tech/Aura-Focus-Game/releases"
+                )
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(Intent.createChooser(shareIntent, "Share NeuroBox via").apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        } catch (e: Exception) {
+            Toast.makeText(context, "Unable to launch share: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun contactDeveloper(context: Context) {
+        try {
+            val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:samir.ahmmed.tech@gmail.com")
+                putExtra(Intent.EXTRA_SUBJECT, "[NeuroBox Feedback] Developer Inquiry")
+                putExtra(Intent.EXTRA_TEXT, "Hello Samir,\n\nI have the following feedback/bug report regarding NeuroBox:")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(emailIntent)
+        } catch (_: Exception) {
+            openUrl(context, "https://github.com/samir-ahmmed-tech/Aura-Focus-Game/issues")
+        }
+    }
 }

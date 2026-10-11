@@ -124,7 +124,18 @@ fun BrainGamesScreen(
             BrainGameInfo("g49", "Lexical Anomaly Hunt", "High-speed semantic anomaly spotting in word grid", "Verbal Processing", "Executive Focus", "🔤", 45, NeonViolet),
             BrainGameInfo("g50", "Synapse Circuit Router", "Rotate 3x3 tiles to transmit neural signals", "Spatial Circuit", "Math & Logic", "⚡", 55, NeonCyan),
             BrainGameInfo("g51", "Microtone Interval Calibrator", "Micro-tonal acoustic pitch ear calibrator", "Acoustic Ear", "Reflex & Rhythm", "🎵", 50, NeonPink),
-            BrainGameInfo("g52", "Peripheral Anomaly Scanner", "Subtle visual scene change blindness scanner", "Visual Saccade", "Executive Focus", "📡", 50, NeonLime)
+            BrainGameInfo("g52", "Peripheral Anomaly Scanner", "Subtle visual scene change blindness scanner", "Visual Saccade", "Executive Focus", "📡", 50, NeonLime),
+            // 10 BRAND NEW HIGH-COGNITIVE GAMES (TOTAL 60 GAMES)
+            BrainGameInfo("g53", "Quantum Polarization Align", "Dual-spin photon angle alignment test", "Quantum IQ", "Math & Logic", "🔬", 60, NeonCyan),
+            BrainGameInfo("g54", "Schulte Table Matrix", "Rapid 5x5 peripheral number hunt (1..25)", "Peripheral Speed", "Reflex & Rhythm", "🔢", 45, NeonLime),
+            BrainGameInfo("g55", "Task Switching Parity", "Dynamic parity vs magnitude prompt flipping", "Executive Switch", "Executive Focus", "🔄", 50, NeonPink),
+            BrainGameInfo("g56", "Spatial Isometric Cube", "Mental 3D hidden block tallying & depth IQ", "3D Spatial IQ", "Executive Focus", "🧊", 55, NeonViolet),
+            BrainGameInfo("g57", "Auditory Pitch Echo", "3-tone melodic pitch interval recall ear trainer", "Acoustic Memory", "Memory", "🎵", 50, NeonCyan),
+            BrainGameInfo("g58", "Flanker Saccade Inhibitor", "Central arrow direction vs distractor flankers", "Inhibition IQ", "Executive Focus", "🏹", 50, NeonAmber),
+            BrainGameInfo("g59", "Math Fraction Sprint", "Rapid fraction vs percentage magnitude comparison", "Mental Math", "Math & Logic", "🧮", 55, NeonLime),
+            BrainGameInfo("g60", "Lexical Rhyme Speed", "Phonological awareness rapid rhyme classifier", "Verbal Fluency", "Executive Focus", "🔤", 50, NeonPink),
+            BrainGameInfo("g61", "Color Stroop Triple Conflict", "Text, Ink, and Frame color 3-way clash", "Conflict Inhibit", "Reflex & Rhythm", "💥", 55, NeonViolet),
+            BrainGameInfo("g62", "Neuro Velocity Reflex Arena", "Multi-target kinetic moving orb tap reflex", "Kinetic Reflex", "Reflex & Rhythm", "⚡", 50, NeonAmber)
         )
     }
 
@@ -165,7 +176,7 @@ fun BrainGamesScreen(
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
-                        text = "50 Master Brain Games • 120 FPS Decoupled Engine",
+                        text = "60 Master Brain Games • 120 FPS Decoupled Engine",
                         style = MaterialTheme.typography.bodySmall,
                         color = NeonCyan
                     )
@@ -186,7 +197,7 @@ fun BrainGamesScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag("games_search_bar"),
-                placeholder = { Text("Search 40 brain games, memory, reflex, math...", color = Color(0x70FFFFFF), fontSize = 13.sp) },
+                placeholder = { Text("Search 60 brain games, memory, reflex, math...", color = Color(0x70FFFFFF), fontSize = 13.sp) },
                 leadingIcon = {
                     Icon(Icons.Default.Search, contentDescription = "Search", tint = NeonCyan, modifier = Modifier.size(20.dp))
                 },
@@ -279,7 +290,7 @@ fun BrainGamesScreen(
                 CustomEmptyStateView(
                     iconEmoji = "🧩",
                     title = "No Cognitive Games Found",
-                    description = "No games matched \"$searchQuery\" in category \"$selectedCategory\". Reset filters to explore all 40 cognitive games.",
+                    description = "No games matched \"$searchQuery\" in category \"$selectedCategory\". Reset filters to explore all 60 cognitive games.",
                     actionButtonText = "Reset All Filters",
                     onActionClick = {
                         searchQuery = ""

@@ -20,6 +20,12 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication">
+
+        <!-- Google AdMob Application ID (Replace with your live ID from Google AdMob console before Play Store publishing) -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
