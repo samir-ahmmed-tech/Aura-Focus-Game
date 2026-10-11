@@ -120,6 +120,37 @@ import com.example.ui.screens.FullDigitalDistractionBlockerScreen
 import com.example.ui.screens.FullBinauralSoundscapeMixerScreen
 import com.example.ui.screens.ZenGardenScreen
 import com.example.ui.screens.AnalyticsAndHistoryScreen
+import com.example.ui.screens.FullQuantumColorClashScreen
+import com.example.ui.screens.FullPatternLogicMatrixScreen
+import com.example.ui.screens.FullVisualSaccadeSprintScreen
+import com.example.ui.screens.FullDualSwitchOddevenScreen
+import com.example.ui.screens.FullSpatialRotation3DScreen
+import com.example.ui.screens.FullEchoRhythmSimonScreen
+import com.example.ui.screens.FullTimeEstimationPacerScreen
+import com.example.ui.screens.FullAnagramChainRushScreen
+import com.example.ui.screens.FullImpulseInhibitionGoNoGoScreen
+import com.example.ui.screens.FullSymbolOdysseyCipherScreen
+import com.example.ui.screens.FullTacticalPeripheralRadarScreen
+import com.example.ui.screens.FullSynapseMathChainsScreen
+import com.example.ui.screens.FullLabyrinthPathfinderScreen
+import com.example.ui.screens.FullChronoDigitMatrixScreen
+import com.example.ui.screens.FullTonePitchDiscriminationScreen
+import com.example.ui.screens.FullKineticOrbBalancingScreen
+import com.example.ui.screens.FullSensoryGrounding54321Screen
+import com.example.ui.screens.FullPomodoroIntervalArchitectScreen
+import com.example.ui.screens.FullCircadianEnergyAuditScreen
+import com.example.ui.screens.FullDeepWorkRatioTrackerScreen
+import com.example.ui.screens.FullGratitudePebbleJarScreen
+import com.example.ui.screens.FullVisionManifestoBoardScreen
+import com.example.ui.screens.FullMentalClarityBrainDumpScreen
+import com.example.ui.screens.FullIvyLeeSixPrioritiesScreen
+import com.example.ui.screens.FullOcularRelief202020Screen
+import com.example.ui.screens.FullMultiSpectrumNoiseGenScreen
+import com.example.ui.screens.FullCbtCognitiveReframingScreen
+import com.example.ui.screens.FullHydrationMetabolismPacerScreen
+import com.example.ui.screens.FullWeeklyReviewRetrospectiveScreen
+import com.example.ui.screens.FullFocusCommitmentContractScreen
+import com.example.ui.screens.FullDeskErgonomicsStretchPacerScreen
 import com.example.ui.components.GlassBanner
 import com.example.ui.components.GlassButton
 import com.example.ui.components.GlassChip
@@ -385,13 +416,29 @@ fun AuraFocusApp(
                         "g24" -> FullSpatialPathTraceScreen(onBack = { activeGameId = null })
                         "g25" -> FullNBackAudioEchoScreen(onBack = { activeGameId = null })
                         "g26" -> FullFocusRadarSaccadeScreen(onBack = { activeGameId = null })
+                        "g27" -> FullQuantumColorClashScreen(onBack = { activeGameId = null })
+                        "g28" -> FullPatternLogicMatrixScreen(onBack = { activeGameId = null })
+                        "g29" -> FullVisualSaccadeSprintScreen(onBack = { activeGameId = null })
+                        "g30" -> FullDualSwitchOddevenScreen(onBack = { activeGameId = null })
+                        "g31" -> FullSpatialRotation3DScreen(onBack = { activeGameId = null })
+                        "g32" -> FullEchoRhythmSimonScreen(onBack = { activeGameId = null })
+                        "g33" -> FullTimeEstimationPacerScreen(onBack = { activeGameId = null })
+                        "g34" -> FullAnagramChainRushScreen(onBack = { activeGameId = null })
+                        "g35" -> FullImpulseInhibitionGoNoGoScreen(onBack = { activeGameId = null })
+                        "g36" -> FullSymbolOdysseyCipherScreen(onBack = { activeGameId = null })
+                        "g37" -> FullTacticalPeripheralRadarScreen(onBack = { activeGameId = null })
+                        "g38" -> FullSynapseMathChainsScreen(onBack = { activeGameId = null })
+                        "g39" -> FullLabyrinthPathfinderScreen(onBack = { activeGameId = null })
+                        "g40" -> FullChronoDigitMatrixScreen(onBack = { activeGameId = null })
+                        "g41" -> FullTonePitchDiscriminationScreen(onBack = { activeGameId = null })
+                        "g42" -> FullKineticOrbBalancingScreen(onBack = { activeGameId = null })
                         "analytics_history" -> AnalyticsAndHistoryScreen(onBack = { activeGameId = null })
                         "zen_garden" -> ZenGardenScreen(onBack = { activeGameId = null })
                         else -> FullMentalMathScreen(onBack = { activeGameId = null })
                     }
                 }
 
-                // Full Screen Tools (20 Tools + Zen Garden)
+                // Full Screen Tools (35 Power Tools + Zen Garden)
                 "tool" -> {
                     when (activeToolId) {
                         "t1" -> FullKanbanScreen(onBack = { activeToolId = null })
@@ -414,6 +461,21 @@ fun AuraFocusApp(
                         "t18" -> FullUltradianRhythmScreen(onBack = { activeToolId = null })
                         "t19" -> FullDigitalDistractionBlockerScreen(onBack = { activeToolId = null })
                         "t20" -> FullBinauralSoundscapeMixerScreen(onBack = { activeToolId = null })
+                        "t21" -> FullSensoryGrounding54321Screen(onBack = { activeToolId = null })
+                        "t22" -> FullPomodoroIntervalArchitectScreen(onBack = { activeToolId = null })
+                        "t23" -> FullCircadianEnergyAuditScreen(onBack = { activeToolId = null })
+                        "t24" -> FullDeepWorkRatioTrackerScreen(onBack = { activeToolId = null })
+                        "t25" -> FullGratitudePebbleJarScreen(onBack = { activeToolId = null })
+                        "t26" -> FullVisionManifestoBoardScreen(onBack = { activeToolId = null })
+                        "t27" -> FullMentalClarityBrainDumpScreen(onBack = { activeToolId = null })
+                        "t28" -> FullIvyLeeSixPrioritiesScreen(onBack = { activeToolId = null })
+                        "t29" -> FullOcularRelief202020Screen(onBack = { activeToolId = null })
+                        "t30" -> FullMultiSpectrumNoiseGenScreen(onBack = { activeToolId = null })
+                        "t31" -> FullCbtCognitiveReframingScreen(onBack = { activeToolId = null })
+                        "t32" -> FullHydrationMetabolismPacerScreen(onBack = { activeToolId = null })
+                        "t33" -> FullWeeklyReviewRetrospectiveScreen(onBack = { activeToolId = null })
+                        "t34" -> FullFocusCommitmentContractScreen(onBack = { activeToolId = null })
+                        "t35" -> FullDeskErgonomicsStretchPacerScreen(onBack = { activeToolId = null })
                         "zen_garden" -> ZenGardenScreen(onBack = { activeToolId = null })
                         "analytics_history" -> AnalyticsAndHistoryScreen(onBack = { activeToolId = null })
                         else -> FullNotesScreen(onBack = { activeToolId = null })

@@ -1,12 +1,12 @@
 package com.example.ui.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,33 +18,21 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmark
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.FormatQuote
-import androidx.compose.material.icons.filled.Grid4x4
-import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.NoteAlt
-import androidx.compose.material.icons.filled.Save
-import androidx.compose.material.icons.filled.SelfImprovement
-import androidx.compose.material.icons.filled.Shield
-import androidx.compose.material.icons.filled.Storage
-import androidx.compose.material.icons.filled.ViewKanban
-import androidx.compose.material3.AlertDialog
+import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Eco
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -52,13 +40,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.data.GamificationManager
-import com.example.ui.components.GlassButton
 import com.example.ui.components.GlassCard
 import com.example.ui.components.GlassChip
 import com.example.ui.theme.NeonAmber
@@ -66,12 +51,6 @@ import com.example.ui.theme.NeonCyan
 import com.example.ui.theme.NeonLime
 import com.example.ui.theme.NeonPink
 import com.example.ui.theme.NeonViolet
-
-import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Eco
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.IconButton
 
 data class ProductivityTool(
     val id: String,
@@ -87,7 +66,6 @@ fun ToolsScreen(
     onLaunchTool: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-
     val tools = remember {
         listOf(
             ProductivityTool("t1", "Smart Kanban Boards", "4-lane agile workflow board", "📋", "Core", NeonCyan),
@@ -102,7 +80,6 @@ fun ToolsScreen(
             ProductivityTool("t10", "Data Sovereignty IO", "1-tap SQLite JSON database export & restore", "💾", "Database", NeonViolet),
             ProductivityTool("t11", "Time-Boxing Interval Matrix", "Visual 30-min deep work blocks & schedule", "⏱️", "Deep Flow", NeonCyan),
             ProductivityTool("t12", "Energy & Bio-Rhythm Audit", "Bio-energetic mood tracker & audio matcher", "⚡", "Energy", NeonAmber),
-            // 5 BRAND NEW HIGH-UTILITY POWER TOOLS
             ProductivityTool("t13", "Sprint Time-Boxing Matrix", "Multi-sprint flow intervals with goal checklists", "⏱️", "Sprint Matrix", NeonCyan),
             ProductivityTool("t14", "Aura Ambience Synthesizer", "5-channel nature sound mixing with binaural crossfades", "🎛️", "Sound Lab", NeonPink),
             ProductivityTool("t15", "Quest Vault & Focus Bounty", "Daily & weekly RPG productivity bounties & XP loot", "⚔️", "Quests", NeonAmber),
@@ -110,7 +87,23 @@ fun ToolsScreen(
             ProductivityTool("t17", "Bilateral Eye Pacer", "EMDR neuro-bilateral saccade stimulation pacer for calm & focus", "👁️", "Neuro-Pacer", NeonCyan),
             ProductivityTool("t18", "Ultradian Rhythm Waves", "90-minute biological energy cycle & recovery planner", "🌊", "Bio-Rhythm", NeonCyan),
             ProductivityTool("t19", "Distraction Interceptor", "10-minute dopamine urge surfing delay protocol", "🛡️", "Habit Shield", NeonPink),
-            ProductivityTool("t20", "Binaural Flow Synthesizer", "Multi-channel acoustic frequency & nature mixer", "🎛️", "Sound Lab", NeonViolet)
+            ProductivityTool("t20", "Binaural Flow Synthesizer", "Multi-channel acoustic frequency & nature mixer", "🎛️", "Sound Lab", NeonViolet),
+            // 15 BRAND NEW POWER PRODUCTIVITY TOOLS (TOTAL 35 TOOLS)
+            ProductivityTool("t21", "5-4-3-2-1 Sensory Grounding", "Anxiety dissolver & sensory mindfulness anchor", "👀", "Mindful", NeonCyan),
+            ProductivityTool("t22", "Pomodoro Flow Architect", "Customizable sprint & rest interval intervals", "⏱️", "Deep Flow", NeonAmber),
+            ProductivityTool("t23", "Circadian Energy Audit", "Bio-rhythm sleep quality & alertness peak tracker", "🌙", "Circadian", NeonCyan),
+            ProductivityTool("t24", "Deep Work Ratio Tracker", "Cal Newport deep work vs shallow work auditor", "📊", "Analytics", NeonPink),
+            ProductivityTool("t25", "Gratitude Pebble Jar", "Daily 3-pebble mental fortitude accumulator", "🏺", "Gratitude", NeonLime),
+            ProductivityTool("t26", "Vision Manifesto Board", "Personal core values & daily focus anchors", "📜", "Vision", NeonViolet),
+            ProductivityTool("t27", "Mental Clarity Brain Dump", "Working memory unloader with instant categorization", "🧠", "Clarity", NeonCyan),
+            ProductivityTool("t28", "Ivy Lee 6 Priorities", "Legendary daily discipline: exactly 6 tasks", "📋", "Discipline", NeonAmber),
+            ProductivityTool("t29", "20-20-20 Ocular Relief Pacer", "Ocular fatigue reliever & distance gaze pacer", "👁️", "Wellness", NeonLime),
+            ProductivityTool("t30", "Noise Waves Synthesizer", "White, Pink & Deep Brown acoustic sound lab", "🔊", "Sound Lab", NeonViolet),
+            ProductivityTool("t31", "CBT Cognitive Reframing", "Identify cognitive distortions & reframe thoughts", "💡", "Psychology", NeonPink),
+            ProductivityTool("t32", "Hydration Metabolism Pacer", "Daily cognitive water intake & interval pacer", "💧", "Hydration", NeonCyan),
+            ProductivityTool("t33", "Weekly Agile Retrospective", "Sprint wins, stumbles & lessons learned review", "🏆", "Agile", NeonLime),
+            ProductivityTool("t34", "Focus Commitment Contract", "Pre-commitment pact with streak stake forfeiture", "🔒", "Focus Lock", NeonPink),
+            ProductivityTool("t35", "Desk Ergonomics & Stretch", "Guided 3-minute spinal and wrist posture reset", "🧘", "Posture", NeonLime)
         )
     }
 
@@ -124,116 +117,118 @@ fun ToolsScreen(
         }
     }
 
-    Column(
+    // LazyColumn virtualization: 120 FPS ultra-smooth lazy loading
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .verticalScroll(rememberScrollState())
-            .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 120.dp)
+            .statusBarsPadding(),
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 120.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        // Header
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    text = "Productivity Power Suite",
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    text = "Deep work execution, mindfulness & habit systems",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = NeonLime
-                )
-            }
-            GlassChip(
-                label = "Power Suite ⚡",
-                color = NeonLime,
-                selected = true
-            )
-        }
-
-        Spacer(modifier = Modifier.height(14.dp))
-
-        // Search Bar for Productivity Tools
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("tools_search_bar"),
-            placeholder = { Text("Search tools, kanban, habits, notes...", color = Color(0x70FFFFFF), fontSize = 13.sp) },
-            leadingIcon = {
-                Icon(Icons.Default.Search, contentDescription = "Search", tint = NeonLime, modifier = Modifier.size(20.dp))
-            },
-            trailingIcon = {
-                if (searchQuery.isNotEmpty()) {
-                    IconButton(onClick = { searchQuery = "" }) {
-                        Icon(Icons.Default.Clear, contentDescription = "Clear", tint = Color.White, modifier = Modifier.size(18.dp))
-                    }
-                }
-            },
-            singleLine = true,
-            shape = RoundedCornerShape(14.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color(0x16FFFFFF),
-                unfocusedContainerColor = Color(0x0EFFFFFF),
-                focusedBorderColor = NeonLime,
-                unfocusedBorderColor = Color(0x28FFFFFF),
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.White
-            )
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // Zen Tree Sanctuary Shortcut (Analytics removed per user request)
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            glowColor = NeonLime,
-            glowRadius = 6.dp,
-            onClick = { onLaunchTool("zen_garden") }
-        ) {
+        // Top Header
+        item(key = "header_item") {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(NeonLime.copy(alpha = 0.22f)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(Icons.Default.Eco, "Tree", tint = NeonLime, modifier = Modifier.size(20.dp))
-                    }
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Column {
-                        Text("Zen Tree Sanctuary", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.White)
-                        Text("Daily habit streaks & fruit harvest garden", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
+                Column {
+                    Text(
+                        text = "Productivity Power Suite",
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Text(
+                        text = "35 Power Tools • Zero Lag Decoupled Engine",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = NeonLime
+                    )
                 }
-                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = NeonLime)
+                GlassChip(
+                    label = "${filteredTools.size} Tools ⚡",
+                    color = NeonLime,
+                    selected = true
+                )
             }
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
-
-        // Tools List
-        filteredTools.forEach { tool ->
-            GlassCard(
+        // Search Bar Item
+        item(key = "search_item") {
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 5.dp),
+                    .testTag("tools_search_bar"),
+                placeholder = { Text("Search 35 tools, kanban, habits, notes, pomodoro...", color = Color(0x70FFFFFF), fontSize = 13.sp) },
+                leadingIcon = {
+                    Icon(Icons.Default.Search, contentDescription = "Search", tint = NeonLime, modifier = Modifier.size(20.dp))
+                },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { searchQuery = "" }) {
+                            Icon(Icons.Default.Clear, contentDescription = "Clear", tint = Color.White, modifier = Modifier.size(18.dp))
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(14.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color(0x16FFFFFF),
+                    unfocusedContainerColor = Color(0x0EFFFFFF),
+                    focusedBorderColor = NeonLime,
+                    unfocusedBorderColor = Color(0x28FFFFFF),
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White
+                )
+            )
+        }
+
+        // Zen Tree Sanctuary Shortcut Item
+        item(key = "zen_tree_shortcut") {
+            GlassCard(
+                modifier = Modifier.fillMaxWidth(),
+                glowColor = NeonLime,
+                glowRadius = 6.dp,
+                onClick = { onLaunchTool("zen_garden") }
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clip(CircleShape)
+                                .background(NeonLime.copy(alpha = 0.22f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.Eco, "Tree", tint = NeonLime, modifier = Modifier.size(20.dp))
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text("Zen Tree Sanctuary", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.White)
+                            Text("Daily habit streaks & fruit harvest garden", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                    }
+                    Icon(Icons.Default.ChevronRight, contentDescription = null, tint = NeonLime)
+                }
+            }
+        }
+
+        // Virtualized Tool Cards: loads lazily on-screen, instant page switch!
+        items(
+            items = filteredTools,
+            key = { it.id }
+        ) { tool ->
+            GlassCard(
+                modifier = Modifier.fillMaxWidth(),
                 glowColor = tool.accentColor,
-                glowRadius = 10.dp,
+                glowRadius = 8.dp,
                 onClick = { onLaunchTool(tool.id) },
                 testTag = "tool_card_${tool.id}"
             ) {
@@ -250,209 +245,54 @@ fun ToolsScreen(
                     ) {
                         Box(
                             modifier = Modifier
-                                .size(46.dp)
-                                .clip(CircleShape)
-                                .background(tool.accentColor.copy(alpha = 0.2f))
-                                .border(1.dp, tool.accentColor.copy(alpha = 0.5f), CircleShape),
+                                .size(44.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(tool.accentColor.copy(alpha = 0.22f))
+                                .border(1.5.dp, tool.accentColor, RoundedCornerShape(12.dp)),
                             contentAlignment = Alignment.Center
                         ) {
                             Text(tool.iconEmoji, fontSize = 22.sp)
                         }
-                        Spacer(modifier = Modifier.width(12.dp))
+
+                        Spacer(modifier = Modifier.width(14.dp))
+
                         Column {
                             Text(
                                 text = tool.title,
-                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-                                color = MaterialTheme.colorScheme.onBackground
+                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                                color = Color.White
                             )
+                            Spacer(modifier = Modifier.height(2.dp))
                             Text(
                                 text = tool.desc,
-                                style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                                style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(tool.accentColor.copy(alpha = 0.15f))
+                                    .padding(horizontal = 6.dp, vertical = 2.dp)
+                            ) {
+                                Text(
+                                    text = tool.badge,
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = tool.accentColor
+                                )
+                            }
                         }
                     }
 
-                    GlassChip(
-                        label = tool.badge,
-                        color = tool.accentColor,
-                        selected = true
+                    Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = "Open",
+                        tint = tool.accentColor,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
     }
-}
-
-@Composable
-fun JournalDialog(onDismiss: () -> Unit) {
-    var intention by remember { mutableStateOf("Complete core Android build today with zero distractions.") }
-    var gratitude by remember { mutableStateOf("Grateful for clean code, deep focus, and high battery life.") }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("📖 Daily Reflection Journal", color = MaterialTheme.colorScheme.onBackground) },
-        text = {
-            Column {
-                Text("Morning Intention:", color = NeonPink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                OutlinedTextField(
-                    value = intention,
-                    onValueChange = { intention = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = NeonPink)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text("Evening Gratitude:", color = NeonPink, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                OutlinedTextField(
-                    value = gratitude,
-                    onValueChange = { gratitude = it },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = NeonPink)
-                )
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = {
-                GamificationManager.recordSessionCompleted()
-                onDismiss()
-            }) {
-                Text("Save Entry", color = NeonLime)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel", color = MaterialTheme.colorScheme.onSurfaceVariant) }
-        },
-        containerColor = Color(0xFF10121D)
-    )
-}
-
-@Composable
-fun QuickNotesDialog(onDismiss: () -> Unit) {
-    var noteContent by remember { mutableStateOf("- Review Room SQLite DAO\n- Check binaural 40Hz output\n- Verify floating glass bottom bar") }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("📝 Quick Scratchpad", color = MaterialTheme.colorScheme.onBackground) },
-        text = {
-            OutlinedTextField(
-                value = noteContent,
-                onValueChange = { noteContent = it },
-                modifier = Modifier.fillMaxWidth().height(150.dp),
-                colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = NeonAmber)
-            )
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) { Text("Save Note", color = NeonCyan) }
-        },
-        containerColor = Color(0xFF10121D)
-    )
-}
-
-@Composable
-fun EisenhowerDialog(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("⚖️ Eisenhower Priority Matrix", color = MaterialTheme.colorScheme.onBackground) },
-        text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Box(modifier = Modifier.fillMaxWidth().background(NeonPink.copy(alpha = 0.2f)).padding(10.dp)) {
-                    Text("1. DO FIRST (Urgent & Important): Core Architecture & Focus Audio", color = NeonPink, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                }
-                Box(modifier = Modifier.fillMaxWidth().background(NeonCyan.copy(alpha = 0.2f)).padding(10.dp)) {
-                    Text("2. SCHEDULE (Important, Not Urgent): 16-Week Habit Matrix & Games", color = NeonCyan, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                }
-                Box(modifier = Modifier.fillMaxWidth().background(NeonAmber.copy(alpha = 0.2f)).padding(10.dp)) {
-                    Text("3. DELEGATE (Urgent, Not Important): Social notifications & noisy emails", color = NeonAmber, fontSize = 11.sp, fontWeight = FontWeight.Bold)
-                }
-                Box(modifier = Modifier.fillMaxWidth().background(Color(0x20FFFFFF)).padding(10.dp)) {
-                    Text("4. ELIMINATE: Doomscrolling & non-deep work distractions", color = Color.White, fontSize = 11.sp)
-                }
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) { Text("Got It", color = NeonCyan) }
-        },
-        containerColor = Color(0xFF10121D)
-    )
-}
-
-@Composable
-fun StoicQuoteDialog(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("🏛️ Stoic Wisdom", color = MaterialTheme.colorScheme.onBackground) },
-        text = {
-            Column {
-                Text(
-                    text = "“You have power over your mind - not outside events. Realize this, and you will find strength.”",
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = NeonAmber
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "— Marcus Aurelius, Meditations", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.sp)
-            }
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) { Text("Close", color = NeonAmber) }
-        },
-        containerColor = Color(0xFF10121D)
-    )
-}
-
-@Composable
-fun DistractionVaultDialog(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("🛡️ Distraction Vault Oath", color = MaterialTheme.colorScheme.onBackground) },
-        text = {
-            Text(
-                text = "“I commit to staying in NeuroBox for this session. I will not break flow for trivial notifications or social feeds until the timer expires.”",
-                color = NeonPink,
-                style = MaterialTheme.typography.bodyMedium
-            )
-        },
-        confirmButton = {
-            TextButton(onClick = {
-                GamificationManager.recordSessionCompleted()
-                onDismiss()
-            }) { Text("I Commit ✓", color = NeonLime) }
-        },
-        containerColor = Color(0xFF10121D)
-    )
-}
-
-@Composable
-fun DatabaseExportDialog(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("💾 Data Sovereignty JSON", color = MaterialTheme.colorScheme.onBackground) },
-        text = {
-            Text(
-                text = "All your habits, tasks, journal entries, and focus minutes are securely managed in high-speed SQLite. You can export a snapshot JSON anytime.",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 12.sp
-            )
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) { Text("Export Backup", color = NeonViolet) }
-        },
-        containerColor = Color(0xFF10121D)
-    )
-}
-
-@Composable
-fun GenericToolDialog(tool: ProductivityTool, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("${tool.iconEmoji} ${tool.title}", color = MaterialTheme.colorScheme.onBackground) },
-        text = {
-            Text(tool.desc, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) { Text("Close", color = tool.accentColor) }
-        },
-        containerColor = Color(0xFF10121D)
-    )
 }

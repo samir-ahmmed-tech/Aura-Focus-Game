@@ -43,7 +43,7 @@ if git diff --staged --quiet; then
     echo "ℹ️  No new changes to commit."
 else
     echo "💾 Creating commit..."
-    git commit -m "feat: NeuroBox v1.0.0 - Full Butter-Smooth Lag Fix, Kernel Linux Visualizer, Realistic Botanical Tree Growth & Complete Games Suite"
+    git commit -m "feat: NeuroBox v1.1.0 - 120 FPS Butter-Smooth Lazy Loading Lag Fix, 40 Master Brain Games, 35 Power Tools, Samir Ahmmed Developer Profile & In-App Release Update Engine"
 fi
 
 echo "🔄 Pushing to https://github.com/${REPO_OWNER}/${REPO_NAME} on branch main..."

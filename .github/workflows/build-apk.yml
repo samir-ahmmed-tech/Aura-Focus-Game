@@ -110,18 +110,47 @@ jobs:
       - name: Publish debug APK to GitHub Releases
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.1
-          name: NeuroBox v1.0.1
+          tag_name: v1.1.0
+          name: NeuroBox v1.1.0 - Ultra-Smooth High Performance Edition
           body: |
-            ## NeuroBox v1.0.1 Release
-            - 120 FPS decoupled visualizer architecture (eliminating all music screen lag)
-            - 100% fresh user start from zero (0 XP, 0 tokens, 0 streaks, 0 tree fruits)
-            - Offline AES-256-GCM encrypted local backup & restore engine (.nbx)
-            - Zero server dependence, zero monthly database fees, complete data sovereignty
-            - Google Play Store compliance: Privacy Policy, Terms of Service & 1-tap data wipe
-            - Kernel Linux cybernetic telemetry animation core
-            - 24 brain training arenas & 20 productivity power tools
-            - Default UI scale set to 85%
+            ## NeuroBox v1.1.0 Release
+            - **120 FPS Butter-Smooth Lazy Virtualization**: Completely eliminated screen transition lag by transitioning all game, tool, and setting screens to LazyColumn with keyed virtualization.
+            - **40 Master Brain Games (16 Brand New Games Added)**:
+              - Quantum Color Clash (g27)
+              - Pattern Logic Matrix (g28)
+              - Visual Saccade Sprint (g29)
+              - Dual Switch Odd/Even (g30)
+              - Spatial 3D Rotation (g31)
+              - Echo Rhythm Simon (g32)
+              - Time Estimation Pulse (g33)
+              - Anagram Chain Rush (g34)
+              - Go / No-Go Inhibit (g35)
+              - Symbol Odyssey Cipher (g36)
+              - Peripheral Radar (g37)
+              - Synapse Math Chains (g38)
+              - Labyrinth Pathfinder (g39)
+              - Chrono Digit Matrix (g40)
+              - Pitch Discrimination (g41)
+              - Kinetic Orb Balancing (g42)
+            - **35 Power Productivity Suite Tools (15 Brand New Tools Added)**:
+              - 5-4-3-2-1 Sensory Grounding (t21)
+              - Pomodoro Flow Architect (t22)
+              - Circadian Energy Audit (t23)
+              - Deep Work Ratio Tracker (t24)
+              - Gratitude Pebble Jar (t25)
+              - Vision Manifesto Board (t26)
+              - Mental Clarity Brain Dump (t27)
+              - Ivy Lee 6 Priorities Discipline (t28)
+              - 20-20-20 Ocular Relief Pacer (t29)
+              - Multi-Spectrum Noise Synthesizer (t30)
+              - CBT Cognitive Reframing Matrix (t31)
+              - Hydration Metabolism Pacer (t32)
+              - Weekly Agile Retrospective (t33)
+              - Focus Commitment Contract (t34)
+              - Desk Ergonomics & Posture Pacer (t35)
+            - **Developer Showcase**: Samir Ahmmed (Lead Architect & Developer) with direct GitHub repo linkage.
+            - **In-App GitHub Release Update Checker**: Built-in update engine checking GitHub Releases with 1-tap download.
+            - **Play Store Compliance & Privacy Sovereignty**: Complete offline privacy policy, terms of service, and 1-tap full data erasure.
           draft: false
           prerelease: false
           make_latest: true

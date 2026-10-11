@@ -7,6 +7,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,18 +17,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Eco
-import androidx.compose.material.icons.filled.EmojiEvents
-import androidx.compose.material.icons.filled.Psychology
-import androidx.compose.material.icons.filled.Timeline
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,12 +52,6 @@ import com.example.ui.theme.NeonAmber
 import com.example.ui.theme.NeonCyan
 import com.example.ui.theme.NeonLime
 import com.example.ui.theme.NeonPink
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.ui.platform.testTag
 import com.example.ui.theme.NeonViolet
 
 data class BrainGameInfo(
@@ -86,7 +85,6 @@ fun BrainGamesScreen(
             BrainGameInfo("g12", "Chimp Memory Matrix", "Spatial sequence recall faster than chimpanzee", "Primate IQ", "Memory", "🐵", 50, NeonLime),
             BrainGameInfo("g13", "Rhythm Beat Tap", "Sub-millisecond tempo synchronizer & rhythm IQ", "Rhythm & Tempo", "Reflex & Rhythm", "🥁", 45, NeonPink),
             BrainGameInfo("g15", "Cognitive Flex Duel", "Rapid dynamic rule switching (Color vs Shape)", "Executive Control", "Executive Focus", "🔄", 50, NeonLime),
-            // 7 BRAND NEW HIGH-COGNITIVE GAMES (NO SUDOKU, NO ZEN BUBBLE)
             BrainGameInfo("g16", "Cyber Glitch Sequence", "Overclocked memory matrix hack sequence recall", "Cyber Memory", "Memory", "⚡", 50, NeonCyan),
             BrainGameInfo("g17", "Chroma Clash Inversion", "Neural conflict inhibition & reaction speed", "Inhibition IQ", "Reflex & Rhythm", "💥", 45, NeonPink),
             BrainGameInfo("g18", "Target Lock Radar", "Chaotic orbiting radar target tracking", "Visual Tracking", "Executive Focus", "🎯", 55, NeonLime),
@@ -97,13 +95,30 @@ fun BrainGamesScreen(
             BrainGameInfo("g23", "Synapse Speed Sort", "Overclocked rapid categorization under shifting rules", "Executive Control", "Reflex & Rhythm", "⚡", 45, NeonCyan),
             BrainGameInfo("g24", "Spatial Path Trace", "Recall celestial constellation sequences", "Visuospatial IQ", "Memory", "✨", 50, NeonLime),
             BrainGameInfo("g25", "N-Back Audio Echo", "2-back acoustic frequency memory tracker", "Acoustic Memory", "Memory", "🎧", 55, NeonViolet),
-            BrainGameInfo("g26", "Focus Radar Saccade", "Anti-saccadic eye movement target inhibitor", "Inhibition IQ", "Executive Focus", "🎯", 50, NeonCyan)
+            BrainGameInfo("g26", "Focus Radar Saccade", "Anti-saccadic eye movement target inhibitor", "Inhibition IQ", "Executive Focus", "🎯", 50, NeonCyan),
+            // 16 BRAND NEW HIGH-COGNITIVE GAMES (TOTAL 40 GAMES)
+            BrainGameInfo("g27", "Quantum Color Clash", "Inverted Stroop & chromatic quantum rule flip", "Cognitive Inversion", "Reflex & Rhythm", "🎨", 50, NeonPink),
+            BrainGameInfo("g28", "Pattern Logic Matrix", "Progressive 3x3 Raven's inductive matrix reasoning", "Fluid Matrix IQ", "Math & Logic", "🧩", 55, NeonCyan),
+            BrainGameInfo("g29", "Visual Saccade Sprint", "Sub-100ms anti-saccadic peripheral target jump", "Peripheral Reflex", "Executive Focus", "🎯", 45, NeonAmber),
+            BrainGameInfo("g30", "Dual Switch Odd/Even", "Rapid parity vs magnitude task-set switching", "Cognitive Switch", "Executive Focus", "🔄", 50, NeonLime),
+            BrainGameInfo("g31", "Spatial 3D Rotation", "Mental polyhedral angle rotation & reflection IQ", "3D Spatial IQ", "Executive Focus", "📐", 55, NeonViolet),
+            BrainGameInfo("g32", "Echo Rhythm Simon", "Acoustic melody sequence echo memory", "Audio Memory", "Memory", "🥁", 50, NeonCyan),
+            BrainGameInfo("g33", "Time Estimation Pulse", "Internal biological clock interval calibration", "Circadian Timing", "Reflex & Rhythm", "⏱️", 45, NeonAmber),
+            BrainGameInfo("g34", "Anagram Chain Rush", "Verbal neuro-linguistic anagram unscramble", "Verbal Fluency", "Executive Focus", "🔤", 50, NeonViolet),
+            BrainGameInfo("g35", "Go / No-Go Inhibit", "Sub-second motor impulse suppression arena", "Impulse Inhibit", "Reflex & Rhythm", "🛑", 45, NeonLime),
+            BrainGameInfo("g36", "Symbol Odyssey Cipher", "Ancient rune glyphs associative working memory", "Symbolic Memory", "Memory", "📜", 55, NeonCyan),
+            BrainGameInfo("g37", "Peripheral Radar", "Tactile change blindness anomaly scanner", "Peripheral Tracking", "Executive Focus", "📡", 50, NeonLime),
+            BrainGameInfo("g38", "Synapse Math Chains", "Chained parenthetical mental arithmetic flow", "Mental Math", "Math & Logic", "🧮", 50, NeonCyan),
+            BrainGameInfo("g39", "Labyrinth Pathfinder", "Dynamic barrier rotation maze navigation", "Spatial Planning", "Math & Logic", "🌀", 55, NeonCyan),
+            BrainGameInfo("g40", "Chrono Digit Matrix", "Interleaved ascending order processing speed", "Processing Speed", "Reflex & Rhythm", "🔢", 45, NeonViolet),
+            BrainGameInfo("g41", "Pitch Discrimination", "Micro-semitone acoustic ear discrimination", "Acoustic IQ", "Reflex & Rhythm", "🎵", 50, NeonPink),
+            BrainGameInfo("g42", "Kinetic Orb Balancing", "Kinetic gravity equilibrium beam precision", "Equilibrium", "Reflex & Rhythm", "⚖️", 50, NeonLime)
         )
     }
 
     var selectedCategory by remember { mutableStateOf("All") }
     var searchQuery by remember { mutableStateOf("") }
-    val categories = listOf("All", "Math & Logic", "Memory", "Reflex & Rhythm", "Executive Focus")
+    val categories = remember { listOf("All", "Math & Logic", "Memory", "Reflex & Rhythm", "Executive Focus") }
 
     val filteredGames = remember(selectedCategory, searchQuery) {
         games.filter { game ->
@@ -116,144 +131,146 @@ fun BrainGamesScreen(
         }
     }
 
-    Column(
+    // LazyColumn provides butter-smooth, 120 FPS virtualization: only renders visible items!
+    LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .statusBarsPadding()
-            .verticalScroll(rememberScrollState())
-            .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 120.dp)
+            .statusBarsPadding(),
+        contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 120.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        // Top Header
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    text = "Cognitive Training Ground",
-                    style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    text = "Neuroplasticity, speed & executive focus arena",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = NeonCyan
+        // Top Header Item
+        item(key = "header_item") {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = "Cognitive Training Ground",
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Text(
+                        text = "40 Master Brain Games • 120 FPS Decoupled Engine",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = NeonCyan
+                    )
+                }
+                GlassChip(
+                    label = "${filteredGames.size} Games ⚡",
+                    color = NeonLime,
+                    selected = true
                 )
             }
-            GlassChip(
-                label = "Live Arena ⚡",
-                color = NeonLime,
-                selected = true
+        }
+
+        // Search Bar Item
+        item(key = "search_item") {
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("games_search_bar"),
+                placeholder = { Text("Search 40 brain games, memory, reflex, math...", color = Color(0x70FFFFFF), fontSize = 13.sp) },
+                leadingIcon = {
+                    Icon(Icons.Default.Search, contentDescription = "Search", tint = NeonCyan, modifier = Modifier.size(20.dp))
+                },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { searchQuery = "" }) {
+                            Icon(Icons.Default.Clear, contentDescription = "Clear", tint = Color.White, modifier = Modifier.size(18.dp))
+                        }
+                    }
+                },
+                singleLine = true,
+                shape = RoundedCornerShape(14.dp),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color(0x16FFFFFF),
+                    unfocusedContainerColor = Color(0x0EFFFFFF),
+                    focusedBorderColor = NeonCyan,
+                    unfocusedBorderColor = Color(0x28FFFFFF),
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White
+                )
             )
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
-
-        // Search Bar for Brain Games
-        OutlinedTextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag("games_search_bar"),
-            placeholder = { Text("Search games, memory, reflex, math...", color = Color(0x70FFFFFF), fontSize = 13.sp) },
-            leadingIcon = {
-                Icon(Icons.Default.Search, contentDescription = "Search", tint = NeonCyan, modifier = Modifier.size(20.dp))
-            },
-            trailingIcon = {
-                if (searchQuery.isNotEmpty()) {
-                    IconButton(onClick = { searchQuery = "" }) {
-                        Icon(Icons.Default.Clear, contentDescription = "Clear", tint = Color.White, modifier = Modifier.size(18.dp))
+        // Zen Tree Shortcut Item
+        item(key = "zen_tree_shortcut") {
+            GlassCard(
+                modifier = Modifier.fillMaxWidth(),
+                glowColor = NeonLime,
+                glowRadius = 6.dp,
+                onClick = { onLaunchGame("zen_garden") }
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clip(CircleShape)
+                                .background(NeonLime.copy(alpha = 0.22f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Default.Eco, "Tree", tint = NeonLime, modifier = Modifier.size(20.dp))
+                        }
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Column {
+                            Text("Zen Tree Sanctuary", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.White)
+                            Text("Realistic tree growth, daily watering & fruit garden", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
                     }
+                    Icon(Icons.Default.ChevronRight, contentDescription = null, tint = NeonLime)
                 }
-            },
-            singleLine = true,
-            shape = RoundedCornerShape(14.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color(0x16FFFFFF),
-                unfocusedContainerColor = Color(0x0EFFFFFF),
-                focusedBorderColor = NeonCyan,
-                unfocusedBorderColor = Color(0x28FFFFFF),
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.White
-            )
-        )
+            }
+        }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // Zen Tree Sanctuary Shortcut (Analytics removed from game screen per request)
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            glowColor = NeonLime,
-            glowRadius = 6.dp,
-            onClick = { onLaunchGame("zen_garden") }
-        ) {
+        // Category Filter Chips Item
+        item(key = "category_chips_item") {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(NeonLime.copy(alpha = 0.22f)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(Icons.Default.Eco, "Tree", tint = NeonLime, modifier = Modifier.size(20.dp))
+                categories.forEach { cat ->
+                    val isSelected = selectedCategory == cat
+                    val chipColor = when (cat) {
+                        "Math & Logic" -> NeonCyan
+                        "Memory" -> NeonViolet
+                        "Reflex & Rhythm" -> NeonPink
+                        "Executive Focus" -> NeonLime
+                        else -> NeonAmber
                     }
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Column {
-                        Text("Zen Tree Sanctuary", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color.White)
-                        Text("Realistic tree growth, daily watering & fruit garden", fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
+
+                    GlassChip(
+                        label = cat,
+                        color = chipColor,
+                        selected = isSelected,
+                        onClick = { selectedCategory = cat }
+                    )
                 }
-                Icon(Icons.Default.ChevronRight, contentDescription = null, tint = NeonLime)
             }
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
-
-        // Category Filter Chips
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState()),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            categories.forEach { cat ->
-                val isSelected = selectedCategory == cat
-                val chipColor = when (cat) {
-                    "Math & Logic" -> NeonCyan
-                    "Memory" -> NeonViolet
-                    "Reflex & Rhythm" -> NeonPink
-                    "Executive Focus" -> NeonLime
-                    else -> NeonAmber
-                }
-
-                GlassChip(
-                    label = cat,
-                    color = chipColor,
-                    selected = isSelected,
-                    onClick = { selectedCategory = cat }
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Games List Cards
-        filteredGames.forEach { game ->
+        // Virtualized Game Cards: Only renders visible items, zero lag!
+        items(
+            items = filteredGames,
+            key = { it.id }
+        ) { game ->
             GlassCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 5.dp),
+                modifier = Modifier.fillMaxWidth(),
                 glowColor = game.accentColor,
-                glowRadius = 10.dp,
+                glowRadius = 8.dp,
                 onClick = { onLaunchGame(game.id) },
                 testTag = "game_card_${game.id}"
             ) {
@@ -282,13 +299,11 @@ fun BrainGamesScreen(
                         Spacer(modifier = Modifier.width(14.dp))
 
                         Column {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = game.title,
-                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                                    color = Color.White
-                                )
-                            }
+                            Text(
+                                text = game.title,
+                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                                color = Color.White
+                            )
                             Spacer(modifier = Modifier.height(2.dp))
                             Text(
                                 text = game.subtitle,
