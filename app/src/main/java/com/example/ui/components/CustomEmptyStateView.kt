@@ -96,7 +96,7 @@ fun CustomEmptyStateView(
                 GlassButton(
                     text = actionButtonText,
                     onClick = onActionClick,
-                    accentColor = NeonCyan
+                    isPrimary = true
                 )
             }
         }

@@ -124,13 +124,13 @@ fun DataSovereigntyBanner(
                     GlassButton(
                         text = "Privacy Policy",
                         onClick = onViewPolicy,
-                        accentColor = Color(0x99FFFFFF),
+                        isPrimary = false,
                         modifier = Modifier.weight(1f)
                     )
                     GlassButton(
                         text = "I Understand",
                         onClick = onAcknowledge,
-                        accentColor = NeonCyan,
+                        isPrimary = true,
                         modifier = Modifier.weight(1.2f)
                     )
                 }
