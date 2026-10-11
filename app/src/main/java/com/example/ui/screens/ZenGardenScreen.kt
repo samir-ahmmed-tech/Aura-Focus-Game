@@ -47,13 +47,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -176,6 +180,16 @@ fun ZenGardenScreen(
         var previewStage by remember { mutableStateOf<Int?>(null) }
         val activeStage = previewStage ?: tree.stage
 
+        // Dynamic organic growth animation: trunk elongates and leaves unfurl naturally
+        val growthAnim = remember { Animatable(1f) }
+        LaunchedEffect(activeStage) {
+            growthAnim.snapTo(0.2f)
+            growthAnim.animateTo(
+                targetValue = 1f,
+                animationSpec = tween(850, easing = FastOutSlowInEasing)
+            )
+        }
+
         val currentStageTitle = when (activeStage) {
             1 -> "Sacred Seed (বীজ)"
             2 -> "Living Sprout (অঙ্কুর)"
@@ -203,7 +217,7 @@ fun ZenGardenScreen(
                 modifier = Modifier.padding(18.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Header details (Clean - no water buttons inside card)
+                // Header details
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -236,18 +250,18 @@ fun ZenGardenScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Realistic Tree Canvas
+                // Realistic Botanical Tree Canvas
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(230.dp)
+                        .height(240.dp)
                         .clip(RoundedCornerShape(16.dp))
                         .background(
                             Brush.verticalGradient(
                                 listOf(
-                                    Color(0xFF061017),
-                                    Color(0xFF0B1F1E),
-                                    Color(0xFF112B22)
+                                    Color(0xFF040A10),
+                                    Color(0xFF08181A),
+                                    Color(0xFF0C241E)
                                 )
                             )
                         ),
@@ -258,193 +272,163 @@ fun ZenGardenScreen(
                         val h = size.height
                         val groundY = h * 0.82f
                         val centerX = w / 2f
-                        val sway = (swayAnim.value - 0.5f) * 8f
+                        val sway = (swayAnim.value - 0.5f) * 7f
+                        val growth = growthAnim.value
 
-                        // Draw organic rich soil mound
+                        // Fertile deep soil mound with organic gradation
                         drawOval(
                             brush = Brush.verticalGradient(
-                                listOf(Color(0xFF2E1F14), Color(0xFF1A110B))
+                                listOf(Color(0xFF2B1C12), Color(0xFF140D08))
                             ),
                             topLeft = Offset(0f, groundY - 18f),
-                            size = androidx.compose.ui.geometry.Size(w, h * 0.45f)
+                            size = Size(w, h * 0.45f)
                         )
-                        // Lush green moss on soil
+                        // Lush velvet moss layer on soil
                         drawOval(
                             brush = Brush.radialGradient(
-                                listOf(Color(0xFF1B4D3E), Color.Transparent),
-                                center = Offset(centerX, groundY),
-                                radius = w * 0.4f
+                                listOf(Color(0xFF1E523A), Color.Transparent),
+                                center = Offset(centerX, groundY - 2f),
+                                radius = w * 0.42f
                             ),
-                            topLeft = Offset(centerX - w * 0.35f, groundY - 14f),
-                            size = androidx.compose.ui.geometry.Size(w * 0.7f, 28f)
+                            topLeft = Offset(centerX - w * 0.36f, groundY - 15f),
+                            size = Size(w * 0.72f, 30f)
                         )
 
                         when (activeStage) {
                             1 -> {
-                                // STAGE 1: SEED (বীজ) - Glowing split seed pod in fertile soil with embryo sprout
-                                val seedY = groundY - 4f
+                                // STAGE 1: SEED (বীজ) - Cracked seed pod with emerging embryo rootlets & live sprout
+                                val seedY = groundY - 6f
 
-                                // Glowing golden halo around seed
+                                // Radiant vitality glow
                                 drawCircle(
                                     brush = Brush.radialGradient(
-                                        listOf(Color(0x80FFD700), Color.Transparent),
+                                        listOf(Color(0x70FFD54F), Color.Transparent),
                                         center = Offset(centerX, seedY),
-                                        radius = 35f
+                                        radius = 36f * growth
                                     ),
-                                    radius = 35f,
+                                    radius = 36f * growth,
                                     center = Offset(centerX, seedY)
                                 )
 
-                                // Seed shell (Chestnut brown)
+                                // Seed shell with organic wood grain
                                 drawOval(
                                     brush = Brush.verticalGradient(
                                         listOf(Color(0xFF8D5524), Color(0xFF4A2810))
                                     ),
                                     topLeft = Offset(centerX - 16f, seedY - 12f),
-                                    size = androidx.compose.ui.geometry.Size(32f, 24f)
+                                    size = Size(32f, 24f)
                                 )
-                                // Seed split highlight
                                 drawArc(
                                     color = Color(0xFFFFD54F),
                                     startAngle = 30f,
                                     sweepAngle = 120f,
                                     useCenter = false,
                                     topLeft = Offset(centerX - 14f, seedY - 10f),
-                                    size = androidx.compose.ui.geometry.Size(28f, 20f),
-                                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.5f)
+                                    size = Size(28f, 20f),
+                                    style = Stroke(width = 2.5f)
                                 )
 
-                                // Little embryo rootlets
+                                // Fine rootlets growing deep into soil
                                 val rootPath = Path().apply {
                                     moveTo(centerX - 2f, seedY + 8f)
-                                    quadraticBezierTo(centerX - 8f, seedY + 22f, centerX - 12f, seedY + 30f)
+                                    quadraticBezierTo(centerX - 8f, seedY + 18f * growth, centerX - 14f, seedY + 28f * growth)
                                     moveTo(centerX + 2f, seedY + 8f)
-                                    quadraticBezierTo(centerX + 8f, seedY + 20f, centerX + 10f, seedY + 28f)
+                                    quadraticBezierTo(centerX + 8f, seedY + 16f * growth, centerX + 12f, seedY + 26f * growth)
                                 }
-                                drawPath(rootPath, Color(0xCCFFFFFF), style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2f))
+                                drawPath(rootPath, Color(0xCCFFFFFF), style = Stroke(width = 1.8f))
 
-                                // Tender green germinating sprout shoot emerging upward
+                                // Sprouting tender shoot emerging upward
+                                val shootTopY = seedY - (42f * growth)
                                 val shootPath = Path().apply {
-                                    moveTo(centerX, seedY - 6f)
-                                    quadraticBezierTo(centerX + sway, seedY - 26f, centerX + sway, seedY - 40f)
+                                    moveTo(centerX, seedY - 4f)
+                                    quadraticBezierTo(centerX + sway * 0.5f, seedY - 22f * growth, centerX + sway, shootTopY)
                                 }
-                                drawPath(shootPath, Color(0xFF69F0AE), style = androidx.compose.ui.graphics.drawscope.Stroke(width = 3.5f))
+                                drawPath(shootPath, Color(0xFF69F0AE), style = Stroke(width = 3.2f))
 
-                                // Twin tiny cotyledon baby leaves
-                                drawOval(
-                                    color = Color(0xFF00E676),
-                                    topLeft = Offset(centerX + sway - 12f, seedY - 48f),
-                                    size = androidx.compose.ui.geometry.Size(12f, 8f)
+                                // Twin cotyledon baby leaves with veins
+                                val babyLeafLen = 14f * growth
+                                val babyLeafWid = 7f * growth
+                                drawRealisticSmallLeaf(
+                                    centerX = centerX + sway - 8f * growth,
+                                    centerY = shootTopY - 4f,
+                                    angleDeg = 150.0,
+                                    length = babyLeafLen,
+                                    width = babyLeafWid,
+                                    color = Color(0xFF00E676)
                                 )
-                                drawOval(
-                                    color = Color(0xFF76FF03),
-                                    topLeft = Offset(centerX + sway, seedY - 50f),
-                                    size = androidx.compose.ui.geometry.Size(13f, 9f)
+                                drawRealisticSmallLeaf(
+                                    centerX = centerX + sway + 8f * growth,
+                                    centerY = shootTopY - 5f,
+                                    angleDeg = 30.0,
+                                    length = babyLeafLen * 1.05f,
+                                    width = babyLeafWid * 1.05f,
+                                    color = Color(0xFF76FF03)
                                 )
                             }
 
                             2 -> {
                                 // STAGE 2: SPROUT / YOUNG SHOOT (অঙ্কুর / ছোট চারা)
+                                val stemTopY = groundY - (95f * growth)
                                 val stemPath = Path().apply {
                                     moveTo(centerX, groundY)
                                     cubicTo(
-                                        centerX - 8f, groundY - 35f,
-                                        centerX + 10f + sway, groundY - 65f,
-                                        centerX + sway, groundY - 95f
+                                        centerX - 6f, groundY - (35f * growth),
+                                        centerX + 8f + sway, groundY - (65f * growth),
+                                        centerX + sway, stemTopY
                                     )
                                 }
                                 drawPath(
                                     stemPath,
                                     brush = Brush.verticalGradient(listOf(Color(0xFF69F0AE), Color(0xFF2E7D32))),
-                                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = 5f)
+                                    style = Stroke(width = 4.5f)
                                 )
 
-                                // Multiple pairs of tender young leaves
-                                val leafPositions = listOf(
-                                    Triple(centerX - 4f, groundY - 40f, -25f),
-                                    Triple(centerX + 6f, groundY - 55f, 25f),
-                                    Triple(centerX - 2f, groundY - 75f, -35f),
-                                    Triple(centerX + sway, groundY - 95f, 0f)
+                                // Realistic small leaves along the stem
+                                val nodeConfigs = listOf(
+                                    Triple(centerX - 4f, groundY - (38f * growth), 150.0),
+                                    Triple(centerX + 6f, groundY - (55f * growth), 30.0),
+                                    Triple(centerX - 3f, groundY - (75f * growth), 140.0),
+                                    Triple(centerX + sway, stemTopY, 80.0)
                                 )
-
-                                leafPositions.forEach { (lx, ly, rot) ->
-                                    drawOval(
-                                        brush = Brush.radialGradient(
-                                            listOf(Color(0xFF76FF03), Color(0xFF1B5E20)),
-                                            center = Offset(lx, ly),
-                                            radius = 16f
-                                        ),
-                                        topLeft = Offset(lx - 12f, ly - 8f),
-                                        size = androidx.compose.ui.geometry.Size(24f, 16f)
+                                nodeConfigs.forEachIndexed { i, (lx, ly, ang) ->
+                                    val lScale = (0.7f + i * 0.1f) * growth
+                                    drawRealisticSmallLeaf(
+                                        centerX = lx,
+                                        centerY = ly,
+                                        angleDeg = ang + sway * 1.2,
+                                        length = 16f * lScale,
+                                        width = 8f * lScale,
+                                        color = if (i % 2 == 0) Color(0xFF2E7D32) else Color(0xFF76FF03)
                                     )
-                                    // Dewdrop on leaf
-                                    drawCircle(Color.White, radius = 2.5f, center = Offset(lx + 4f, ly - 2f))
+                                    // Sunlight dewdrop
+                                    drawCircle(Color.White, radius = 2f * growth, center = Offset(lx + 3f, ly - 2f))
                                 }
                             }
 
                             3 -> {
-                                // STAGE 3: GROWING YOUNG TREE (গাছ)
-                                val trunkPath = Path().apply {
-                                    moveTo(centerX - 10f, groundY)
-                                    lineTo(centerX - 6f, groundY - 60f)
-                                    lineTo(centerX - 20f + sway, groundY - 95f)
-                                    lineTo(centerX - 16f + sway, groundY - 98f)
-                                    lineTo(centerX - 2f, groundY - 65f)
-                                    lineTo(centerX + 18f + sway, groundY - 92f)
-                                    lineTo(centerX + 22f + sway, groundY - 89f)
-                                    lineTo(centerX + 4f, groundY - 55f)
-                                    lineTo(centerX + 8f, groundY)
-                                    close()
-                                }
-                                drawPath(
-                                    trunkPath,
-                                    brush = Brush.linearGradient(
-                                        listOf(Color(0xFF5D4037), Color(0xFF3E2723)),
-                                        start = Offset(centerX, groundY),
-                                        end = Offset(centerX, groundY - 100f)
-                                    )
-                                )
+                                // STAGE 3: GROWING YOUNG TREE (গাছ) - Real wood trunk & small leaf clusters
+                                val trunkHeight = 85f * growth
+                                val topY = groundY - trunkHeight
 
-                                // Lush green foliage clouds
-                                val foliageClusters = listOf(
-                                    Triple(centerX - 20f + sway, groundY - 105f, 26f),
-                                    Triple(centerX + 20f + sway, groundY - 102f, 26f),
-                                    Triple(centerX + sway, groundY - 125f, 32f)
-                                )
-                                foliageClusters.forEach { (fx, fy, rad) ->
-                                    drawCircle(
-                                        brush = Brush.radialGradient(
-                                            listOf(Color(0xFF00E676), Color(0xFF1B5E20)),
-                                            center = Offset(fx, fy),
-                                            radius = rad
-                                        ),
-                                        radius = rad,
-                                        center = Offset(fx, fy)
-                                    )
-                                }
-                            }
-
-                            4 -> {
-                                // STAGE 4: MAJESTIC MATURE TREE (পরিপূর্ণ বিশাল গাছ)
+                                // Tapered organic trunk with root flaring
                                 val trunkPath = Path().apply {
-                                    moveTo(centerX - 18f, groundY)
-                                    // Roots entering ground
-                                    quadraticBezierTo(centerX - 28f, groundY + 4f, centerX - 36f, groundY + 8f)
-                                    quadraticBezierTo(centerX - 18f, groundY - 2f, centerX - 12f, groundY - 20f)
-                                    lineTo(centerX - 10f, groundY - 60f)
-                                    // Left spreading major bough
-                                    quadraticBezierTo(centerX - 40f + sway, groundY - 90f, centerX - 55f + sway, groundY - 110f)
-                                    lineTo(centerX - 50f + sway, groundY - 114f)
-                                    quadraticBezierTo(centerX - 30f + sway, groundY - 96f, centerX - 4f, groundY - 75f)
-                                    // Right major bough
-                                    quadraticBezierTo(centerX + 35f + sway, groundY - 95f, centerX + 55f + sway, groundY - 108f)
-                                    lineTo(centerX + 58f + sway, groundY - 104f)
-                                    quadraticBezierTo(centerX + 30f + sway, groundY - 88f, centerX + 6f, groundY - 65f)
-                                    // Center bough
-                                    lineTo(centerX + 3f + sway, groundY - 115f)
-                                    lineTo(centerX - 3f + sway, groundY - 115f)
-                                    lineTo(centerX + 12f, groundY - 20f)
-                                    quadraticBezierTo(centerX + 25f, groundY - 2f, centerX + 34f, groundY + 8f)
+                                    moveTo(centerX - 12f, groundY)
+                                    quadraticBezierTo(centerX - 18f, groundY + 3f, centerX - 24f, groundY + 6f)
+                                    quadraticBezierTo(centerX - 14f, groundY - 4f, centerX - 8f, groundY - 18f)
+                                    lineTo(centerX - 5f, topY + 25f)
+                                    // Left bough
+                                    quadraticBezierTo(centerX - 16f + sway, topY + 12f, centerX - 26f + sway, topY - 5f)
+                                    lineTo(centerX - 22f + sway, topY - 8f)
+                                    lineTo(centerX - 2f, topY + 15f)
+                                    // Right bough
+                                    quadraticBezierTo(centerX + 18f + sway, topY + 10f, centerX + 28f + sway, topY - 6f)
+                                    lineTo(centerX + 24f + sway, topY - 9f)
+                                    lineTo(centerX + 3f, topY + 10f)
+                                    // Center tip
+                                    lineTo(centerX + 1f + sway, topY - 16f)
+                                    lineTo(centerX - 1f + sway, topY - 16f)
+                                    lineTo(centerX + 6f, groundY - 18f)
+                                    quadraticBezierTo(centerX + 14f, groundY - 4f, centerX + 22f, groundY + 6f)
                                     close()
                                 }
                                 drawPath(
@@ -454,88 +438,159 @@ fun ZenGardenScreen(
                                     )
                                 )
 
-                                // Dense majestic canopies with depth shading
-                                val denseCanopies = listOf(
-                                    Triple(centerX - 60f + sway, groundY - 125f, 34f),
-                                    Triple(centerX + 60f + sway, groundY - 120f, 34f),
-                                    Triple(centerX - 25f + sway, groundY - 145f, 38f),
-                                    Triple(centerX + 25f + sway, groundY - 145f, 38f),
-                                    Triple(centerX + sway, groundY - 158f, 44f)
+                                // Clusters of realistic small leaves on branch ends
+                                drawRealisticFoliageCluster(
+                                    cx = centerX - 26f + sway,
+                                    cy = topY - 10f,
+                                    clusterRadius = 24f,
+                                    leafScale = growth,
+                                    sway = sway
+                                )
+                                drawRealisticFoliageCluster(
+                                    cx = centerX + 28f + sway,
+                                    cy = topY - 12f,
+                                    clusterRadius = 24f,
+                                    leafScale = growth,
+                                    sway = sway
+                                )
+                                drawRealisticFoliageCluster(
+                                    cx = centerX + sway,
+                                    cy = topY - 26f,
+                                    clusterRadius = 28f,
+                                    leafScale = growth,
+                                    sway = sway
+                                )
+                            }
+
+                            4 -> {
+                                // STAGE 4: MAJESTIC MATURE TREE (পরিপূর্ণ বিশাল গাছ)
+                                val trunkHeight = 105f * growth
+                                val topY = groundY - trunkHeight
+
+                                // Mighty trunk with multiple root buttresses and bark striations
+                                val trunkPath = Path().apply {
+                                    moveTo(centerX - 20f, groundY)
+                                    quadraticBezierTo(centerX - 32f, groundY + 5f, centerX - 42f, groundY + 8f)
+                                    quadraticBezierTo(centerX - 22f, groundY - 4f, centerX - 14f, groundY - 25f)
+                                    lineTo(centerX - 11f, topY + 45f)
+                                    // Low-left major limb
+                                    quadraticBezierTo(centerX - 42f + sway, topY + 30f, centerX - 62f + sway, topY + 10f)
+                                    lineTo(centerX - 58f + sway, topY + 6f)
+                                    quadraticBezierTo(centerX - 35f + sway, topY + 22f, centerX - 6f, topY + 35f)
+                                    // High-left limb
+                                    quadraticBezierTo(centerX - 28f + sway, topY + 15f, centerX - 40f + sway, topY - 15f)
+                                    lineTo(centerX - 36f + sway, topY - 18f)
+                                    lineTo(centerX - 2f, topY + 20f)
+                                    // High-right limb
+                                    quadraticBezierTo(centerX + 26f + sway, topY + 15f, centerX + 38f + sway, topY - 16f)
+                                    lineTo(centerX + 34f + sway, topY - 19f)
+                                    lineTo(centerX + 3f, topY + 20f)
+                                    // Low-right major limb
+                                    quadraticBezierTo(centerX + 40f + sway, topY + 32f, centerX + 64f + sway, topY + 8f)
+                                    lineTo(centerX + 67f + sway, topY + 12f)
+                                    quadraticBezierTo(centerX + 36f + sway, topY + 25f, centerX + 8f, topY + 38f)
+                                    // Center trunk
+                                    lineTo(centerX + 2f + sway, topY - 24f)
+                                    lineTo(centerX - 2f + sway, topY - 24f)
+                                    lineTo(centerX + 14f, groundY - 25f)
+                                    quadraticBezierTo(centerX + 24f, groundY - 4f, centerX + 40f, groundY + 8f)
+                                    close()
+                                }
+                                drawPath(
+                                    trunkPath,
+                                    brush = Brush.verticalGradient(
+                                        listOf(Color(0xFF795548), Color(0xFF4E342E), Color(0xFF2B1A14))
+                                    )
                                 )
 
-                                denseCanopies.forEach { (cx, cy, r) ->
-                                    drawCircle(
-                                        brush = Brush.radialGradient(
-                                            listOf(Color(0xFF00E676), Color(0xFF2E7D32), Color(0xFF0D3319)),
-                                            center = Offset(cx, cy - r * 0.2f),
-                                            radius = r
-                                        ),
-                                        radius = r,
-                                        center = Offset(cx, cy)
-                                    )
-                                    // Bright foliage highlight
-                                    drawCircle(
-                                        color = Color(0x60B9F6CA),
-                                        radius = r * 0.45f,
-                                        center = Offset(cx - r * 0.2f, cy - r * 0.25f)
+                                // Bark striation texture lines
+                                drawLine(
+                                    color = Color(0x35000000),
+                                    start = Offset(centerX - 5f, groundY - 15f),
+                                    end = Offset(centerX - 3f, topY + 30f),
+                                    strokeWidth = 1.5f
+                                )
+                                drawLine(
+                                    color = Color(0x40FFFFFF),
+                                    start = Offset(centerX + 4f, groundY - 18f),
+                                    end = Offset(centerX + 2f, topY + 25f),
+                                    strokeWidth = 1.2f
+                                )
+
+                                // Dense layered canopy of realistic small leaves (Over 140 individual leaves across clusters)
+                                val clusterSpots = listOf(
+                                    Triple(centerX - 68f + sway, topY + 5f, 24f),
+                                    Triple(centerX + 68f + sway, topY + 4f, 24f),
+                                    Triple(centerX - 46f + sway, topY - 20f, 28f),
+                                    Triple(centerX + 44f + sway, topY - 22f, 28f),
+                                    Triple(centerX - 22f + sway, topY - 40f, 30f),
+                                    Triple(centerX + 22f + sway, topY - 42f, 30f),
+                                    Triple(centerX + sway, topY - 52f, 34f)
+                                )
+                                clusterSpots.forEach { (cx, cy, rad) ->
+                                    drawRealisticFoliageCluster(
+                                        cx = cx,
+                                        cy = cy,
+                                        clusterRadius = rad,
+                                        leafScale = growth,
+                                        sway = sway
                                     )
                                 }
                             }
 
                             5 -> {
                                 // STAGE 5: FRUIT / FOOD BEARING TREE (Food / ফল)
-                                // Full majestic tree loaded with edible glowing Aura Fruits!
+                                val trunkHeight = 105f * growth
+                                val topY = groundY - trunkHeight
+
                                 val trunkPath = Path().apply {
-                                    moveTo(centerX - 16f, groundY)
-                                    lineTo(centerX - 10f, groundY - 65f)
-                                    quadraticBezierTo(centerX - 45f + sway, groundY - 95f, centerX - 60f + sway, groundY - 115f)
-                                    lineTo(centerX - 55f + sway, groundY - 118f)
-                                    quadraticBezierTo(centerX - 30f + sway, groundY - 98f, centerX - 4f, groundY - 80f)
-                                    quadraticBezierTo(centerX + 35f + sway, groundY - 98f, centerX + 60f + sway, groundY - 115f)
-                                    lineTo(centerX + 64f + sway, groundY - 112f)
-                                    quadraticBezierTo(centerX + 30f + sway, groundY - 90f, centerX + 6f, groundY - 70f)
-                                    lineTo(centerX + 14f, groundY)
+                                    moveTo(centerX - 18f, groundY)
+                                    lineTo(centerX - 10f, groundY - 30f)
+                                    lineTo(centerX - 8f, topY + 40f)
+                                    quadraticBezierTo(centerX - 45f + sway, topY + 22f, centerX - 62f + sway, topY + 8f)
+                                    lineTo(centerX - 58f + sway, topY + 4f)
+                                    lineTo(centerX - 4f, topY + 26f)
+                                    quadraticBezierTo(centerX + 35f + sway, topY + 24f, centerX + 62f + sway, topY + 6f)
+                                    lineTo(centerX + 65f + sway, topY + 10f)
+                                    lineTo(centerX + 6f, topY + 30f)
+                                    lineTo(centerX + 1f + sway, topY - 22f)
+                                    lineTo(centerX - 1f + sway, topY - 22f)
+                                    lineTo(centerX + 12f, groundY - 30f)
+                                    lineTo(centerX + 16f, groundY)
                                     close()
                                 }
                                 drawPath(trunkPath, Brush.verticalGradient(listOf(Color(0xFF795548), Color(0xFF3E2723))))
 
-                                val canopies = listOf(
-                                    Triple(centerX - 55f + sway, groundY - 128f, 35f),
-                                    Triple(centerX + 55f + sway, groundY - 125f, 35f),
-                                    Triple(centerX - 22f + sway, groundY - 148f, 40f),
-                                    Triple(centerX + 22f + sway, groundY - 148f, 40f),
-                                    Triple(centerX + sway, groundY - 160f, 46f)
+                                // Full realistic foliage clusters
+                                val matureClusters = listOf(
+                                    Triple(centerX - 62f + sway, topY + 5f, 24f),
+                                    Triple(centerX + 62f + sway, topY + 4f, 24f),
+                                    Triple(centerX - 42f + sway, topY - 18f, 28f),
+                                    Triple(centerX + 40f + sway, topY - 20f, 28f),
+                                    Triple(centerX - 20f + sway, topY - 38f, 30f),
+                                    Triple(centerX + 20f + sway, topY - 40f, 30f),
+                                    Triple(centerX + sway, topY - 50f, 34f)
                                 )
-
-                                canopies.forEach { (cx, cy, r) ->
-                                    drawCircle(
-                                        brush = Brush.radialGradient(
-                                            listOf(Color(0xFF00E676), Color(0xFF1B5E20)),
-                                            center = Offset(cx, cy),
-                                            radius = r
-                                        ),
-                                        radius = r,
-                                        center = Offset(cx, cy)
-                                    )
+                                matureClusters.forEach { (cx, cy, rad) ->
+                                    drawRealisticFoliageCluster(cx, cy, rad, growth, sway)
                                 }
 
-                                // Glowing ripe Aura Fruits (Food / ফল) hanging from branches!
+                                // Glowing ripe Aura Fruits hanging naturally among leaves
                                 val fruitSpots = listOf(
-                                    Offset(centerX - 62f + sway, groundY - 112f),
-                                    Offset(centerX - 35f + sway, groundY - 132f),
-                                    Offset(centerX - 15f + sway, groundY - 118f),
-                                    Offset(centerX + 12f + sway, groundY - 122f),
-                                    Offset(centerX + 38f + sway, groundY - 135f),
-                                    Offset(centerX + 62f + sway, groundY - 110f),
-                                    Offset(centerX - 5f + sway, groundY - 148f),
-                                    Offset(centerX + 25f + sway, groundY - 152f)
+                                    Offset(centerX - 60f + sway, topY + 20f),
+                                    Offset(centerX - 38f + sway, topY - 4f),
+                                    Offset(centerX - 16f + sway, topY - 20f),
+                                    Offset(centerX + 14f + sway, topY - 22f),
+                                    Offset(centerX + 38f + sway, topY - 6f),
+                                    Offset(centerX + 60f + sway, topY + 18f),
+                                    Offset(centerX - 4f + sway, topY - 32f),
+                                    Offset(centerX + 26f + sway, topY - 34f)
                                 )
-
                                 fruitSpots.forEach { fPos ->
                                     // Stem
                                     drawLine(
                                         color = Color(0xFF4E342E),
-                                        start = Offset(fPos.x, fPos.y - 12f),
+                                        start = Offset(fPos.x, fPos.y - 10f),
                                         end = fPos,
                                         strokeWidth = 2f
                                     )
@@ -544,102 +599,137 @@ fun ZenGardenScreen(
                                         brush = Brush.radialGradient(
                                             listOf(Color(0x90FF1744), Color.Transparent),
                                             center = fPos,
-                                            radius = 16f
+                                            radius = 16f * growth
                                         ),
-                                        radius = 16f,
+                                        radius = 16f * growth,
                                         center = fPos
                                     )
-                                    // Apple/Fruit body
+                                    // Apple body
                                     drawCircle(
                                         brush = Brush.radialGradient(
                                             listOf(Color(0xFFFF5252), Color(0xFFD50000)),
                                             center = Offset(fPos.x - 2f, fPos.y - 2f),
-                                            radius = 9f
+                                            radius = 8.5f * growth
                                         ),
-                                        radius = 8.5f,
+                                        radius = 8f * growth,
                                         center = fPos
                                     )
                                     // Specular shine
-                                    drawCircle(Color.White, radius = 2.2f, center = Offset(fPos.x - 3f, fPos.y - 3f))
-                                    // Tiny green fruit leaf
-                                    drawOval(
-                                        color = Color(0xFF76FF03),
-                                        topLeft = Offset(fPos.x, fPos.y - 14f),
-                                        size = androidx.compose.ui.geometry.Size(7f, 4f)
+                                    drawCircle(Color.White, radius = 2f * growth, center = Offset(fPos.x - 2.5f, fPos.y - 2.5f))
+                                    // Small fruit leaf
+                                    drawRealisticSmallLeaf(
+                                        centerX = fPos.x + 3f,
+                                        centerY = fPos.y - 10f,
+                                        angleDeg = 45.0,
+                                        length = 8f * growth,
+                                        width = 4f * growth,
+                                        color = Color(0xFF76FF03)
                                     )
                                 }
                             }
 
                             else -> {
                                 // STAGE 6: FULL ZEN SANCTUARY GARDEN (বাগান)
-                                // Multi-tree garden with pond, stepping stones, lanterns & fruit orchards
+                                // Multi-tree sanctuary: Bonsai master tree + Weeping Sakura + Spruce + Koi Pond + Lantern
 
-                                // Background Misty Trees
-                                drawCircle(Color(0x55E91E63), radius = 35f, center = Offset(w * 0.18f, groundY - 65f)) // Sakura
-                                drawCircle(Color(0x5500E676), radius = 38f, center = Offset(w * 0.82f, groundY - 70f)) // Emerald Pine
-                                drawCircle(Color(0x4000E5FF), radius = 30f, center = Offset(w * 0.32f, groundY - 80f)) // Blue Spruce
+                                // Sakura Tree (Left) with delicate small pink leaves
+                                val sakuraTrunk = Path().apply {
+                                    moveTo(w * 0.16f - 8f, groundY)
+                                    quadraticBezierTo(w * 0.14f, groundY - 30f, w * 0.12f, groundY - 60f)
+                                    lineTo(w * 0.14f, groundY - 60f)
+                                    lineTo(w * 0.16f + 8f, groundY)
+                                    close()
+                                }
+                                drawPath(sakuraTrunk, Brush.verticalGradient(listOf(Color(0xFF5D4037), Color(0xFF2E1C14))))
+                                drawRealisticFoliageCluster(
+                                    cx = w * 0.12f + sway * 0.6f,
+                                    cy = groundY - 70f,
+                                    clusterRadius = 26f,
+                                    leafScale = growth,
+                                    sway = sway,
+                                    isSakura = true
+                                )
+
+                                // Emerald Spruce Tree (Right)
+                                val pineTrunk = Path().apply {
+                                    moveTo(w * 0.84f - 6f, groundY)
+                                    lineTo(w * 0.84f, groundY - 75f)
+                                    lineTo(w * 0.84f + 6f, groundY)
+                                    close()
+                                }
+                                drawPath(pineTrunk, Brush.verticalGradient(listOf(Color(0xFF4E342E), Color(0xFF1B0000))))
+                                drawRealisticFoliageCluster(
+                                    cx = w * 0.84f + sway * 0.5f,
+                                    cy = groundY - 78f,
+                                    clusterRadius = 28f,
+                                    leafScale = growth,
+                                    sway = sway
+                                )
 
                                 // Reflective Koi Pond
                                 drawOval(
                                     brush = Brush.radialGradient(
-                                        listOf(Color(0xAA00F2FE), Color(0x600D47A1), Color.Transparent),
-                                        center = Offset(centerX + 60f, groundY + 12f),
+                                        listOf(Color(0xBB00F2FE), Color(0x600D47A1), Color.Transparent),
+                                        center = Offset(centerX + 62f, groundY + 12f),
                                         radius = 65f
                                     ),
-                                    topLeft = Offset(centerX + 10f, groundY - 4f),
-                                    size = androidx.compose.ui.geometry.Size(110f, 32f)
+                                    topLeft = Offset(centerX + 12f, groundY - 4f),
+                                    size = Size(108f, 32f)
                                 )
-                                // Pond Lily Pad
+                                // Pond Lily Pad & Lotus Flower
                                 drawCircle(Color(0xFF00E676), radius = 6f, center = Offset(centerX + 50f, groundY + 10f))
-                                drawCircle(Color(0xFFFF4081), radius = 3.5f, center = Offset(centerX + 52f, groundY + 9f)) // Lotus blossom
+                                drawCircle(Color(0xFFFF4081), radius = 3.5f, center = Offset(centerX + 52f, groundY + 9f))
 
-                                // Stone Pagoda Lantern on the bank
+                                // Stone Pagoda Lantern with warm golden glow
                                 val lx = centerX - 80f
                                 val ly = groundY - 20f
-                                drawRect(Color(0xFF90A4AE), topLeft = Offset(lx - 4f, ly), size = androidx.compose.ui.geometry.Size(8f, 16f))
-                                drawRect(Color(0xFFFFD54F), topLeft = Offset(lx - 6f, ly - 8f), size = androidx.compose.ui.geometry.Size(12f, 8f)) // Lantern light
-                                drawOval(Color(0xFF546E7A), topLeft = Offset(lx - 10f, ly - 12f), size = androidx.compose.ui.geometry.Size(20f, 6f)) // Roof
+                                drawRect(Color(0xFF90A4AE), topLeft = Offset(lx - 4f, ly), size = Size(8f, 16f))
+                                drawRect(Color(0xFFFFD54F), topLeft = Offset(lx - 6f, ly - 8f), size = Size(12f, 8f))
+                                drawOval(Color(0xFF546E7A), topLeft = Offset(lx - 10f, ly - 12f), size = Size(20f, 6f))
 
                                 // Main Master Bonsai Tree in center
-                                val trunkPath = Path().apply {
+                                val bonsaiTrunk = Path().apply {
                                     moveTo(centerX - 14f, groundY)
-                                    lineTo(centerX - 8f, groundY - 65f)
-                                    quadraticBezierTo(centerX - 40f + sway, groundY - 95f, centerX - 55f + sway, groundY - 110f)
-                                    lineTo(centerX - 50f + sway, groundY - 114f)
-                                    quadraticBezierTo(centerX - 25f + sway, groundY - 95f, centerX - 2f, groundY - 80f)
-                                    quadraticBezierTo(centerX + 30f + sway, groundY - 95f, centerX + 50f + sway, groundY - 110f)
-                                    lineTo(centerX + 54f + sway, groundY - 106f)
-                                    quadraticBezierTo(centerX + 25f + sway, groundY - 90f, centerX + 6f, groundY - 70f)
+                                    lineTo(centerX - 8f, groundY - 55f)
+                                    quadraticBezierTo(centerX - 38f + sway, groundY - 80f, centerX - 50f + sway, groundY - 95f)
+                                    lineTo(centerX - 46f + sway, groundY - 98f)
+                                    quadraticBezierTo(centerX - 22f + sway, groundY - 80f, centerX - 2f, groundY - 68f)
+                                    quadraticBezierTo(centerX + 28f + sway, groundY - 80f, centerX + 48f + sway, groundY - 95f)
+                                    lineTo(centerX + 52f + sway, groundY - 92f)
+                                    quadraticBezierTo(centerX + 24f + sway, groundY - 76f, centerX + 6f, groundY - 60f)
                                     lineTo(centerX + 12f, groundY)
                                     close()
                                 }
-                                drawPath(trunkPath, Brush.verticalGradient(listOf(Color(0xFF6D4C41), Color(0xFF271510))))
+                                drawPath(bonsaiTrunk, Brush.verticalGradient(listOf(Color(0xFF6D4C41), Color(0xFF271510))))
 
-                                val gardenCanopies = listOf(
-                                    Triple(centerX - 50f + sway, groundY - 120f, 32f),
-                                    Triple(centerX + 50f + sway, groundY - 118f, 32f),
-                                    Triple(centerX + sway, groundY - 145f, 40f)
+                                drawRealisticFoliageCluster(
+                                    cx = centerX - 48f + sway,
+                                    cy = groundY - 105f,
+                                    clusterRadius = 26f,
+                                    leafScale = growth,
+                                    sway = sway
                                 )
-                                gardenCanopies.forEach { (cx, cy, r) ->
-                                    drawCircle(
-                                        brush = Brush.radialGradient(
-                                            listOf(Color(0xFF00E676), Color(0xFF1B5E20)),
-                                            center = Offset(cx, cy),
-                                            radius = r
-                                        ),
-                                        radius = r,
-                                        center = Offset(cx, cy)
-                                    )
-                                }
+                                drawRealisticFoliageCluster(
+                                    cx = centerX + 48f + sway,
+                                    cy = groundY - 103f,
+                                    clusterRadius = 26f,
+                                    leafScale = growth,
+                                    sway = sway
+                                )
+                                drawRealisticFoliageCluster(
+                                    cx = centerX + sway,
+                                    cy = groundY - 122f,
+                                    clusterRadius = 30f,
+                                    leafScale = growth,
+                                    sway = sway
+                                )
 
-                                // Fruits in Garden
+                                // Aura fruits in Sanctuary Garden
                                 listOf(
-                                    Offset(centerX - 45f + sway, groundY - 110f),
-                                    Offset(centerX - 15f + sway, groundY - 130f),
-                                    Offset(centerX + 15f + sway, groundY - 130f),
-                                    Offset(centerX + 45f + sway, groundY - 110f)
+                                    Offset(centerX - 44f + sway, groundY - 96f),
+                                    Offset(centerX + 44f + sway, groundY - 94f)
                                 ).forEach { fPos ->
-                                    drawCircle(Color(0xFFFF1744), radius = 7f, center = fPos)
+                                    drawCircle(Color(0xFFFF1744), radius = 6.5f, center = fPos)
                                     drawCircle(Color.White, radius = 2f, center = Offset(fPos.x - 2f, fPos.y - 2f))
                                 }
                             }
@@ -844,5 +934,105 @@ fun ZenGardenScreen(
         }
 
         Spacer(modifier = Modifier.height(28.dp))
+    }
+}
+
+// =============================================================================
+// REALISTIC BOTANICAL TREE DRAWING HELPERS (Leaf clusters, fractal limbs & veins)
+// =============================================================================
+
+private fun DrawScope.drawRealisticSmallLeaf(
+    centerX: Float,
+    centerY: Float,
+    angleDeg: Double,
+    length: Float,
+    width: Float,
+    color: Color,
+    veinColor: Color = Color(0x60FFFFFF)
+) {
+    val rad = Math.toRadians(angleDeg)
+    val cos = Math.cos(rad).toFloat()
+    val sin = Math.sin(rad).toFloat()
+
+    val halfLen = length * 0.5f
+    val tipX = centerX + cos * halfLen
+    val tipY = centerY + sin * halfLen
+    val baseX = centerX - cos * halfLen
+    val baseY = centerY - sin * halfLen
+
+    val perpX = -sin * (width * 0.5f)
+    val perpY = cos * (width * 0.5f)
+
+    val leafPath = Path().apply {
+        moveTo(baseX, baseY)
+        quadraticBezierTo(centerX + perpX, centerY + perpY, tipX, tipY)
+        quadraticBezierTo(centerX - perpX, centerY - perpY, baseX, baseY)
+        close()
+    }
+    drawPath(leafPath, color)
+    drawLine(veinColor, Offset(baseX, baseY), Offset(tipX, tipY), strokeWidth = 0.8f)
+}
+
+private fun DrawScope.drawRealisticFoliageCluster(
+    cx: Float,
+    cy: Float,
+    clusterRadius: Float,
+    leafScale: Float,
+    sway: Float,
+    isSakura: Boolean = false
+) {
+    if (leafScale <= 0.05f) return
+    val scaledRad = clusterRadius * leafScale
+    val leafLen = (9.5f * leafScale).coerceAtLeast(3f)
+    val leafWid = (4.8f * leafScale).coerceAtLeast(1.8f)
+
+    // Botanical multi-layer palette: Shadow under-leaves, lush body, vibrant sunlit highlights
+    val underColor = if (isSakura) Color(0xFFAD1457) else Color(0xFF1B5E20)
+    val midColor1 = if (isSakura) Color(0xFFD81B60) else Color(0xFF2E7D32)
+    val midColor2 = if (isSakura) Color(0xFFF06292) else Color(0xFF388E3C)
+    val hiColor = if (isSakura) Color(0xFFF8BBD0) else Color(0xFF76FF03)
+    val veinCol = if (isSakura) Color(0x40FFFFFF) else Color(0x45FFFFFF)
+
+    val offsets = listOf(
+        // Layer 1: Under-layer / Shadow core
+        Triple(0f, 0f, 0.0),
+        Triple(-scaledRad * 0.40f, -scaledRad * 0.20f, 35.0),
+        Triple(scaledRad * 0.40f, -scaledRad * 0.25f, -40.0),
+        Triple(0f, -scaledRad * 0.50f, 90.0),
+        Triple(-scaledRad * 0.30f, scaledRad * 0.30f, 130.0),
+        Triple(scaledRad * 0.30f, scaledRad * 0.28f, -125.0),
+        // Layer 2: Main canopy body
+        Triple(-scaledRad * 0.60f, 0f, 15.0),
+        Triple(scaledRad * 0.60f, 0f, -20.0),
+        Triple(-scaledRad * 0.20f, -scaledRad * 0.65f, 75.0),
+        Triple(scaledRad * 0.22f, -scaledRad * 0.62f, -80.0),
+        Triple(-scaledRad * 0.50f, -scaledRad * 0.42f, 50.0),
+        Triple(scaledRad * 0.50f, -scaledRad * 0.42f, -55.0),
+        // Layer 3: Sunlit tips & outer budding leaves
+        Triple(-scaledRad * 0.78f, -scaledRad * 0.15f, 25.0),
+        Triple(scaledRad * 0.78f, -scaledRad * 0.15f, -30.0),
+        Triple(0f, -scaledRad * 0.85f, 95.0),
+        Triple(-scaledRad * 0.32f, -scaledRad * 0.80f, 65.0),
+        Triple(scaledRad * 0.32f, -scaledRad * 0.80f, -70.0)
+    )
+
+    offsets.forEachIndexed { idx, (ox, oy, angle) ->
+        val swayOffset = sway * (0.35f + (idx % 3) * 0.25f)
+        val lx = cx + ox + swayOffset
+        val ly = cy + oy
+        val col = when {
+            idx < 6 -> underColor
+            idx < 12 -> if (idx % 2 == 0) midColor1 else midColor2
+            else -> hiColor
+        }
+        drawRealisticSmallLeaf(
+            centerX = lx,
+            centerY = ly,
+            angleDeg = angle + sway * 1.5,
+            length = leafLen,
+            width = leafWid,
+            color = col,
+            veinColor = veinCol
+        )
     }
 }

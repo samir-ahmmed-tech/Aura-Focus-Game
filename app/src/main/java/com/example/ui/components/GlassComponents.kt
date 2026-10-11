@@ -79,10 +79,12 @@ import com.example.util.AuraSoundManager
  * Reusable Glassmorphism Card surface with customizable frosted glass gradient,
  * background blur simulation, translucent border, glowing highlights, and Material3 surface integration.
  */
+val DefaultGlassCardShape = RoundedCornerShape(20.dp)
+
 @Composable
 fun GlassCard(
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(20.dp),
+    shape: Shape = DefaultGlassCardShape,
     borderBrush: Brush? = null,
     borderWidth: Dp = 1.dp,
     glowColor: Color = Color.Transparent,
@@ -94,63 +96,47 @@ fun GlassCard(
     val themeMode = LocalAuraThemeMode.current
     val view = LocalView.current
     val touchSoundEnabled = LocalTouchSoundEnabled.current
-    val backdropStyle = LocalCardBackdropStyle.current
     val isLight = themeMode == AuraThemeMode.SOLAR_LIGHT
 
-    // Theme-specific frosted glass gradient backgrounds
-    val baseBgBrush = when (themeMode) {
-        AuraThemeMode.SOLAR_LIGHT -> Brush.verticalGradient(
-            colors = listOf(
-                Color(0xEEFFFFFF),
-                Color(0xCCF8FAFC)
+    // Cache theme brushes to avoid recreating objects on each frame
+    val baseBgBrush = remember(themeMode) {
+        when (themeMode) {
+            AuraThemeMode.SOLAR_LIGHT -> Brush.verticalGradient(
+                listOf(Color(0xEEFFFFFF), Color(0xCCF8FAFC))
             )
-        )
-        AuraThemeMode.MIDNIGHT_EMERALD -> Brush.verticalGradient(
-            colors = listOf(
-                Color(0x2800E676),
-                Color(0x120A1F1B),
-                Color(0x0A061412)
+            AuraThemeMode.MIDNIGHT_EMERALD -> Brush.verticalGradient(
+                listOf(Color(0x2800E676), Color(0x120A1F1B), Color(0x0A061412))
             )
-        )
-        AuraThemeMode.SUNSET_OBSIDIAN -> Brush.verticalGradient(
-            colors = listOf(
-                Color(0x2AFFFF80),
-                Color(0x18FF6E7F),
-                Color(0x0E120B10)
+            AuraThemeMode.SUNSET_OBSIDIAN -> Brush.verticalGradient(
+                listOf(Color(0x2AFFFF80), Color(0x18FF6E7F), Color(0x0E120B10))
             )
-        )
-        AuraThemeMode.CYBER_NEON -> Brush.verticalGradient(
-            colors = listOf(
-                Color(0x2600FF87),
-                Color(0x10FF2A85),
-                Color(0x0C0C0E14)
+            AuraThemeMode.CYBER_NEON -> Brush.verticalGradient(
+                listOf(Color(0x2600FF87), Color(0x10FF2A85), Color(0x0C0C0E14))
             )
-        )
-        AuraThemeMode.AURORA_DARK -> Brush.verticalGradient(
-            colors = listOf(
-                Color(0x2400F2FE),
-                Color(0x167F00FF),
-                Color(0x0D10121D)
+            AuraThemeMode.AURORA_DARK -> Brush.verticalGradient(
+                listOf(Color(0x2400F2FE), Color(0x167F00FF), Color(0x0D10121D))
             )
-        )
+        }
     }
 
-    val defaultBorderBrush = when (themeMode) {
-        AuraThemeMode.SOLAR_LIGHT -> Brush.verticalGradient(
-            listOf(Color(0x400284C7), Color(0x150F172A))
-        )
-        AuraThemeMode.MIDNIGHT_EMERALD -> Brush.verticalGradient(
-            listOf(Color(0x6000E676), Color(0x1800E676), Color(0x3500E5FF))
-        )
-        AuraThemeMode.SUNSET_OBSIDIAN -> Brush.verticalGradient(
-            listOf(Color(0x65FF6E7F), Color(0x20FFAB40), Color(0x30FF6E7F))
-        )
-        AuraThemeMode.CYBER_NEON -> Brush.verticalGradient(
-            listOf(Color(0x6000FF87), Color(0x15FF2A85), Color(0x4000FF87))
-        )
-        AuraThemeMode.AURORA_DARK -> Brush.verticalGradient(
-            listOf(Color(0x5500F2FE), Color(0x18FFFFFF), Color(0x407F00FF))
-        )
+    val defaultBorderBrush = remember(themeMode) {
+        when (themeMode) {
+            AuraThemeMode.SOLAR_LIGHT -> Brush.verticalGradient(
+                listOf(Color(0x400284C7), Color(0x150F172A))
+            )
+            AuraThemeMode.MIDNIGHT_EMERALD -> Brush.verticalGradient(
+                listOf(Color(0x6000E676), Color(0x1800E676), Color(0x3500E5FF))
+            )
+            AuraThemeMode.SUNSET_OBSIDIAN -> Brush.verticalGradient(
+                listOf(Color(0x65FF6E7F), Color(0x20FFAB40), Color(0x30FF6E7F))
+            )
+            AuraThemeMode.CYBER_NEON -> Brush.verticalGradient(
+                listOf(Color(0x6000FF87), Color(0x15FF2A85), Color(0x4000FF87))
+            )
+            AuraThemeMode.AURORA_DARK -> Brush.verticalGradient(
+                listOf(Color(0x5500F2FE), Color(0x18FFFFFF), Color(0x407F00FF))
+            )
+        }
     }
 
     val finalBorderBrush = borderBrush ?: defaultBorderBrush
@@ -170,110 +156,23 @@ fun GlassCard(
         Modifier
     }
 
+    val drawBehindModifier = if (glowRadius > 0.dp && glowColor != Color.Transparent) {
+        Modifier.drawBehind {
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(glowColor.copy(alpha = 0.22f), Color.Transparent),
+                    radius = size.maxDimension * 0.7f
+                )
+            )
+        }
+    } else {
+        Modifier
+    }
+
     Box(
         modifier = modifier
             .testTag(testTag)
-            // Simulated frosted background blur depth halo with customizable backdrop style
-            .drawBehind {
-                val haloColor = if (glowRadius > 0.dp && glowColor != Color.Transparent) glowColor.copy(alpha = 0.28f) else Color(0x0AFFFFFF)
-                when (backdropStyle) {
-                    CardBackdropStyle.OFF -> {
-                        // Completely OFF: do not draw any halo or shape behind!
-                    }
-                    CardBackdropStyle.CIRCLE_HALO -> {
-                        drawCircle(
-                            brush = Brush.radialGradient(
-                                colors = listOf(haloColor, Color.Transparent),
-                                radius = size.maxDimension * 0.75f
-                            )
-                        )
-                    }
-                    CardBackdropStyle.CYBER_GRID -> {
-                        val step = size.maxDimension * 0.18f
-                        var x = 0f
-                        while (x <= size.width) {
-                            drawLine(
-                                color = haloColor.copy(alpha = 0.12f),
-                                start = Offset(x, 0f),
-                                end = Offset(x, size.height),
-                                strokeWidth = 1.5f
-                            )
-                            x += step
-                        }
-                        var y = 0f
-                        while (y <= size.height) {
-                            drawLine(
-                                color = haloColor.copy(alpha = 0.12f),
-                                start = Offset(0f, y),
-                                end = Offset(size.width, y),
-                                strokeWidth = 1.5f
-                            )
-                            y += step
-                        }
-                    }
-                    CardBackdropStyle.HEX_PULSE -> {
-                        val cx = size.width / 2f
-                        val cy = size.height / 2f
-                        val r = size.maxDimension * 0.6f
-                        val hexPath = Path().apply {
-                            for (i in 0 until 6) {
-                                val angle = (i * 60 - 30) * (Math.PI / 180.0)
-                                val x = cx + (r * Math.cos(angle)).toFloat()
-                                val y = cy + (r * Math.sin(angle)).toFloat()
-                                if (i == 0) moveTo(x, y) else lineTo(x, y)
-                            }
-                            close()
-                        }
-                        drawPath(
-                            path = hexPath,
-                            brush = Brush.radialGradient(
-                                colors = listOf(haloColor, Color.Transparent),
-                                center = Offset(cx, cy),
-                                radius = r
-                            )
-                        )
-                    }
-                    CardBackdropStyle.AURORA_BEAM -> {
-                        drawRect(
-                            brush = Brush.linearGradient(
-                                colors = listOf(
-                                    Color.Transparent,
-                                    haloColor.copy(alpha = 0.35f),
-                                    haloColor.copy(alpha = 0.15f),
-                                    Color.Transparent
-                                ),
-                                start = Offset(0f, size.height * 0.2f),
-                                end = Offset(size.width, size.height * 0.8f)
-                            )
-                        )
-                    }
-                    CardBackdropStyle.NEBULA_WAVE -> {
-                        val cx = size.width / 2f
-                        val cy = size.height / 2f
-                        val wavePath = Path().apply {
-                            moveTo(0f, cy * 0.5f)
-                            cubicTo(cx * 0.5f, 0f, cx * 1.5f, cy, size.width, cy * 0.6f)
-                            lineTo(size.width, size.height)
-                            cubicTo(cx * 1.5f, size.height * 0.8f, cx * 0.5f, size.height * 1.1f, 0f, size.height * 0.9f)
-                            close()
-                        }
-                        drawPath(
-                            path = wavePath,
-                            brush = Brush.linearGradient(
-                                colors = listOf(haloColor, haloColor.copy(alpha = 0.05f), Color.Transparent),
-                                start = androidx.compose.ui.geometry.Offset(0f, 0f),
-                                end = androidx.compose.ui.geometry.Offset(size.width, size.height)
-                            )
-                        )
-                    }
-                }
-            }
-            .shadow(
-                elevation = if (isLight) 6.dp else 4.dp,
-                shape = shape,
-                ambientColor = if (isLight) Color(0x20000000) else Color(0x40000000),
-                spotColor = if (isLight) Color(0x15000000) else Color(0x25000000)
-            )
+            .then(drawBehindModifier)
             .clip(shape)
             .background(baseBgBrush)
             .border(borderWidth, finalBorderBrush, shape)

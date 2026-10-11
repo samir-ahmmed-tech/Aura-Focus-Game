@@ -171,9 +171,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             var currentTheme by remember { mutableStateOf(AuraThemeMode.AURORA_DARK) }
-            var uiScale by remember { mutableFloatStateOf(1.0f) }
+            var uiScale by remember { mutableFloatStateOf(0.85f) }
             var touchSoundEnabled by remember { mutableStateOf(true) }
-            var cardBackdropStyle by remember { mutableStateOf(CardBackdropStyle.CIRCLE_HALO) }
+            var cardBackdropStyle by remember { mutableStateOf(CardBackdropStyle.OFF) }
 
             AuraFocusTheme(
                 themeMode = currentTheme,
@@ -234,17 +234,6 @@ fun AuraFocusApp(
     var activeToolId by remember { mutableStateOf<String?>(null) }
     var showAnalyticsScreen by remember { mutableStateOf(false) }
 
-    // Daily Morning Mood & Productivity Check-In State
-    val todayDateStr = remember { SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date()) }
-    var showMorningMoodDialog by remember {
-        mutableStateOf(gamificationState.lastMoodCheckInDate != todayDateStr)
-    }
-    var morningMoodEmoji by remember { mutableStateOf("⚡") }
-    var morningMoodLabel by remember { mutableStateOf("High Energy") }
-    var morningEnergyLevel by remember { mutableFloatStateOf(8f) }
-    var morningIntent by remember { mutableStateOf("Complete deep work sprints & maintain unbroken streak") }
-    var morningPlannedMinutes by remember { mutableIntStateOf(120) }
-
     // Unified Multi-Permission Launcher for Notifications & Local Audio Auto-Import
     var hasNotifPermission by remember {
         mutableStateOf(
@@ -262,7 +251,6 @@ fun AuraFocusApp(
             }
         )
     }
-    var showPermissionBanner by remember { mutableStateOf(!hasNotifPermission || !hasAudioPermission) }
 
     val permissionsLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions()
@@ -280,9 +268,7 @@ fun AuraFocusApp(
         if (audioGranted) {
             hasAudioPermission = true
             musicEngine.scanDeviceAudio(context)
-            Toast.makeText(context, "Scanning phone audio files...", Toast.LENGTH_SHORT).show()
         }
-        showPermissionBanner = !hasNotifPermission || !hasAudioPermission
     }
 
     LaunchedEffect(Unit) {
@@ -559,149 +545,8 @@ fun AuraFocusApp(
             }
         }
     }
-
-        // 1. Interactive Glassmorphic Morning Mood & Productivity Check-In Dialog
-        if (showMorningMoodDialog) {
-            GlassDialog(
-                onDismissRequest = { showMorningMoodDialog = false },
-                title = "🌅 Morning Intentions & Flow Check-In",
-                glowColor = NeonCyan,
-                confirmButton = {
-                    GlassButton(
-                        text = "Commit Daily Flow (+60 XP)",
-                        onClick = {
-                            GamificationManager.recordDailyCheckIn(
-                                moodEmoji = morningMoodEmoji,
-                                moodLabel = morningMoodLabel,
-                                energyLevel = morningEnergyLevel.toInt(),
-                                primaryIntent = morningIntent,
-                                plannedFocusMinutes = morningPlannedMinutes
-                            )
-                            showMorningMoodDialog = false
-                            Toast.makeText(context, "Morning flow recorded! +60 XP & +5 Fruits earned 🔥", Toast.LENGTH_SHORT).show()
-                        },
-                        isPrimary = true
-                    )
-                },
-                dismissButton = {
-                    GlassButton(
-                        text = "Later",
-                        onClick = { showMorningMoodDialog = false },
-                        isPrimary = false
-                    )
-                }
-            ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = "Calibrate today's cognitive energy and define your primary focus intention:",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Text("Current Mood Sensation:", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = NeonCyan)
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .horizontalScroll(rememberScrollState()),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        listOf(
-                            Pair("⚡", "High Energy"),
-                            Pair("🧘", "Deep Calm"),
-                            Pair("🌊", "Flow State"),
-                            Pair("🚀", "Motivated"),
-                            Pair("☕", "Rest & Reset")
-                        ).forEach { (emoji, label) ->
-                            val isSelected = morningMoodEmoji == emoji
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(10.dp))
-                                    .background(if (isSelected) NeonCyan.copy(alpha = 0.32f) else Color(0x14FFFFFF))
-                                    .border(1.dp, if (isSelected) NeonCyan else Color(0x20FFFFFF), RoundedCornerShape(10.dp))
-                                    .clickable {
-                                        morningMoodEmoji = emoji
-                                        morningMoodLabel = label
-                                    }
-                                    .padding(horizontal = 10.dp, vertical = 6.dp),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text("$emoji $label", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = if (isSelected) NeonCyan else Color.White)
-                            }
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(14.dp))
-                    Text("Energy Vitality (1-10): ${(morningEnergyLevel).toInt()}/10", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = NeonAmber)
-                    GlassSlider(
-                        value = morningEnergyLevel / 10f,
-                        onValueChange = { morningEnergyLevel = (it * 10f).coerceIn(1f, 10f) },
-                        activeColor = NeonAmber
-                    )
-
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text("Daily Primary Deep Work Intent:", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                    Spacer(modifier = Modifier.height(4.dp))
-                    GlassTextField(
-                        value = morningIntent,
-                        onValueChange = { morningIntent = it },
-                        placeholder = "e.g. Master mental arithmetic and 2 focus sessions"
-                    )
-                }
-            }
-        }
-
-        // 2. Permission Rationale Floating Banner
-        if (showPermissionBanner && activeRoute == "main") {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .statusBarsPadding()
-                    .padding(horizontal = 16.dp, vertical = 6.dp)
-            ) {
-                GlassBanner(
-                    title = "Enable Notifications & Audio Access",
-                    description = "Required for focus timer alerts, streak reminders, and auto-scanning songs on your phone.",
-                    iconEmoji = "🔔",
-                    accentColor = NeonCyan,
-                    actionButtonText = "Grant",
-                    onActionClick = {
-                        val needed = mutableListOf<String>()
-                        if (!hasNotifPermission && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            needed.add(Manifest.permission.POST_NOTIFICATIONS)
-                        }
-                        if (!hasAudioPermission) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                needed.add(Manifest.permission.READ_MEDIA_AUDIO)
-                            } else {
-                                needed.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-                            }
-                        }
-                        if (needed.isNotEmpty()) {
-                            try {
-                                permissionsLauncher.launch(needed.toTypedArray())
-                            } catch (_: Exception) {
-                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                                    data = Uri.fromParts("package", context.packageName, null)
-                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                }
-                                context.startActivity(intent)
-                            }
-                        } else {
-                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                                data = Uri.fromParts("package", context.packageName, null)
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            }
-                            context.startActivity(intent)
-                        }
-                    }
-                )
-        }
-    }
 }
-}
-}
+
 
 
 

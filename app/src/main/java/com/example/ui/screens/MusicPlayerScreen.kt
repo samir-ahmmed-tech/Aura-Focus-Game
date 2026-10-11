@@ -502,57 +502,125 @@ fun MusicPlayerScreen(
                         )
                     }
 
-                    // STRICTLY CONTAINED Center Vinyl Core: Absolutely NO text leakage!
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    // KERNEL LINUX CYBERNETIC TELEMETRY CORE (Pure Animation - Absolutely ZERO Text)
+                    Box(
                         modifier = Modifier
                             .size(136.dp)
                             .clip(CircleShape)
-                            .background(Color(0x990A131F))
-                            .padding(horizontal = 10.dp, vertical = 6.dp),
-                        verticalArrangement = Arrangement.Center
+                            .background(Color(0xCC050C16)),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            imageVector = if (playerState.isPlaying) Icons.Default.GraphicEq else Icons.Default.Audiotrack,
-                            contentDescription = "Visualizer Track",
-                            tint = NeonCyan,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = playerState.currentTrack?.title ?: "Select Track",
-                            style = MaterialTheme.typography.titleSmall.copy(fontSize = 11.sp, fontWeight = FontWeight.Bold),
-                            color = Color.White,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
-                        )
-                        Text(
-                            text = playerState.currentTrack?.artist ?: "Aura Ambient Lab",
-                            style = MaterialTheme.typography.bodySmall.copy(fontSize = 9.sp),
-                            color = Color(0xBBFFFFFF),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
-                        )
-                        Spacer(modifier = Modifier.height(3.dp))
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(NeonLime.copy(alpha = 0.22f))
-                                .border(0.8.dp, NeonLime, RoundedCornerShape(8.dp))
-                                .padding(horizontal = 8.dp, vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = activeBrainwave.stateLabel,
-                                fontSize = 8.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = NeonLime,
-                                maxLines = 1
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            val cx = size.width / 2f
+                            val cy = size.height / 2f
+                            val isPlaying = playerState.isPlaying
+                            val rotRad = (discRotation * PI / 180f).toFloat()
+
+                            // 1. Linux Kernel Hex Sector Grid (Rotating telemetry)
+                            val sectors = 12
+                            for (s in 0 until sectors) {
+                                val sAngle = (2 * PI * s / sectors).toFloat() + rotRad * 1.5f
+                                val tickR1 = size.minDimension * 0.42f
+                                val tickR2 = size.minDimension * 0.48f
+                                val tx1 = cx + cos(sAngle) * tickR1
+                                val ty1 = cy + sin(sAngle) * tickR1
+                                val tx2 = cx + cos(sAngle) * tickR2
+                                val ty2 = cy + sin(sAngle) * tickR2
+                                drawLine(
+                                    color = if (s % 3 == 0) NeonCyan else NeonLime.copy(alpha = 0.6f),
+                                    start = Offset(tx1, ty1),
+                                    end = Offset(tx2, ty2),
+                                    strokeWidth = 2f,
+                                    cap = androidx.compose.ui.graphics.StrokeCap.Round
+                                )
+                            }
+
+                            // 2. High-Tech Concentric Radar Wave (Counter-rotating)
+                            drawCircle(
+                                color = NeonCyan.copy(alpha = 0.35f),
+                                radius = size.minDimension * 0.36f,
+                                center = Offset(cx, cy),
+                                style = Stroke(width = 1.2f)
+                            )
+                            drawCircle(
+                                color = NeonViolet.copy(alpha = 0.25f),
+                                radius = size.minDimension * 0.26f,
+                                center = Offset(cx, cy),
+                                style = Stroke(width = 1f)
+                            )
+
+                            // 3. Kernel Quantum Pulse Core
+                            val corePulseR = size.minDimension * 0.16f * (if (isPlaying) wavePulse else 1f)
+                            drawCircle(
+                                brush = Brush.radialGradient(
+                                    listOf(NeonCyan, NeonLime, Color.Transparent),
+                                    center = Offset(cx, cy),
+                                    radius = corePulseR * 1.5f
+                                ),
+                                radius = corePulseR * 1.5f,
+                                center = Offset(cx, cy)
+                            )
+                            drawCircle(
+                                color = Color.White,
+                                radius = 3.5f,
+                                center = Offset(cx, cy)
                             )
                         }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // Sleek External Track Metadata Capsule (Clean, zero text clutter inside circle)
+                GlassCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    glowColor = NeonCyan,
+                    glowRadius = 6.dp
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 14.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(NeonCyan.copy(alpha = 0.2f))
+                                .border(1.dp, NeonCyan, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = if (playerState.isPlaying) Icons.Default.GraphicEq else Icons.Default.Audiotrack,
+                                contentDescription = "Playing",
+                                tint = NeonCyan,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = playerState.currentTrack?.title ?: "Select Track",
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = Color.White,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                text = "${playerState.currentTrack?.artist ?: "Aura Ambient Lab"} • ${activeBrainwave.stateLabel}",
+                                style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                                color = NeonCyan,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        GlassChip(
+                            label = if (playerState.isPlaying) "KERNEL ACTIVE" else "PAUSED",
+                            color = if (playerState.isPlaying) NeonLime else NeonAmber,
+                            selected = true
+                        )
                     }
                 }
             }
@@ -635,52 +703,107 @@ fun MusicPlayerScreen(
                         )
                     }
 
-                    // STRICTLY CONTAINED Center Core
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                    // SACRED MANDALA ORBIT CORE (Pure Animation - Absolutely ZERO Text)
+                    Box(
                         modifier = Modifier
                             .size(136.dp)
                             .clip(CircleShape)
-                            .background(Color(0x990D1117))
-                            .padding(horizontal = 10.dp, vertical = 6.dp),
-                        verticalArrangement = Arrangement.Center
+                            .background(Color(0xCC090D13)),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Text(text = "🪐", fontSize = 16.sp)
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = playerState.currentTrack?.title ?: "Select Track",
-                            style = MaterialTheme.typography.titleSmall.copy(fontSize = 11.sp, fontWeight = FontWeight.Bold),
-                            color = Color.White,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
-                        )
-                        Text(
-                            text = playerState.currentTrack?.artist ?: "Mandala Orbit",
-                            style = MaterialTheme.typography.bodySmall.copy(fontSize = 9.sp),
-                            color = Color(0xBBFFFFFF),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp)
-                        )
-                        Spacer(modifier = Modifier.height(3.dp))
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp))
-                                .background(NeonPink.copy(alpha = 0.22f))
-                                .border(0.8.dp, NeonPink, RoundedCornerShape(8.dp))
-                                .padding(horizontal = 8.dp, vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = "${selectedSolfeggioHz}Hz SOLFEGGIO",
-                                fontSize = 8.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = NeonPink,
-                                maxLines = 1
+                        Canvas(modifier = Modifier.fillMaxSize()) {
+                            val cx = size.width / 2f
+                            val cy = size.height / 2f
+                            val isPlaying = playerState.isPlaying
+                            val rotRad = (discRotation * PI / 180f).toFloat()
+
+                            // Sacred Multi-Node Pulsing Geometry
+                            val nodes = 6
+                            for (n in 0 until nodes) {
+                                val ang = (2 * PI * n / nodes).toFloat() - rotRad * 2f
+                                val r = size.minDimension * 0.35f
+                                val nx = cx + cos(ang) * r
+                                val ny = cy + sin(ang) * r
+                                drawCircle(
+                                    color = NeonPink.copy(alpha = 0.45f),
+                                    radius = 6f,
+                                    center = Offset(nx, ny)
+                                )
+                                drawLine(
+                                    color = NeonViolet.copy(alpha = 0.4f),
+                                    start = Offset(cx, cy),
+                                    end = Offset(nx, ny),
+                                    strokeWidth = 1.2f
+                                )
+                            }
+
+                            // Center Pulsing Solfeggio Core
+                            val centerR = size.minDimension * 0.18f * (if (isPlaying) wavePulse else 1f)
+                            drawCircle(
+                                brush = Brush.radialGradient(
+                                    listOf(NeonPink, NeonViolet, Color.Transparent),
+                                    center = Offset(cx, cy),
+                                    radius = centerR * 1.6f
+                                ),
+                                radius = centerR * 1.6f,
+                                center = Offset(cx, cy)
+                            )
+                            drawCircle(
+                                color = Color.White,
+                                radius = 3.5f,
+                                center = Offset(cx, cy)
                             )
                         }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // External Track Metadata Capsule (Design 1)
+                GlassCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    glowColor = NeonPink,
+                    glowRadius = 6.dp
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 14.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                                .background(NeonPink.copy(alpha = 0.2f))
+                                .border(1.dp, NeonPink, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "🪐", fontSize = 18.sp)
+                        }
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = playerState.currentTrack?.title ?: "Select Track",
+                                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
+                                color = Color.White,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                text = "${playerState.currentTrack?.artist ?: "Mandala Orbit"} • ${selectedSolfeggioHz}Hz SOLFEGGIO",
+                                style = MaterialTheme.typography.bodySmall.copy(fontSize = 11.sp),
+                                color = NeonPink,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        GlassChip(
+                            label = if (playerState.isPlaying) "HARMONIC FLOW" else "PAUSED",
+                            color = if (playerState.isPlaying) NeonPink else NeonAmber,
+                            selected = true
+                        )
                     }
                 }
             }

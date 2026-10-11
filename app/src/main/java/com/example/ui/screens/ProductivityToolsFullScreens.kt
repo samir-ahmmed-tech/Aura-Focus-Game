@@ -956,7 +956,7 @@ fun FullDistractionVaultScreen(onBack: () -> Unit) {
                 Text("THE SOLEMN COMMITMENT", fontWeight = FontWeight.Bold, color = NeonPink, fontSize = 13.sp)
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "“I willingly lock my attention inside AuraFocus. I promise myself that my goals are more important than cheap social dopamine. I will work in flow until the bell sounds.”",
+                    text = "“I willingly lock my attention inside NeuroBox. I promise myself that my goals are more important than cheap social dopamine. I will work in flow until the bell sounds.”",
                     color = Color.White,
                     fontSize = 13.sp,
                     lineHeight = 20.sp,

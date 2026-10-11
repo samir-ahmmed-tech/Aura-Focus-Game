@@ -98,7 +98,7 @@ fun TasksScreen(
     }
     val tasks = remember {
         mutableStateListOf(
-            TaskItem("1", "Draft AuraFocus architecture", "Room SQLite schema and DAO interfaces", TaskColumn.DONE, TaskPriority.HIGH, 3, 3, true),
+            TaskItem("1", "Draft NeuroBox architecture", "Room SQLite schema and DAO interfaces", TaskColumn.DONE, TaskPriority.HIGH, 3, 3, true),
             TaskItem("2", "Design 3D Glassmorphism Cards", "Layered acrylic surfaces with neon edge shaders", TaskColumn.IN_PROGRESS, TaskPriority.URGENT, 4, 2, false),
             TaskItem("3", "Implement Pomodoro countdown loop", "Precision timekeeper with breathing pulse", TaskColumn.IN_PROGRESS, TaskPriority.HIGH, 2, 1, false),
             TaskItem("4", "Local MP3 audio player SAF hook", "Storage Access Framework integration", TaskColumn.BACKLOG, TaskPriority.MEDIUM, 2, 0, false),
@@ -367,7 +367,7 @@ fun TasksScreen(
 
         AlertDialog(
             onDismissRequest = { showAddTaskDialog = false },
-            title = { Text("New AuraFocus Task", color = MaterialTheme.colorScheme.onBackground) },
+            title = { Text("New NeuroBox Task", color = MaterialTheme.colorScheme.onBackground) },
             text = {
                 Column {
                     OutlinedTextField(

@@ -408,7 +408,7 @@ fun DistractionVaultDialog(onDismiss: () -> Unit) {
         title = { Text("🛡️ Distraction Vault Oath", color = MaterialTheme.colorScheme.onBackground) },
         text = {
             Text(
-                text = "“I commit to staying in AuraFocus for this session. I will not break flow for trivial notifications or social feeds until the timer expires.”",
+                text = "“I commit to staying in NeuroBox for this session. I will not break flow for trivial notifications or social feeds until the timer expires.”",
                 color = NeonPink,
                 style = MaterialTheme.typography.bodyMedium
             )

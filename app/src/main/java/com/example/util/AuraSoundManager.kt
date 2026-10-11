@@ -8,90 +8,94 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.SoundEffectConstants
 import android.view.View
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 /**
- * Reliable acoustic tap sound & haptics manager.
- * Uses hardware ToneGenerator on STREAM_MUSIC to ensure crisp audible feedback
- * regardless of whether the user's OS has disabled system touch sounds.
+ * High-performance, non-blocking acoustic tap sound & haptics manager for NeuroBox.
+ * Executes on background dispatchers to guarantee zero UI thread lag or micro-freezes.
  */
 object AuraSoundManager {
     private var toneGenerator: ToneGenerator? = null
+    private val soundScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
+    private var lastTapTime = 0L
 
     init {
-        initTone()
+        soundScope.launch {
+            initTone()
+        }
     }
 
     private fun initTone() {
         try {
-            toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, 100)
+            toneGenerator = ToneGenerator(AudioManager.STREAM_MUSIC, 85)
         } catch (_: Exception) {
             try {
-                toneGenerator = ToneGenerator(AudioManager.STREAM_SYSTEM, 100)
+                toneGenerator = ToneGenerator(AudioManager.STREAM_SYSTEM, 85)
             } catch (_: Exception) {
                 try {
-                    toneGenerator = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100)
+                    toneGenerator = ToneGenerator(AudioManager.STREAM_NOTIFICATION, 85)
                 } catch (_: Exception) {}
             }
         }
     }
 
     /**
-     * Plays a crisp, satisfying mechanical click sound on tap.
+     * Non-blocking tap feedback: fires asynchronously so UI thread stays 100% fluid.
      */
     fun playTapSound(context: Context?, view: View? = null) {
+        val now = System.currentTimeMillis()
+        if (now - lastTapTime < 50L) return // Rate-limit rapid successive clicks to prevent queue buildup
+        lastTapTime = now
+
         val ctx = context ?: view?.context
 
-        // 1. Play Android AudioManager system click effect
+        // Lightweight instant view click if available
         try {
-            val audioManager = ctx?.getSystemService(Context.AUDIO_SERVICE) as? AudioManager
-            audioManager?.playSoundEffect(AudioManager.FX_KEY_CLICK, 1.0f)
+            view?.playSoundEffect(SoundEffectConstants.CLICK)
         } catch (_: Exception) {}
 
-        // 2. Play view sound effect with soundEffectsEnabled forced to true
-        try {
-            if (view != null) {
-                view.isSoundEffectsEnabled = true
-                view.playSoundEffect(SoundEffectConstants.CLICK)
-            }
-        } catch (_: Exception) {}
-
-        // 3. Play tone generator beep on STREAM_MUSIC
-        try {
-            if (toneGenerator == null) initTone()
-            toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 30)
-        } catch (_: Exception) {
-            initTone()
+        // Tone & Haptic in background coroutine to never block the main rendering thread
+        soundScope.launch {
             try {
-                toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 30)
+                if (toneGenerator == null) initTone()
+                toneGenerator?.startTone(ToneGenerator.TONE_PROP_BEEP, 25)
             } catch (_: Exception) {}
-        }
 
-        // 4. Subtle tactile haptic pulse
-        performHaptic(ctx, 10)
+            performHaptic(ctx, 8)
+        }
     }
 
     /**
      * Plays a success chime when achieving a goal or high score.
      */
     fun playSuccessSound() {
-        try {
-            toneGenerator?.startTone(ToneGenerator.TONE_PROP_ACK, 70)
-        } catch (_: Exception) {}
+        soundScope.launch {
+            try {
+                if (toneGenerator == null) initTone()
+                toneGenerator?.startTone(ToneGenerator.TONE_PROP_ACK, 65)
+            } catch (_: Exception) {}
+        }
     }
 
     /**
      * Plays a pleasant drop sound when harvesting fruits or gaining rewards.
      */
     fun playHarvestSound() {
-        try {
-            toneGenerator?.startTone(ToneGenerator.TONE_PROP_PROMPT, 60)
-        } catch (_: Exception) {}
+        soundScope.launch {
+            try {
+                if (toneGenerator == null) initTone()
+                toneGenerator?.startTone(ToneGenerator.TONE_PROP_PROMPT, 55)
+            } catch (_: Exception) {}
+        }
     }
 
     /**
-     * Optional subtle tactile pulse.
+     * Subtle tactile pulse executed non-blocking.
      */
-    fun performHaptic(context: Context?, durationMs: Long = 15) {
+    fun performHaptic(context: Context?, durationMs: Long = 10) {
         try {
             if (context == null) return
             val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator

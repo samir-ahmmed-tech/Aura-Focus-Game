@@ -28,7 +28,7 @@ object AuraNotificationHelper {
 
             val focusChannel = NotificationChannel(
                 CHANNEL_FOCUS_ID,
-                "Aura Focus Sessions",
+                "NeuroBox Sessions",
                 NotificationManager.IMPORTANCE_LOW
             ).apply {
                 description = "Shows live status for active deep work and meditation sessions"

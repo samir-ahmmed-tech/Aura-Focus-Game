@@ -398,6 +398,19 @@ fun AnalyticsAndHistoryScreen(
                                         drawLine(color = Color(0x20FFFFFF), start = Offset(cx, cy), end = Offset(px, py), strokeWidth = 1f)
                                     }
 
+                                    // Concentric radial baseline polygon
+                                    val basePolyPath = Path().apply {
+                                        quotients.forEachIndexed { i, q ->
+                                            val r = (maxR * 0.70f).coerceAtMost(maxR)
+                                            val angle = (i * 60 - 30) * (Math.PI / 180.0)
+                                            val px = cx + (r * Math.cos(angle)).toFloat()
+                                            val py = cy + (r * Math.sin(angle)).toFloat()
+                                            if (i == 0) moveTo(px, py) else lineTo(px, py)
+                                        }
+                                        close()
+                                    }
+                                    drawPath(basePolyPath, color = Color(0x35FFFFFF), style = androidx.compose.ui.graphics.drawscope.Stroke(width = 1.2f))
+
                                     // Dynamic current score polygon
                                     val polyPath = Path().apply {
                                         quotients.forEachIndexed { i, q ->
@@ -406,7 +419,7 @@ fun AnalyticsAndHistoryScreen(
                                                 1 -> 1f + (q.weekDeltaPercent / 100f)
                                                 else -> 1f + (q.monthDeltaPercent / 100f)
                                             }
-                                            val r = (maxR * 0.72f * growthFactor).coerceAtMost(maxR)
+                                            val r = (maxR * 0.70f * growthFactor).coerceAtMost(maxR)
                                             val angle = (i * 60 - 30) * (Math.PI / 180.0)
                                             val px = cx + (r * Math.cos(angle)).toFloat()
                                             val py = cy + (r * Math.sin(angle)).toFloat()
@@ -415,20 +428,29 @@ fun AnalyticsAndHistoryScreen(
                                         close()
                                     }
 
-                                    drawPath(polyPath, brush = Brush.radialGradient(listOf(NeonCyan.copy(alpha = 0.35f), Color.Transparent), center = Offset(cx, cy), radius = maxR))
+                                    drawPath(polyPath, brush = Brush.radialGradient(listOf(NeonCyan.copy(alpha = 0.38f), Color.Transparent), center = Offset(cx, cy), radius = maxR))
                                     drawPath(polyPath, color = NeonCyan, style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2.5f))
 
-                                    // Draw vertices dots
+                                    // Draw vertices with holographic halo glow
                                     quotients.forEachIndexed { i, q ->
                                         val growthFactor = when (selectedTimeframe) {
                                             0 -> 1f + (q.dayDeltaPercent / 100f)
                                             1 -> 1f + (q.weekDeltaPercent / 100f)
                                             else -> 1f + (q.monthDeltaPercent / 100f)
                                         }
-                                        val r = (maxR * 0.72f * growthFactor).coerceAtMost(maxR)
+                                        val r = (maxR * 0.70f * growthFactor).coerceAtMost(maxR)
                                         val angle = (i * 60 - 30) * (Math.PI / 180.0)
                                         val px = cx + (r * Math.cos(angle)).toFloat()
                                         val py = cy + (r * Math.sin(angle)).toFloat()
+                                        drawCircle(
+                                            brush = Brush.radialGradient(
+                                                listOf(q.color.copy(alpha = 0.65f), Color.Transparent),
+                                                center = Offset(px, py),
+                                                radius = 12f
+                                            ),
+                                            radius = 12f,
+                                            center = Offset(px, py)
+                                        )
                                         drawCircle(color = Color.White, radius = 4f, center = Offset(px, py))
                                         drawCircle(color = q.color, radius = 2.5f, center = Offset(px, py))
                                     }

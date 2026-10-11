@@ -189,7 +189,7 @@ fun FocusScreen(
         ) {
             Column {
                 Text(
-                    text = "AuraFocus",
+                    text = "NeuroBox",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 1.sp
@@ -197,7 +197,7 @@ fun FocusScreen(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
-                    text = "Acoustic Brainwave Focus Space",
+                    text = "Acoustic Brainwave & Cognitive Space",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

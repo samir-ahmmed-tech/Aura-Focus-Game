@@ -134,16 +134,18 @@ private val SunsetObsidianColorScheme = darkColorScheme(
 @Composable
 fun AuraFocusTheme(
     themeMode: AuraThemeMode = AuraThemeMode.AURORA_DARK,
-    uiScale: Float = 1.0f,
+    uiScale: Float = 0.85f,
     touchSoundEnabled: Boolean = true,
-    cardBackdropStyle: CardBackdropStyle = CardBackdropStyle.CIRCLE_HALO,
+    cardBackdropStyle: CardBackdropStyle = CardBackdropStyle.OFF,
     content: @Composable () -> Unit
 ) {
     val standardDensity = androidx.compose.ui.platform.LocalDensity.current
-    val scaledDensity = androidx.compose.ui.unit.Density(
-        density = standardDensity.density * uiScale,
-        fontScale = standardDensity.fontScale * uiScale
-    )
+    val scaledDensity = androidx.compose.runtime.remember(standardDensity.density, standardDensity.fontScale, uiScale) {
+        androidx.compose.ui.unit.Density(
+            density = standardDensity.density * uiScale,
+            fontScale = standardDensity.fontScale * uiScale
+        )
+    }
 
     val colorScheme = when (themeMode) {
         AuraThemeMode.AURORA_DARK -> AuroraDarkColorScheme
@@ -151,26 +153,6 @@ fun AuraFocusTheme(
         AuraThemeMode.SOLAR_LIGHT -> SolarLightColorScheme
         AuraThemeMode.MIDNIGHT_EMERALD -> MidnightEmeraldColorScheme
         AuraThemeMode.SUNSET_OBSIDIAN -> SunsetObsidianColorScheme
-    }
-
-    val scaledTypography = androidx.compose.runtime.remember(uiScale) {
-        androidx.compose.material3.Typography(
-            displayLarge = Typography.displayLarge.copy(fontSize = Typography.displayLarge.fontSize * uiScale),
-            displayMedium = Typography.displayMedium.copy(fontSize = Typography.displayMedium.fontSize * uiScale),
-            displaySmall = Typography.displaySmall.copy(fontSize = Typography.displaySmall.fontSize * uiScale),
-            headlineLarge = Typography.headlineLarge.copy(fontSize = Typography.headlineLarge.fontSize * uiScale),
-            headlineMedium = Typography.headlineMedium.copy(fontSize = Typography.headlineMedium.fontSize * uiScale),
-            headlineSmall = Typography.headlineSmall.copy(fontSize = Typography.headlineSmall.fontSize * uiScale),
-            titleLarge = Typography.titleLarge.copy(fontSize = Typography.titleLarge.fontSize * uiScale),
-            titleMedium = Typography.titleMedium.copy(fontSize = Typography.titleMedium.fontSize * uiScale),
-            titleSmall = Typography.titleSmall.copy(fontSize = Typography.titleSmall.fontSize * uiScale),
-            bodyLarge = Typography.bodyLarge.copy(fontSize = Typography.bodyLarge.fontSize * uiScale),
-            bodyMedium = Typography.bodyMedium.copy(fontSize = Typography.bodyMedium.fontSize * uiScale),
-            bodySmall = Typography.bodySmall.copy(fontSize = Typography.bodySmall.fontSize * uiScale),
-            labelLarge = Typography.labelLarge.copy(fontSize = Typography.labelLarge.fontSize * uiScale),
-            labelMedium = Typography.labelMedium.copy(fontSize = Typography.labelMedium.fontSize * uiScale),
-            labelSmall = Typography.labelSmall.copy(fontSize = Typography.labelSmall.fontSize * uiScale)
-        )
     }
 
     CompositionLocalProvider(
@@ -182,7 +164,7 @@ fun AuraFocusTheme(
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
-            typography = scaledTypography,
+            typography = Typography,
             content = content
         )
     }

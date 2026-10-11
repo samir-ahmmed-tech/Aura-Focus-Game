@@ -190,7 +190,7 @@ fun HubScreen(
         ) {
             Column {
                 Text(
-                    text = "AuraFocus Hub & Settings",
+                    text = "NeuroBox Hub & Settings",
                     style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -1217,7 +1217,7 @@ fun HubScreen(
             }
             2 -> {
                 // FEATURE GUIDE & README IN SIMPLE, CLEAR ENGLISH
-                Text("📖 AuraFocus User Manual & Feature Guide:", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = NeonLime)
+                Text("📖 NeuroBox User Manual & Feature Guide:", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = NeonLime)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text("Read this complete guide to understand every part of the app in simple, clear English.", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Spacer(modifier = Modifier.height(10.dp))
@@ -1232,7 +1232,7 @@ fun HubScreen(
                         )
 
                         Text(
-                            text = "2. Playing Songs From Your Phone\n• Tap the Music tab in the bottom bar.\n• When prompted, grant media storage permission.\n• AuraFocus automatically searches your internal storage and SD card for all MP3, AAC, and WAV songs.\n• Tap any song to play it immediately with repeat, shuffle, and next/previous controls.",
+                            text = "2. Playing Songs From Your Phone\n• Tap the Music tab in the bottom bar.\n• When prompted, grant media storage permission.\n• NeuroBox automatically searches your internal storage and SD card for all MP3, AAC, and WAV songs.\n• Tap any song to play it immediately with repeat, shuffle, and next/previous controls.",
                             fontSize = 12.sp,
                             color = Color.White,
                             lineHeight = 18.sp
@@ -1274,7 +1274,7 @@ fun HubScreen(
                         )
 
                         Text(
-                            text = "8. Instant High Performance & Cloud Connectivity\n• AuraFocus provides instant zero-lag response with high-speed local caching while staying fully connected to the network.\n• Keep internet enabled to enjoy continuous streaming audio updates, cloud backup compatibility, and uninterrupted ambient focus.",
+                            text = "8. Instant High Performance & Cloud Connectivity\n• NeuroBox provides instant zero-lag response with high-speed local caching while staying fully connected to the network.\n• Keep internet enabled to enjoy continuous streaming audio updates, cloud backup compatibility, and uninterrupted ambient focus.",
                             fontSize = 12.sp,
                             color = Color.White,
                             lineHeight = 18.sp
